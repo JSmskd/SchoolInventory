@@ -24,7 +24,7 @@ struct ContentView: View {
 }
 
 extension Color {
-    static let darkOrange = Color(red: 255/255, green: 108/255, blue: 36/255)
+    static let darkOrange = Color(red: 244/255, green: 108/255, blue: 44/255)
 }
     
 #Preview {
