@@ -9,16 +9,24 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
+        
+        VStack(spacing: 0) { // Set spacing to 0
             Image("DawgPound")
                 .resizable()
                 .frame(width: 300, height: 175)
-
+            Text("INVENTORY")
+                .font(.custom("Impact", size: 70))
+                .foregroundColor(.darkOrange)
         }
+        
         .padding()
     }
 }
 
+extension Color {
+    static let darkOrange = Color(red: 255/255, green: 108/255, blue: 36/255)
+}
+    
 #Preview {
     ContentView()
 }
