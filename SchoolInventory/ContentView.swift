@@ -12,7 +12,7 @@ struct ContentView: View {
         VStack {
             Image("DawgPound")
                 .resizable()
-                .frame(width: 300, height: 170)
+                .frame(width: 300, height: 175)
 
         }
         .padding()
