@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct BarcodeTextApp: App {
     
-    @StateObject private var vm = AppViewModel()
+    @StateObject private var vm = BarcodeAppViewModel()
     var body: some Scene {
         WindowGroup {
             BarcodeView()
