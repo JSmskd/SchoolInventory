@@ -20,6 +20,14 @@ struct ContentView: View {
         }
         
         .padding()
+        
+        TabView {
+            BarcodeView().tabItem {
+                Text("Barcode")
+            }
+            
+            
+        }
     }
 }
 
