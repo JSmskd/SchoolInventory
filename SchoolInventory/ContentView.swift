@@ -26,7 +26,21 @@ struct ContentView: View {
                 Text("Barcode")
             }
             
+            InventoryView().tabItem {
+                Text("Inventory")
+            }
             
+            ManuallyEnterView().tabItem {
+                Text("Manually Enter")
+            }
+            
+            StudentOrdersView().tabItem {
+                Text("Online")
+            }
+            
+            WalkUpView().tabItem {
+                Text("Walk Up")
+            }
         }
     }
 }
