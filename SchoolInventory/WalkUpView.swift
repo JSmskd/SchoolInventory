@@ -13,6 +13,7 @@ struct WalkUpView: View {
             .font(.custom("Impact", size: 70))
             .foregroundColor(.darkOrange)
         
+        
     }
 }
 
