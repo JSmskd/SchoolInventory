@@ -23,23 +23,38 @@ struct ContentView: View {
         
         TabView {
             BarcodeView().tabItem {
-                Text("Barcode")
+                HStack{
+                    Text("Barcode")
+                    Image(systemName: "barcode")
+                }
             }
             
             InventoryView().tabItem {
-                Text("Inventory")
+                HStack{
+                    Text("Inventory")
+                    Image(systemName: "shippingbox")
+                }
             }
             
             ManuallyEnterView().tabItem {
-                Text("Manually Enter")
+                HStack{
+                    Text("Manually Enter")
+                    Image(systemName: "square.and.pencil")
+                }
             }
             
             StudentOrdersView().tabItem {
-                Text("Online")
+                HStack{
+                    Text("Online")
+                    Image(systemName: "desktopcomputer")
+                }
             }
             
             WalkUpView().tabItem {
-                Text("Walk Up")
+                HStack{
+                    Text("Walk Up")
+                    Image(systemName: "figure.walk")
+                }
             }
         }
     }
