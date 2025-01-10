@@ -36,7 +36,7 @@ final class BarcodeAppViewModel: ObservableObject {
         if recognizedItems.isEmpty {
             return "Scanning \(scanType.rawValue)"
         } else {
-            return "Recogniized \(recognizedItems.count) item(s)"
+            return "Recognized \(recognizedItems.count) item(s)"
         }
     }
     var dataScannerViewerId: Int {
