@@ -29,7 +29,7 @@ struct BarcodeView: View {
         case .cameraNotAvaliable:
             Text("Your device does not have a camera")
         case .scannerNotAvaliable:
-            Text("Your device does not support scanning barcodes with this app ")
+            Text("Your device does not support scanning barcodes with this app")
         case .cameraAccessNotGranted:
             Text("Please provide access to the camera in settings")
         case .notDetermined:
@@ -73,7 +73,7 @@ struct BarcodeView: View {
                     Text("Barcode").tag(ScanType.barcode)
                     Text("Text").tag(ScanType.text)
                 }.pickerStyle(.segmented)
-                Toggle("Scan multipe", isOn: $vm.recognizesMultipeItems)
+                Toggle("Scan multiple", isOn: $vm.recognizesMultipeItems)
             }.padding(.top)
             if vm.scanType == .text {
                 Picker("Text content type", selection: $vm.textContentType) {
