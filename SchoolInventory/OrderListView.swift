@@ -13,9 +13,8 @@ struct OrderListView: View {
         VStack(alignment: .leading) {
             Text(currentOrderItem.nameOfItem)
                 .font(.title)
-                .foregroundColor(.teal)
                 .bold()
-            //Text(currentOrderItem.studentID)
+            Text("ID: \(currentOrderItem.studentID)")
         }
     }
 }
