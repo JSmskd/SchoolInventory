@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct StudentOrdersView: View {
+    @State var orderItems: [OrderItem] = []
     var body: some View {
         Text("Student Orders View")
             .font(.custom("Impact", size: 70))
