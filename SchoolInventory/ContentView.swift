@@ -5,12 +5,6 @@
 //  Created by Neha M. Darji on 12/5/24.
 //
 
-
-
-
-
-
-//doing reasewrch on searchbar and doing it on another app first (aneena)
 import SwiftUI
 
 struct ContentView: View {
