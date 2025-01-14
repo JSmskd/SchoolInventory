@@ -12,6 +12,7 @@ struct StudentOrdersView: View {
         Text("Student Orders View")
             .font(.custom("Impact", size: 70))
             .foregroundColor(.darkOrange)
+        
     }
 }
 
