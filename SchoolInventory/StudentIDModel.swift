@@ -6,6 +6,6 @@
 //
 
 struct StudentIDModel {
-     
+    var lastName: String
     
 }

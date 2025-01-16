@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct StudentIDContentView: View {
-    
+    @StateObject var studentViewModel: StudentIDViewModel = StudentIDViewModel()
     var body: some View {
+        List{
+            ForEach(studentViewModel.students, id: \.lastName) {student in
+                Text(student.lastName)
+        }
+        }
         
     }
 }
