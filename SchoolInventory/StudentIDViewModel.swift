@@ -8,7 +8,8 @@
 import SwiftUI
 
 class StudentIDViewModel: ObservableObject {
-    @Published var students: [StudentIDModel]
+    @Published var students: [StudentIDModel] = []
     
-    
+
+    }
 }
