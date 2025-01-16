@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public var countryList = [
+public var ItemsList = [
     "Afghanistan",
     "Albania",
     "Algeria",
