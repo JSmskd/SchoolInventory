@@ -5,7 +5,8 @@
 //  Created by Neha M. Darji on 12/5/24.
 //
 
-//working on moving app to playgrounds 
+//working on moving app to playgrounds
+//getting rid of playgrounds errors 
 
 import SwiftUI
 
