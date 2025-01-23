@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct SearchBarView: View {
-    private var listOfItems = ItemsList
+    private var listOfCountry = countryList
     @State var searchText = ""
     var body: some View {
         NavigationView {
             List {
-                ForEach(ItemsList, id: \.self) { item in
-                    //supposed to be items not items list
+                ForEach(countries, id: \.self) { counry in
                     HStack{
-                        Text(item.capitalized)
+                        Text(counry.capitalized)
                         Spacer()
                         Image(systemName: "figure.walk")
                             .foregroundColor(Color.blue)
@@ -25,18 +24,19 @@ struct SearchBarView: View {
                 }
             }
             .searchable(text: $searchText)
-            .navigationTitle("Items")
+            .navigationTitle("Countries")
         }
       
     }
-    var items: [String] {
-        let lcItems = listOfItems.map { $0.lowercased() }
-        return searchText == "" ? lcItems : lcItems.filter {
+    var countries: [String] {
+        let lcCountries = listOfCountry.map { $0.lowercased() }
+        return searchText == "" ? lcCountries : lcCountries.filter {
             $0.contains(searchText.lowercased())
         }
     }
 }
 
 #Preview {
-    SearchBarView()
+    ContentView()
 }
+
