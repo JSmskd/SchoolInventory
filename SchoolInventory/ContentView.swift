@@ -25,11 +25,11 @@ struct ContentView: View {
         .padding()
         
         TabView {
-            BarcodeView().tabItem {
-                HStack{
-                    Text("Barcode")
-                    Image(systemName: "barcode")
-                }
+//            BarcodeView().tabItem {
+//                HStack{
+//                    Text("Barcode")
+//                    Image(systemName: "barcode")
+//                }
             }
             
             InventoryView().tabItem {
@@ -61,7 +61,7 @@ struct ContentView: View {
             }
         }
     }
-}
+
 
 extension Color {
     static let darkOrange = Color(red: 244/255, green: 108/255, blue: 44/255)
