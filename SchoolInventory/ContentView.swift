@@ -12,31 +12,16 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        
-        VStack(spacing: 0) { // Set spacing to 0
-            Image("DawgPound")
-                .resizable()
-                .frame(width: 300, height: 175)
-            Text("INVENTORY")
-                .font(.custom("Impact", size: 70))
-                .foregroundColor(.orange)
-        }
-        
-        .padding()
-        
         TabView {
+            HomeView().tabItem{
+                Text("Home")
+                Image(systemName: "house.fill")
+            }
             
             InventoryView().tabItem {
                 HStack{
                     Text("Inventory")
                     Image(systemName: "shippingbox")
-                }
-            }
-            
-            ManuallyEnterView().tabItem {
-                HStack{
-                    Text("Manually Enter")
-                    Image(systemName: "square.and.pencil")
                 }
             }
             
@@ -56,10 +41,6 @@ struct ContentView: View {
         }
     }
 }
-
-//extension Color {
-//    static let darkOrange = Color(red: 244/255, green: 108/255, blue: 44/255)
-//}
     
 #Preview {
     ContentView()
