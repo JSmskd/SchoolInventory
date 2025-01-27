@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-@main
+//@main
 
 struct StudentIDViewerApp: App {
     var body: some Scene {

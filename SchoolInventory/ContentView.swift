@@ -19,18 +19,12 @@ struct ContentView: View {
                 .frame(width: 300, height: 175)
             Text("INVENTORY")
                 .font(.custom("Impact", size: 70))
-                .foregroundColor(.darkOrange)
+                .foregroundColor(.orange)
         }
         
         .padding()
         
         TabView {
-//            BarcodeView().tabItem {
-//                HStack{
-//                    Text("Barcode")
-//                    Image(systemName: "barcode")
-//                }
-            }
             
             InventoryView().tabItem {
                 HStack{
@@ -61,11 +55,11 @@ struct ContentView: View {
             }
         }
     }
-
-
-extension Color {
-    static let darkOrange = Color(red: 244/255, green: 108/255, blue: 44/255)
 }
+
+//extension Color {
+//    static let darkOrange = Color(red: 244/255, green: 108/255, blue: 44/255)
+//}
     
 #Preview {
     ContentView()

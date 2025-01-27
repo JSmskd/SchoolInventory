@@ -11,7 +11,7 @@ struct WalkUpView: View {
     var body: some View {
         Text("Walk Up")
             .font(.custom("Impact", size: 70))
-            .foregroundColor(.darkOrange)
+            .foregroundColor(.orange)
         
         
     }

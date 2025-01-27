@@ -11,7 +11,7 @@ struct ManuallyEnterView: View {
     var body: some View {
         Text("Manually Enter")
             .font(.custom("Impact", size: 70))
-            .foregroundColor(.darkOrange)
+            .foregroundColor(.orange)
     }
 }
 
