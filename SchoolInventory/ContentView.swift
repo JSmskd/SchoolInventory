@@ -53,6 +53,12 @@ struct ContentView: View {
                     Image(systemName: "figure.walk")
                 }
             }
+            SearchBarView().tabItem {
+                HStack {
+                    Text("Search Bar")
+                    Image(systemName: "magnifyingglass")
+                }
+            }
         }
     }
 }
