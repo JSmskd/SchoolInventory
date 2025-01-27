@@ -11,12 +11,10 @@ import SwiftData
 @Model
 class Order: Hashable {
     var barcodeNumber: Int
-    var date: Date
     var size: String
     var clothingItem: String
-    init(barcodeNumber: Int, date: Date, size: String, clothingItem: String) {
+    init(barcodeNumber: Int, size: String, clothingItem: String) {
         self.barcodeNumber = barcodeNumber
-        self.date = date
         self.size = size
         self.clothingItem = clothingItem
     }
