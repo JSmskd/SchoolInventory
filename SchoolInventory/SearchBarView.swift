@@ -24,7 +24,7 @@ struct SearchBarView: View {
                 }
             }
             .searchable(text: $searchText)
-            .navigationTitle("Countries")
+            .navigationTitle("Search Bar")
         }
       
     }
