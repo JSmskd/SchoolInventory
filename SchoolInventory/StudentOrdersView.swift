@@ -10,12 +10,15 @@ import SwiftUI
 struct StudentOrdersView: View {
     @State var orderItems: [OrderItem] = []
     var body: some View {
-        VStack {
-            HeaderOrderView(orderItems: $orderItems)
+        VStack{
             List(orderItems, id: \.self) { currentOrderItem in
                 OrderListView(currentOrderItem: currentOrderItem)
             }
         }
         
     }
+}
+
+#Preview {
+    StudentOrdersView()
 }

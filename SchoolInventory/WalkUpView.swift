@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct WalkUpView: View {
+    @State var orderItems: [OrderItem] = []
     var body: some View {
-        Text("Walk Up")
-            .font(.custom("Impact", size: 70))
-            .foregroundColor(.orange)
-        
-        
+        VStack {
+            HeaderOrderView(orderItems: $orderItems)
+            List(orderItems, id: \.self) { currentOrderItem in
+                OrderListView(currentOrderItem: currentOrderItem)
+            }
+        }
     }
 }
 
