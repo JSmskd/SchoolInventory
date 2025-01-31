@@ -8,51 +8,51 @@
 import SwiftUI
 
 struct SearchBarView: View {
-    @State private var listOfCountry = countryList // Your original country list
+    @State private var listOfStudentIDs = studentIDList
     @State private var searchText = ""
-    @State private var newCountry = ""  // For storing the new country being added
-    @State private var showAddCountrySheet = false  // For toggling the sheet
+    @State private var newStudentID = ""
+    @State private var showAddStudentIDSheet = false
     
     var body: some View {
         NavigationView {
             VStack {
                 List {
-                    ForEach(countries, id: \.self) { country in
+                    ForEach(studentIDs, id: \.self) { studentID in
                         HStack {
-                            Text(country.capitalized)
+                            Text(studentID.capitalized)
                             Spacer()
-                            Image(systemName: "figure.walk")
+                            Image(systemName: "person.fill")
                                 .foregroundColor(Color.blue)
                         }
                         .padding()
                     }
-                    .onDelete(perform: deleteItems) // Swipe-to-delete
+                    .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
-                .navigationTitle("Search Bar")
+                .navigationTitle("Search Student IDs")
                 
                 Button(action: {
-                    showAddCountrySheet = true
+                    showAddStudentIDSheet = true
                 }) {
-                    Text("Add Country")
+                    Text("Add Student ID")
                         .padding()
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
-                .sheet(isPresented: $showAddCountrySheet) {
+                .sheet(isPresented: $showAddStudentIDSheet) {
                     VStack {
-                        Text("Enter Country Name")
+                        Text("Enter Student ID")
                             .font(.title2)
                             .padding()
                         
-                        TextField("Country name", text: $newCountry)
+                        TextField("Student ID", text: $newStudentID)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
                         
                         Button(action: {
-                            addCountry(newCountry)
-                            showAddCountrySheet = false // Dismiss the sheet
+                            addStudentID(newStudentID)
+                            showAddStudentIDSheet = false
                         }) {
                             Text("Add")
                                 .font(.title2)
@@ -64,7 +64,7 @@ struct SearchBarView: View {
                         .padding()
                         
                         Button(action: {
-                            showAddCountrySheet = false // Dismiss the sheet without adding
+                            showAddStudentIDSheet = false
                         }) {
                             Text("Cancel")
                                 .font(.title2)
@@ -81,27 +81,25 @@ struct SearchBarView: View {
         }
     }
     
-    var countries: [String] {
-        let lcCountries = listOfCountry.map { $0.lowercased() }
-        return searchText.isEmpty ? lcCountries : lcCountries.filter {
+    var studentIDs: [String] {
+        let lcStudentIDs = listOfStudentIDs.map { $0.lowercased() }
+        return searchText.isEmpty ? lcStudentIDs : lcStudentIDs.filter {
             $0.contains(searchText.lowercased())
         }
     }
-    
-    // Function to delete an item from the list
+ 
     func deleteItems(at offsets: IndexSet) {
-        listOfCountry.remove(atOffsets: offsets)
+        listOfStudentIDs.remove(atOffsets: offsets)
     }
-    
-    // Function to add a new country
-    func addCountry(_ country: String) {
-        // Check if country is not empty and doesn't already exist in the list
-        if !country.isEmpty && !listOfCountry.contains(where: { $0.lowercased() == country.lowercased() }) {
-            listOfCountry.append(country)
+   
+    func addStudentID(_ studentID: String) {
+        if !studentID.isEmpty && !listOfStudentIDs.contains(where: { $0.lowercased() == studentID.lowercased() }) {
+            listOfStudentIDs.append(studentID)
         }
-        newCountry = "" // Clear the input field
+        newStudentID = ""
     }
 }
+
 
 #Preview {
     SearchBarView()

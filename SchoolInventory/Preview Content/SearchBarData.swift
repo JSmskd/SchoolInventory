@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public var countryList = [
+public var studentIDList = [
     "627135",
     "627094",
     "625296",
