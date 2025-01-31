@@ -7,11 +7,6 @@
 
 import Foundation
 public var studentIDList = [
-    "627135",
-    "627094",
-    "625296",
-    "625275",
-    "625196",
-    "627366"
+    "12345"
     
 ]

@@ -25,7 +25,8 @@ struct ContentView: View {
                 }
             }
             
-            StudentOrdersView().tabItem {
+            // StudentOrdersView().tabItem {
+            SearchBarView().tabItem {
                 HStack{
                     Text("Online")
                     Image(systemName: "desktopcomputer")
@@ -38,12 +39,12 @@ struct ContentView: View {
                     Image(systemName: "figure.walk")
                 }
             }
-            SearchBarView().tabItem {
-                HStack {
-                    Text("Search Bar")
-                    Image(systemName: "magnifyingglass")
-                }
-            }
+//            SearchBarView().tabItem {
+//                HStack {
+//                    Text("Search Bar")
+//                    Image(systemName: "magnifyingglass")
+           //     }
+      //      }
         }
     }
 }
