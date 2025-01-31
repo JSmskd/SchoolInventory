@@ -12,10 +12,16 @@ struct WalkUpView: View {
     var body: some View {
         VStack {
             HeaderOrderView(orderItems: $orderItems)
-            List(orderItems, id: \.self) { currentOrderItem in
-                OrderListView(currentOrderItem: currentOrderItem)
+            List {
+                ForEach(orderItems, id: \.nameOfItem) { currentOrderItem in
+                    OrderListView(currentOrderItem: currentOrderItem)
+                }
+                .onDelete(perform: delete)
             }
         }
+    }
+    func delete(at offsets: IndexSet) {
+        orderItems.remove(atOffsets: offsets)
     }
 }
 

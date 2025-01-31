@@ -11,14 +11,14 @@ struct StudentOrdersView: View {
     @State var orderItems: [OrderItem] = []
     var body: some View {
         VStack{
-            List(orderItems, id: \.self) { currentOrderItem in
-                OrderListView(currentOrderItem: currentOrderItem)
-            }
+            List(orderItems, id: \.nameOfItem) { currentOrderItem in
+                    OrderListView(currentOrderItem: currentOrderItem)
+                }
         }
         
     }
-}
 
+}
 #Preview {
     StudentOrdersView()
 }
