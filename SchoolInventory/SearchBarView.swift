@@ -7,10 +7,13 @@
 
 import SwiftUI
 
-
+struct StudentItem {
+    var studentID: String
+    var item: String
+}
 
 struct SearchBarView: View {
-    @State private var listOfStudentIDs = studentIDList
+    @State private var listOfStudentIDs: [StudentItem] = []
     @State private var searchText = ""
     @State private var newStudentID = ""
     @State private var newItem = ""
@@ -20,10 +23,12 @@ struct SearchBarView: View {
         NavigationView {
             VStack {
                 List {
-                    ForEach(studentIDs, id: \.self) { studentID in
+                    ForEach(listOfStudentIDs, id: \.studentID) { studentItem in
                         HStack {
-                            Text(studentID.capitalized)
+                            Text(studentItem.studentID.capitalized)
                             Spacer()
+                            Text(studentItem.item)
+                                .foregroundColor(.gray)
                             Image(systemName: "person.fill")
                                 .foregroundColor(Color.blue)
                         }
@@ -64,7 +69,7 @@ struct SearchBarView: View {
                             .font(.title2)
                             .padding()
                         
-                        TextField("Items", text: $newItem)  // Binding to newItem
+                        TextField("Items", text: $newItem)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
                         
@@ -99,10 +104,10 @@ struct SearchBarView: View {
         }
     }
     
-    var studentIDs: [String] {
-        let lcStudentIDs = listOfStudentIDs.map { $0.lowercased() }
-        return searchText.isEmpty ? lcStudentIDs : lcStudentIDs.filter {
-            $0.contains(searchText.lowercased())
+    var studentItems: [StudentItem] {
+        let lcStudentItems = listOfStudentIDs.map { StudentItem(studentID: $0.studentID.lowercased(), item: $0.item) }
+        return searchText.isEmpty ? lcStudentItems : lcStudentItems.filter {
+            $0.studentID.contains(searchText.lowercased())
         }
     }
  
@@ -111,12 +116,13 @@ struct SearchBarView: View {
     }
    
     func addStudentID(_ studentID: String, newItem: String) {
-        if !studentID.isEmpty && !listOfStudentIDs.contains(where: { $0.lowercased() == studentID.lowercased() }) {
-            listOfStudentIDs.append(studentID)
+        if !studentID.isEmpty && !listOfStudentIDs.contains(where: { $0.studentID.lowercased() == studentID.lowercased() }) {
+            let newStudentItem = StudentItem(studentID: studentID, item: newItem)
+            listOfStudentIDs.append(newStudentItem)
         }
-        
+
         newStudentID = ""
-//        newItem = ""
+       // newItem = ""  // Reset the item text
     }
 }
 
