@@ -43,16 +43,12 @@ struct SearchBarView: View {
                     showAddStudentIDSheet = true
                 }) {
                     HStack {
-                        Text("Add Student ID")
+                        Text("Add Student ID And Items")
                             .padding()
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(10)
-                        Text("Add Items")
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
+                      
                     }
                 }
                 .sheet(isPresented: $showAddStudentIDSheet) {
@@ -122,7 +118,7 @@ struct SearchBarView: View {
         }
 
         newStudentID = ""
-       // newItem = ""  // Reset the item text
+       // newItem = ""
     }
 }
 
