@@ -11,12 +11,15 @@ struct InventoryView: View {
     var body: some View {
         VStack {
             Button("Shirts"){
-                
+               
             }
             
+            
+            
             Button("Sweatpants") {
-                
+               
             }
+           
         }
     }
 }
