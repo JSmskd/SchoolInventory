@@ -7,20 +7,28 @@
 
 import SwiftUI
 
+struct StudentItem {
+    var studentID: String
+    var item: String
+}
+
 struct SearchBarView: View {
-    @State private var listOfStudentIDs = studentIDList
+    @State private var listOfStudentIDs: [StudentItem] = []
     @State private var searchText = ""
     @State private var newStudentID = ""
+    @State private var newItem = ""
     @State private var showAddStudentIDSheet = false
     
     var body: some View {
         NavigationView {
             VStack {
                 List {
-                    ForEach(studentIDs, id: \.self) { studentID in
+                    ForEach(listOfStudentIDs, id: \.studentID) { studentItem in
                         HStack {
-                            Text(studentID.capitalized)
+                            Text(studentItem.studentID.capitalized)
                             Spacer()
+                            Text(studentItem.item)
+                                .foregroundColor(.gray)
                             Image(systemName: "person.fill")
                                 .foregroundColor(Color.blue)
                         }
@@ -29,16 +37,23 @@ struct SearchBarView: View {
                     .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
-                .navigationTitle("Search Student IDs")
+                .navigationTitle("Search Student IDs and Items")
                 
                 Button(action: {
                     showAddStudentIDSheet = true
                 }) {
-                    Text("Add Student ID")
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                    HStack {
+                        Text("Add Student ID")
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        Text("Add Items")
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
                 }
                 .sheet(isPresented: $showAddStudentIDSheet) {
                     VStack {
@@ -50,8 +65,16 @@ struct SearchBarView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
                         
+                        Text("Enter Items")
+                            .font(.title2)
+                            .padding()
+                        
+                        TextField("Items", text: $newItem)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+                        
                         Button(action: {
-                            addStudentID(newStudentID)
+                            addStudentID(newStudentID, newItem: newItem)
                             showAddStudentIDSheet = false
                         }) {
                             Text("Add")
@@ -81,10 +104,10 @@ struct SearchBarView: View {
         }
     }
     
-    var studentIDs: [String] {
-        let lcStudentIDs = listOfStudentIDs.map { $0.lowercased() }
-        return searchText.isEmpty ? lcStudentIDs : lcStudentIDs.filter {
-            $0.contains(searchText.lowercased())
+    var studentItems: [StudentItem] {
+        let lcStudentItems = listOfStudentIDs.map { StudentItem(studentID: $0.studentID.lowercased(), item: $0.item) }
+        return searchText.isEmpty ? lcStudentItems : lcStudentItems.filter {
+            $0.studentID.contains(searchText.lowercased())
         }
     }
  
@@ -92,14 +115,16 @@ struct SearchBarView: View {
         listOfStudentIDs.remove(atOffsets: offsets)
     }
    
-    func addStudentID(_ studentID: String) {
-        if !studentID.isEmpty && !listOfStudentIDs.contains(where: { $0.lowercased() == studentID.lowercased() }) {
-            listOfStudentIDs.append(studentID)
+    func addStudentID(_ studentID: String, newItem: String) {
+        if !studentID.isEmpty && !listOfStudentIDs.contains(where: { $0.studentID.lowercased() == studentID.lowercased() }) {
+            let newStudentItem = StudentItem(studentID: studentID, item: newItem)
+            listOfStudentIDs.append(newStudentItem)
         }
+
         newStudentID = ""
+       // newItem = ""  // Reset the item text
     }
 }
-
 
 #Preview {
     SearchBarView()
