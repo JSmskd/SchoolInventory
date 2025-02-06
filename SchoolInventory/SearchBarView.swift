@@ -7,10 +7,13 @@
 
 import SwiftUI
 
+
+
 struct SearchBarView: View {
     @State private var listOfStudentIDs = studentIDList
     @State private var searchText = ""
     @State private var newStudentID = ""
+    @State private var newItem = ""
     @State private var showAddStudentIDSheet = false
     
     var body: some View {
@@ -29,16 +32,23 @@ struct SearchBarView: View {
                     .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
-                .navigationTitle("Search Student IDs")
+                .navigationTitle("Search Student IDs and Items")
                 
                 Button(action: {
                     showAddStudentIDSheet = true
                 }) {
-                    Text("Add Student ID")
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                    HStack {
+                        Text("Add Student ID")
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        Text("Add Items")
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
                 }
                 .sheet(isPresented: $showAddStudentIDSheet) {
                     VStack {
@@ -50,8 +60,16 @@ struct SearchBarView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
                         
+                        Text("Enter Items")
+                            .font(.title2)
+                            .padding()
+                        
+                        TextField("Items", text: $newItem)  // Binding to newItem
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+                        
                         Button(action: {
-                            addStudentID(newStudentID)
+                            addStudentID(newStudentID, newItem: newItem)
                             showAddStudentIDSheet = false
                         }) {
                             Text("Add")
@@ -92,14 +110,15 @@ struct SearchBarView: View {
         listOfStudentIDs.remove(atOffsets: offsets)
     }
    
-    func addStudentID(_ studentID: String) {
+    func addStudentID(_ studentID: String, newItem: String) {
         if !studentID.isEmpty && !listOfStudentIDs.contains(where: { $0.lowercased() == studentID.lowercased() }) {
             listOfStudentIDs.append(studentID)
         }
+        
         newStudentID = ""
+//        newItem = ""
     }
 }
-
 
 #Preview {
     SearchBarView()
