@@ -37,7 +37,7 @@ struct SearchBarView: View {
                     .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
-                .navigationTitle("Search Student IDs and Items")
+                .navigationTitle("Search IDs & Items")
                 
                 Button(action: {
                     showAddStudentIDSheet = true
