@@ -13,11 +13,11 @@ struct StudentItem {
 }
 
 struct SearchBarView: View {
-    @State private var listOfStudentIDs: [StudentItem] = []
-    @State private var searchText = ""
-    @State private var newStudentID = ""
-    @State private var newItem = ""
-    @State private var showAddStudentIDSheet = false
+    @State  var listOfStudentIDs: [StudentItem] = []
+    @State  var searchText = ""
+    @State  var newStudentID = ""
+    @State  var newItem = ""
+    @State  var showAddStudentIDSheet = false
     
     var body: some View {
         NavigationView {
@@ -37,22 +37,18 @@ struct SearchBarView: View {
                     .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
-                .navigationTitle("Search Student IDs and Items")
+                .navigationTitle("Search IDs & Items")
                 
                 Button(action: {
                     showAddStudentIDSheet = true
                 }) {
                     HStack {
-                        Text("Add Student ID")
+                        Text("Add Student ID And Items")
                             .padding()
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(10)
-                        Text("Add Items")
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
+                      
                     }
                 }
                 .sheet(isPresented: $showAddStudentIDSheet) {
@@ -122,7 +118,7 @@ struct SearchBarView: View {
         }
 
         newStudentID = ""
-       // newItem = ""  // Reset the item text
+        self.newItem = ""
     }
 }
 
