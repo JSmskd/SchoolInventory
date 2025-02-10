@@ -25,19 +25,39 @@ struct OrderContentView: View {
                 Button("+") {
                     let orders = Order(barcodeNumber: enteredBarcodeNumber, size: enteredSize, clothingItem: enteredClothingItem)
                     context.insert(orders)
+                    
+                    // Reset the form fields
                     enteredBarcodeNumber = 0
                     enteredSize = ""
                     enteredClothingItem = ""
+                    
+                    // Save the context
+                    saveContext()
                 }
             }
             List {
-                ForEach(barcodeNumbers) { currentbarcodeNumber in
-                    VStack{
-                        Text(currentbarcodeNumber.size)
-                        Text(currentbarcodeNumber.clothingItem)
+                ForEach(barcodeNumbers) { currentBarcodeNumber in
+                    VStack {
+                        Text(currentBarcodeNumber.size)
+                        Text(currentBarcodeNumber.clothingItem)
                     }
                 }
             }
+            .onChange(of: barcodeNumbers) { _ in
+                saveContext() // Save every time the list changes
+            }
+        }
+        .onDisappear {
+            saveContext() // Save when the view disappears (i.e., when the app exits)
+        }
+    }
+    
+    // Save the context
+    func saveContext() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error.localizedDescription)")
         }
     }
 }
