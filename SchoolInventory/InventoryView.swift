@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+extension Color {
+    static let darkBrown = Color(red: 92/255, green: 64/255, blue: 51/255)
+    
+}
+
+
 struct InventoryView: View {
     var body: some View {
         NavigationView {
@@ -24,7 +30,7 @@ struct InventoryView: View {
                     Text("Sweats")
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.brown)
+                        .background(Color.darkBrown)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
@@ -42,7 +48,7 @@ struct InventoryView: View {
                     Text("Crewnecks")
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.brown)
+                        .background(Color.darkBrown)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
