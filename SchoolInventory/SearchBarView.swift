@@ -13,11 +13,11 @@ struct StudentItem {
 }
 
 struct SearchBarView: View {
-    @State private var listOfStudentIDs: [StudentItem] = []
-    @State private var searchText = ""
-    @State private var newStudentID = ""
-    @State private var newItem = ""
-    @State private var showAddStudentIDSheet = false
+    @State  var listOfStudentIDs: [StudentItem] = []
+    @State  var searchText = ""
+    @State  var newStudentID = ""
+    @State  var newItem = ""
+    @State  var showAddStudentIDSheet = false
     
     var body: some View {
         NavigationView {
@@ -118,7 +118,7 @@ struct SearchBarView: View {
         }
 
         newStudentID = ""
-       // newItem = ""
+        self.newItem = ""
     }
 }
 
