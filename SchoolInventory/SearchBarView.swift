@@ -23,7 +23,7 @@ struct SearchBarView: View {
         NavigationView {
             VStack {
                 List {
-                    ForEach(listOfStudentIDs, id: \.studentID) { studentItem in
+                    ForEach(studentItems, id: \.studentID) { studentItem in
                         HStack {
                             Text(studentItem.studentID.capitalized)
                             Spacer()
@@ -32,14 +32,10 @@ struct SearchBarView: View {
                             Image(systemName: "person.fill")
                                 .foregroundColor(.blue)
                         }
-                        .foregroundStyle(.brown)
-                        .bold()
-                        .underline()
-                        .font(.custom("Impact", size: 20))
-                        .padding()
                     }
                     .onDelete(perform: deleteItems)
                 }
+
                 .searchable(text: $searchText)
                 .navigationTitle("Search IDs & Items")
                 
@@ -105,11 +101,17 @@ struct SearchBarView: View {
     }
     
     var studentItems: [StudentItem] {
-        let lcStudentItems = listOfStudentIDs.map { StudentItem(studentID: $0.studentID.lowercased(), item: $0.item) }
-        return searchText.isEmpty ? lcStudentItems : lcStudentItems.filter {
-            $0.studentID.contains(searchText.lowercased())
+        let lcStudentItems = listOfStudentIDs.map { StudentItem(studentID: $0.studentID.lowercased(), item: $0.item.lowercased()) }
+        
+        if searchText.isEmpty {
+            return lcStudentItems
+        } else {
+            return lcStudentItems.filter {
+                $0.studentID.contains(searchText.lowercased()) || $0.item.contains(searchText.lowercased())
+            }
         }
     }
+
  
     func deleteItems(at offsets: IndexSet) {
         listOfStudentIDs.remove(atOffsets: offsets)
