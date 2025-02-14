@@ -14,6 +14,7 @@ struct OrderContentView: View {
     @State var enteredBarcodeNumber = 0
     @State var enteredSize = ""
     @State var enteredClothingItem = ""
+    @State var characteristics = UserDefaults.standard.string(forKey: "OrderCharacteristics")
     
     var body: some View {
         VStack {
@@ -26,13 +27,11 @@ struct OrderContentView: View {
                     let orders = Order(barcodeNumber: enteredBarcodeNumber, size: enteredSize, clothingItem: enteredClothingItem)
                     context.insert(orders)
                     
-                    // Reset the form fields
                     enteredBarcodeNumber = 0
                     enteredSize = ""
                     enteredClothingItem = ""
+                    UserDefaults.standard.set(characteristics, forKey: "OrderCharacteristics")
                     
-                    // Save the context
-                    saveContext()
                 }
             }
             List {
@@ -43,22 +42,9 @@ struct OrderContentView: View {
                     }
                 }
             }
-            .onChange(of: barcodeNumbers) { _ in
-                saveContext() // Save every time the list changes
-            }
+            
         }
-        .onDisappear {
-            saveContext() // Save when the view disappears (i.e., when the app exits)
-        }
-    }
-    
-    // Save the context
-    func saveContext() {
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context: \(error.localizedDescription)")
-        }
+        
     }
 }
 
