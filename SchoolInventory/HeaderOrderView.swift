@@ -11,6 +11,7 @@ struct HeaderOrderView: View {
     @State var newOrderItemName: String = ""
     @State var newStudentID: Int?
     @Binding var orderItems: [OrderItem]
+    @AppStorage("OrderCharacteristics") var orderCharacteristics: String = ""
     var body: some View {
         HStack{
             TextField("ID", value: $newStudentID, format: .number)

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WalkUpView: View {
     @State var orderItems: [OrderItem] = []
+    @AppStorage("OrderCharacteristics") var orderCharacteristics: String = ""
     var body: some View {
         VStack {
             HeaderOrderView(orderItems: $orderItems)

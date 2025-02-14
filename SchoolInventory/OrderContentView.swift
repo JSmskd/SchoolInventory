@@ -14,7 +14,7 @@ struct OrderContentView: View {
     @State var enteredBarcodeNumber = 0
     @State var enteredSize = ""
     @State var enteredClothingItem = ""
-    @State var characteristics = UserDefaults.standard.string(forKey: "OrderCharacteristics")
+   
     
     var body: some View {
         VStack {
@@ -30,7 +30,6 @@ struct OrderContentView: View {
                     enteredBarcodeNumber = 0
                     enteredSize = ""
                     enteredClothingItem = ""
-                    UserDefaults.standard.set(characteristics, forKey: "OrderCharacteristics")
                     
                 }
             }
