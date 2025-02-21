@@ -39,12 +39,12 @@ struct ContentView: View {
                     Image(systemName: "desktopcomputer")
                 }
             }
-//            SearchBarView().tabItem {
-//                HStack {
-//                    Text("Search Bar")
-//                    Image(systemName: "magnifyingglass")
-           //     }
-      //      }
+            OrderContentView().tabItem {
+                HStack {
+                    Text("Search Bar")
+                    Image(systemName: "magnifyingglass")
+                }
+            }
         }
     }
 }
