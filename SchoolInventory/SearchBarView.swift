@@ -13,11 +13,12 @@ struct StudentItem {
 }
 
 struct SearchBarView: View {
-    @State  var listOfStudentIDs: [StudentItem] = []
+    @State  var listOfStudentIDs: [StudentItem] = [
+        StudentItem(studentID: "12345", item: "Shirt"),
+        StudentItem(studentID: "67890", item: "Hoodie"),
+        StudentItem(studentID: "54321", item: "Shorts")
+    ]
     @State  var searchText = ""
-    @State  var newStudentID = ""
-    @State  var newItem = ""
-    @State  var showAddStudentIDSheet = false
     
     var body: some View {
         NavigationView {
@@ -35,10 +36,11 @@ struct SearchBarView: View {
                     }
                     .onDelete(perform: deleteItems)
                 }
-
                 .searchable(text: $searchText)
                 .navigationTitle("Search IDs & Items")
                 
+                // Commented out the add button and sheet
+                /*
                 Button(action: {
                     showAddStudentIDSheet = true
                 }) {
@@ -48,7 +50,6 @@ struct SearchBarView: View {
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(10)
-                      
                     }
                 }
                 .sheet(isPresented: $showAddStudentIDSheet) {
@@ -96,6 +97,7 @@ struct SearchBarView: View {
                     }
                     .padding()
                 }
+                */
             }
         }
     }
@@ -112,19 +114,8 @@ struct SearchBarView: View {
         }
     }
 
- 
     func deleteItems(at offsets: IndexSet) {
         listOfStudentIDs.remove(atOffsets: offsets)
-    }
-   
-    func addStudentID(_ studentID: String, newItem: String) {
-        if !studentID.isEmpty && !listOfStudentIDs.contains(where: { $0.studentID.lowercased() == studentID.lowercased() }) {
-            let newStudentItem = StudentItem(studentID: studentID, item: newItem)
-            listOfStudentIDs.append(newStudentItem)
-        }
-
-        newStudentID = ""
-        self.newItem = ""
     }
 }
 
