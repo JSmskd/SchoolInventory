@@ -13,12 +13,15 @@ struct Studentitem {
 }
 
 struct WalkUpView: View {
-    @State  var listOfStudentIDs: [StudentItem] = [
-        StudentItem(studentID: "54321", item: "CrewNeck"),
-        StudentItem(studentID: "09876", item: "Orange Hoodie"),
-        StudentItem(studentID: "12431", item: "SweatPants")
+    @State  var listOfStudentIDs: [Studentitem] = [
+        Studentitem(studentID: "54321", item: "CrewNeck"),
+        Studentitem(studentID: "09876", item: "Orange Hoodie"),
+        Studentitem(studentID: "12431", item: "SweatPants")
     ]
     @State  var searchText = ""
+    @State private var showAddStudentIDSheet = false
+    @State private var newStudentID = ""
+    @State private var newItem = ""
     
     var body: some View {
         NavigationView {
@@ -39,8 +42,6 @@ struct WalkUpView: View {
                 .searchable(text: $searchText)
                 .navigationTitle("Search IDs & Items")
                 
-                // Commented out the add button and sheet
-                /*
                 Button(action: {
                     showAddStudentIDSheet = true
                 }) {
@@ -97,13 +98,12 @@ struct WalkUpView: View {
                     }
                     .padding()
                 }
-                */
             }
         }
     }
     
-    var studentItems: [StudentItem] {
-        let lcStudentItems = listOfStudentIDs.map { StudentItem(studentID: $0.studentID.lowercased(), item: $0.item.lowercased()) }
+    var studentItems: [Studentitem] {  // Updated to Studentitem
+        let lcStudentItems = listOfStudentIDs.map { Studentitem(studentID: $0.studentID.lowercased(), item: $0.item.lowercased()) }
         
         if searchText.isEmpty {
             return lcStudentItems
@@ -113,14 +113,19 @@ struct WalkUpView: View {
             }
         }
     }
-
+    
     func deleteItems(at offsets: IndexSet) {
         listOfStudentIDs.remove(atOffsets: offsets)
+    }
+    
+    func addStudentID(_ studentID: String, newItem: String) {
+        let newStudent = Studentitem(studentID: studentID, item: newItem)
+        listOfStudentIDs.append(newStudent)
     }
 }
 
 #Preview {
-    SearchBarView()
+    WalkUpView()
 }
 
 
