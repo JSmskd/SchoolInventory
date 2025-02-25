@@ -34,7 +34,7 @@ struct WalkUpView: View {
                             Text(studentItem.item)
                                 .foregroundColor(.gray)
                             Image(systemName: "person.fill")
-                                .foregroundColor(.blue)
+                                .foregroundColor(.darkOrange)
                         }
                     }
                     .onDelete(perform: deleteItems)
@@ -48,7 +48,7 @@ struct WalkUpView: View {
                     HStack {
                         Text("Add Student ID And Items")
                             .padding()
-                            .background(Color.blue)
+                            .background(Color.darkBrown)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
@@ -78,7 +78,7 @@ struct WalkUpView: View {
                             Text("Add")
                                 .font(.title2)
                                 .padding()
-                                .background(Color.green)
+                                .background(Color.darkOrange)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
@@ -90,7 +90,7 @@ struct WalkUpView: View {
                             Text("Cancel")
                                 .font(.title2)
                                 .padding()
-                                .background(Color.red)
+                                .background(Color.darkOrange)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
@@ -102,7 +102,7 @@ struct WalkUpView: View {
         }
     }
     
-    var studentItems: [Studentitem] {  // Updated to Studentitem
+    var studentItems: [Studentitem] {
         let lcStudentItems = listOfStudentIDs.map { Studentitem(studentID: $0.studentID.lowercased(), item: $0.item.lowercased()) }
         
         if searchText.isEmpty {
