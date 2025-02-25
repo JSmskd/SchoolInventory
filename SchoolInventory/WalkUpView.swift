@@ -13,16 +13,22 @@ struct Studentitem {
 }
 
 struct WalkUpView: View {
-    @State  var listOfStudentIDs: [Studentitem] = [
-        Studentitem(studentID: "54321", item: "CrewNeck"),
+    @State var listOfStudentIDs: [Studentitem] = [
+        Studentitem(studentID: "54321", item: "Crewneck"),
         Studentitem(studentID: "09876", item: "Orange Hoodie"),
-        Studentitem(studentID: "12431", item: "SweatPants")
+        Studentitem(studentID: "12431", item: "Sweat Pants")
     ]
-    @State  var searchText = ""
+    @State var searchText = ""
+    
     @State private var showAddStudentIDSheet = false
     @State private var newStudentID = ""
-    @State private var newItem = ""
     
+    @State private var selectedItem = "Crewneck"
+    let itemOptions = ["Crewneck", "Orange Hoodie", "Sweat Pants", "T-Shirt", "Jacket"]
+    
+   
+    @State private var isTyping = false
+
     var body: some View {
         NavigationView {
             VStack {
@@ -63,16 +69,31 @@ struct WalkUpView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
                         
-                        Text("Enter Items")
+                        Text("Select or Type an Item")
                             .font(.title2)
                             .padding()
                         
-                        TextField("Items", text: $newItem)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                       
+                        Toggle("Type Item", isOn: $isTyping)
                             .padding()
-                        
+
+                        if isTyping {
+                            TextField("Enter Item", text: $selectedItem)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .padding()
+                        } else {
+                          
+                            Picker("Items", selection: $selectedItem) {
+                                ForEach(itemOptions, id: \.self) { item in
+                                    Text(item).tag(item)
+                                }
+                            }
+                            .pickerStyle(WheelPickerStyle())
+                            .padding()
+                        }
+
                         Button(action: {
-                            addStudentID(newStudentID, newItem: newItem)
+                            addStudentID(newStudentID, newItem: selectedItem)
                             showAddStudentIDSheet = false
                         }) {
                             Text("Add")
@@ -90,7 +111,7 @@ struct WalkUpView: View {
                             Text("Cancel")
                                 .font(.title2)
                                 .padding()
-                                .background(Color.darkOrange)
+                                .background(Color.darkBrown)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
@@ -113,11 +134,11 @@ struct WalkUpView: View {
             }
         }
     }
-    
+
     func deleteItems(at offsets: IndexSet) {
         listOfStudentIDs.remove(atOffsets: offsets)
     }
-    
+
     func addStudentID(_ studentID: String, newItem: String) {
         let newStudent = Studentitem(studentID: studentID, item: newItem)
         listOfStudentIDs.append(newStudent)

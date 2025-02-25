@@ -31,7 +31,7 @@ struct SearchBarView: View {
                             Text(studentItem.item)
                                 .foregroundColor(.gray)
                             Image(systemName: "person.fill")
-                                .foregroundColor(.blue)
+                                .foregroundColor(.darkBrown)
                         }
                     }
                     .onDelete(perform: deleteItems)
