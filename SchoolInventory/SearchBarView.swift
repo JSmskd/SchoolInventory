@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct StudentItem {
+struct StudentItem: Identifiable {
+    var id = UUID()
     var studentID: String
     var item: String
 }
@@ -93,15 +94,20 @@ struct SearchBarView: View {
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
-                        .padding()
                     }
-                    .padding()
+                    .onDelete(perform: deleteItems)
                 }
-                */
+                .searchable(text: $searchText)
+                .navigationTitle("Search IDs & Items")
+                .navigationBarItems(
+                    trailing: Button(isEditing ? "Done" : "Edit") {
+                        isEditing.toggle()
+                    }
+                )
             }
         }
     }
-    
+
     var studentItems: [StudentItem] {
         let lcStudentItems = listOfStudentIDs.map { StudentItem(studentID: $0.studentID.lowercased(), item: $0.item.lowercased()) }
         
@@ -122,3 +128,4 @@ struct SearchBarView: View {
 #Preview {
     SearchBarView()
 }
+
