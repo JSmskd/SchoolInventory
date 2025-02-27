@@ -53,7 +53,7 @@ struct WalkUpView: View {
                     .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
-                .navigationTitle("Search IDs & Items")
+                .navigationTitle("Walk Up Orders")
                 .navigationBarItems(
                     trailing: Button(isEditing ? "Done" : "Edit") {
                         isEditing.toggle()
