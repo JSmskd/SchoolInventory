@@ -19,7 +19,7 @@ struct SearchBarView: View {
         StudentItem(studentID: "54321", item: "Shorts")
     ]
     @State private var searchText = ""
-    @State private var isEditing = false  // Controls the edit mode
+    @State private var isEditing = false
 
     var body: some View {
         NavigationView {
