@@ -53,7 +53,7 @@ struct WalkUpView: View {
                     .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
-                .navigationTitle("Search IDs & Items")
+                .navigationTitle("Walk Up Orders")
                 .navigationBarItems(
                     trailing: Button(isEditing ? "Done" : "Edit") {
                         isEditing.toggle()
@@ -109,7 +109,7 @@ struct WalkUpView: View {
                             Text("Add")
                                 .font(.title2)
                                 .padding()
-                                .background(Color.orange)
+                                .background(Color.darkOrange)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
@@ -121,7 +121,7 @@ struct WalkUpView: View {
                             Text("Cancel")
                                 .font(.title2)
                                 .padding()
-                                .background(Color.brown)
+                                .background(Color.darkBrown)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }

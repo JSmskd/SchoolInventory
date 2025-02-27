@@ -46,7 +46,7 @@ struct SearchBarView: View {
                     .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
-                .navigationTitle("Search IDs & Items")
+                .navigationTitle("Online Orders")
                 .navigationBarItems(
                     trailing: Button(isEditing ? "Done" : "Edit") {
                         isEditing.toggle()
