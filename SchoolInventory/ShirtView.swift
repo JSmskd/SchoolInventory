@@ -7,10 +7,10 @@
 
 import SwiftUI
 struct ShirtView: View {
-    @State private var isEditing = false 
+    @State private var isEditing = false
     @State private var gildanName = "Gildan5000"
     @State private var bellaName = "Bella3001CVC"
-
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -40,23 +40,37 @@ struct ShirtView: View {
                             .frame(width: 120)
                             .offset(x: 45, y: -235)
                     } else {
-                        Text(gildanName)
-                            .offset(x: -45, y: -235)
-                        
-                        Text(bellaName)
-                            .offset(x: 45, y: -235)
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(gildanName)
+                                Text("Sizes: S, M, L")
+                                
+                                    .padding(.top, 4)
+                            }
+                        }
+                                .offset(x: -45, y: -235)
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(bellaName)
+                                Text("Sizes: S, M, L")
+                                
+                                    .padding(.top, 4)
+                            }
+                        }
+                            
+                                .offset(x: 45, y: -235)
+                        }
                     }
                 }
+                .navigationTitle("Shirts")
+                .navigationBarItems(
+                    trailing: Button(isEditing ? "Done" : "Edit") {
+                        isEditing.toggle()
+                    }
+                )
             }
-            .navigationTitle("Shirts")
-            .navigationBarItems(
-                trailing: Button(isEditing ? "Done" : "Edit") {
-                    isEditing.toggle()
-                }
-            )
         }
     }
-}
 
 #Preview {
     ShirtView()
