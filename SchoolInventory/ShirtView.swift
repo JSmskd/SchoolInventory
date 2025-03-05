@@ -22,8 +22,8 @@ struct ShirtView: View {
                     .border(.orange, width: 5)
             }
             HStack {
-                Text("Orange Shirt")
-                Text("White Shirt")
+                Text("Gildan5000")
+                Text("Bella3001CVC")
             }
         }
     }
