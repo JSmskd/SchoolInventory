@@ -24,9 +24,9 @@ struct ShirtView: View {
                     .offset(x: 5, y: -240)
             }
             HStack {
-                Text("Orange Shirt")
+                Text("Gildan5000")
                     .offset(x: -45, y: -235)
-                Text("White Shirt")
+                Text("Bella3001CVC")
                     .offset(x: 45, y: -235)
             }
         }
