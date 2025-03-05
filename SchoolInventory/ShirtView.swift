@@ -40,25 +40,23 @@ struct ShirtView: View {
                             .frame(width: 120)
                             .offset(x: 45, y: -235)
                     } else {
-                        HStack {
-                            VStack(alignment: .leading) {
+                        HStack{
+                            VStack{
                                 Text(gildanName)
-                                Text("Sizes: S, M, L")
-                                
-                                    .padding(.top, 4)
+                                    .offset(x: -45, y: -235)
+                                Text("Small: 0")
+                                Text("Medium: 0")
+                                Text("Large: 0")
                             }
-                        }
-                                .offset(x: -45, y: -235)
-                        HStack {
-                            VStack(alignment: .leading) {
+                            VStack{
                                 Text(bellaName)
-                                Text("Sizes: S, M, L")
-                                
-                                    .padding(.top, 4)
+                                    .offset(x: 45, y: -235)
+                                Text("Small: 0")
+                                Text("Medium: 0")
+                                Text("Large: 0")
                             }
                         }
                             
-                                .offset(x: 45, y: -235)
                         }
                     }
                 }
