@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 struct ShirtView: View {
     @State private var isEditing = false
     @State private var gildanName = "Gildan5000"
@@ -54,8 +55,15 @@ struct ShirtView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 120)
                     
-                    } else {
+                    HStack {
+                        if isEditing {
+                            TextField("Enter name", text: $gildanName)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 120)
                             
+                            TextField("Enter name", text: $bellaName)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 120)
                         }
                     }
                 }
@@ -68,9 +76,13 @@ struct ShirtView: View {
             }
         }
     }
+}
 
 #Preview {
     ShirtView()
+}
+
+
 
 //struct ShirtView: View {
 //    var body: some View {
@@ -100,4 +112,4 @@ struct ShirtView: View {
 //
 //#Preview {
 //    ShirtView()
-}
+//}
