@@ -43,7 +43,7 @@ struct ShirtView: View {
                                 Text("Medium: \(gildanMediumQuantity)")
                                 Text("Large: \(gildanLargeQuantity)")
                             }
-                            .border(.orange, width: 2)
+                            .border(.brown, width: 2)
                             VStack{
                                 Image("Gildan5000")
                                     .resizable()
@@ -65,7 +65,7 @@ struct ShirtView: View {
                                 Text("Medium: \(bellaMediumQuantity)")
                                 Text("Large: \(bellaLargeQuantity)")
                             }
-                            .border(.orange, width: 2)
+                            .border(.brown, width: 2)
                             VStack{
                                 Image("Bella3001CVC")
                                     .resizable()
@@ -85,7 +85,7 @@ struct ShirtView: View {
                                 Text("Medium: \(bellaMediumQuantity)")
                                 Text("Large: \(bellaLargeQuantity)")
                             }
-                            .border(.orange, width: 2)
+                            .border(.brown, width: 2)
                         }
                         
                     }
