@@ -20,53 +20,91 @@ struct ShirtView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                HStack {
-                    VStack{
-                        Image("Gildan5000")
-                            .resizable()
-                            .frame(width: 200, height: 200)
-                        Text(gildanName)
-                        Text("Small: \(gildanSmallQuantity)")
-                        Text("Medium: \(gildanMediumQuantity)")
-                        Text("Large: \(gildanLargeQuantity)")
-                    }
-                    .border(.orange, width: 2)
-                    VStack{
-                        Image("Bella3001CVC")
-                            .resizable()
-                            .frame(width: 200, height: 200)
-                        Text(bellaName)
-                        Text("Small: \(bellaSmallQuantity)")
-                        Text("Medium: \(bellaMediumQuantity)")
-                        Text("Large: \(bellaLargeQuantity)")
-                    }
-                    .border(.orange, width: 2)
-                }
-                
-                HStack {
-                    if isEditing {
-                        TextField("Enter name", text: $gildanName)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 120)
+            ScrollView {
+                VStack {
+                    HStack {
+                        VStack{
+                            VStack{
+                                Image("Gildan5000")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(gildanName)
+                                Text("Small: \(gildanSmallQuantity)")
+                                Text("Medium: \(gildanMediumQuantity)")
+                                Text("Large: \(gildanLargeQuantity)")
+                            }
+                            .border(.orange, width: 2)
+                            VStack{
+                                Image("Gildan5000")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(gildanName)
+                                Text("Small: \(gildanSmallQuantity)")
+                                Text("Medium: \(gildanMediumQuantity)")
+                                Text("Large: \(gildanLargeQuantity)")
+                            }
+                            .border(.orange, width: 2)
+                            VStack{
+                                Image("Gildan5000")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(gildanName)
+                                Text("Small: \(gildanSmallQuantity)")
+                                Text("Medium: \(gildanMediumQuantity)")
+                                Text("Large: \(gildanLargeQuantity)")
+                            }
+                            .border(.orange, width: 2)
+                        }
+                        VStack{
+                            VStack{
+                                Image("Bella3001CVC")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(bellaName)
+                                Text("Small: \(bellaSmallQuantity)")
+                                Text("Medium: \(bellaMediumQuantity)")
+                                Text("Large: \(bellaLargeQuantity)")
+                            }
+                            .border(.orange, width: 2)
+                            VStack{
+                                Image("Bella3001CVC")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(bellaName)
+                                Text("Small: \(bellaSmallQuantity)")
+                                Text("Medium: \(bellaMediumQuantity)")
+                                Text("Large: \(bellaLargeQuantity)")
+                            }
+                            .border(.orange, width: 2)
+                            VStack{
+                                Image("Bella3001CVC")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(bellaName)
+                                Text("Small: \(bellaSmallQuantity)")
+                                Text("Medium: \(bellaMediumQuantity)")
+                                Text("Large: \(bellaLargeQuantity)")
+                            }
+                            .border(.orange, width: 2)
+                        }
                         
-                        
-                        TextField("Enter name", text: $bellaName)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 120)
+                    }
                     
                     HStack {
                         if isEditing {
-                            TextField("Enter name", text: $gildanName)
+                            TextField("Enter Gildan name", text: $gildanName)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 120)
+                                .frame(width: 200)
                             
-                            TextField("Enter name", text: $bellaName)
+                            TextField("Enter Bella name", text: $bellaName)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 120)
+                                .frame(width: 200)
                         }
                     }
+                    
+                    // Optional: Add more editing fields for quantities, if needed.
                 }
+                .padding()
                 .navigationTitle("Shirts")
                 .navigationBarItems(
                     trailing: Button(isEditing ? "Done" : "Edit") {
@@ -81,8 +119,6 @@ struct ShirtView: View {
 #Preview {
     ShirtView()
 }
-
-
 
 //struct ShirtView: View {
 //    var body: some View {
