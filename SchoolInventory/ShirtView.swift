@@ -10,22 +10,32 @@ struct ShirtView: View {
     @State private var isEditing = false
     @State private var gildanName = "Gildan5000"
     @State private var bellaName = "Bella3001CVC"
+    @State private var gildanSmallQuanity = 0
     
     var body: some View {
         NavigationView {
             VStack {
                 HStack {
-                    Image("Gildan5000")
-                        .resizable()
-                        .frame(width: 200, height: 200)
-                        .border(.orange, width: 5)
-                        .offset(x: -5, y: -200)
-                    
-                    Image("Bella3001CVC")
-                        .resizable()
-                        .frame(width: 200, height: 200)
-                        .border(.orange, width: 5)
-                        .offset(x: 5, y: -200)
+                    VStack{
+                        Image("Gildan5000")
+                            .resizable()
+                            .frame(width: 200, height: 200)
+                        Text(gildanName)
+                        Text("Small: \(gildanSmallQuanity)")
+                        Text("Medium: 0")
+                        Text("Large: 0")
+                    }
+                    .border(.orange, width: 2)
+                    VStack{
+                        Image("Bella3001CVC")
+                            .resizable()
+                            .frame(width: 200, height: 200)
+                        Text(bellaName)
+                        Text("Small: 0")
+                        Text("Medium: 0")
+                        Text("Large: 0")
+                    }
+                    .border(.orange, width: 2)
                 }
                 
                 HStack {
@@ -33,29 +43,13 @@ struct ShirtView: View {
                         TextField("Enter name", text: $gildanName)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 120)
-                            .offset(x: -45, y: -195)
+                        
                         
                         TextField("Enter name", text: $bellaName)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 120)
-                            .offset(x: 45, y: -195)
+                    
                     } else {
-                        HStack{
-                            VStack{
-                                Text(gildanName)
-                                    .offset(x: -45, y: -195)
-                                Text("Small: 0")
-                                Text("Medium: 0")
-                                Text("Large: 0")
-                            }
-                            VStack{
-                                Text(bellaName)
-                                    .offset(x: 45, y: -195)
-                                Text("Small: 0")
-                                Text("Medium: 0")
-                                Text("Large: 0")
-                            }
-                        }
                             
                         }
                     }
