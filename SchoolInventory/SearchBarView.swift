@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 struct StudentItem: Identifiable {
     var id = UUID()
     var studentID: String
@@ -25,13 +26,13 @@ struct SearchBarView: View {
         NavigationView {
             VStack {
                 List {
-                    ForEach($listOfStudentIDs) { $studentItem in
+                    ForEach(studentItems) { studentItem in  // Using the studentItems array here
                         HStack {
                             if isEditing {
-                                TextField("Student ID", text: $studentItem.studentID)
+                                TextField("Student ID", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.studentID)
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
                                 
-                                TextField("Item", text: $studentItem.item)
+                                TextField("Item", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.item)
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
                             } else {
                                 Text(studentItem.studentID.capitalized)
@@ -50,7 +51,6 @@ struct SearchBarView: View {
                 .navigationBarItems(
                     trailing: Button(isEditing ? "Done" : "Edit") {
                         isEditing.toggle()
-                    
                     }
                 )
             }
@@ -61,7 +61,7 @@ struct SearchBarView: View {
         let lcStudentItems = listOfStudentIDs.map { StudentItem(studentID: $0.studentID.lowercased(), item: $0.item.lowercased()) }
         
         if searchText.isEmpty {
-            return lcStudentItems
+            return listOfStudentIDs  // Return the original list if searchText is empty
         } else {
             return lcStudentItems.filter {
                 $0.studentID.contains(searchText.lowercased()) || $0.item.contains(searchText.lowercased())

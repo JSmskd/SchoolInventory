@@ -24,7 +24,7 @@ struct WalkUpView: View {
     @State private var newStudentID = ""
     @State private var selectedItem = "Crewneck"
     @State private var isTyping = false
-    @State private var isEditing = false   
+    @State private var isEditing = false
 
     let itemOptions = ["Crewneck", "Orange Hoodie", "Sweat Pants", "T-Shirt", "Jacket"]
 
@@ -32,13 +32,13 @@ struct WalkUpView: View {
         NavigationView {
             VStack {
                 List {
-                    ForEach($listOfStudentIDs) { $studentItem in
+                    ForEach(filteredStudentItems) { studentItem in
                         HStack {
                             if isEditing {
-                                TextField("Student ID", text: $studentItem.studentID)
+                                TextField("Student ID", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.studentID)
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
                                 
-                                TextField("Item", text: $studentItem.item)
+                                TextField("Item", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.item)
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
                             } else {
                                 Text(studentItem.studentID.capitalized)
@@ -133,14 +133,13 @@ struct WalkUpView: View {
         }
     }
     
-    var studentItems: [Studentitem] {
-        let lcStudentItems = listOfStudentIDs.map { Studentitem(studentID: $0.studentID.lowercased(), item: $0.item.lowercased()) }
-        
+    // Filtered list of student items based on search text
+    var filteredStudentItems: [Studentitem] {
         if searchText.isEmpty {
-            return lcStudentItems
+            return listOfStudentIDs
         } else {
-            return lcStudentItems.filter {
-                $0.studentID.contains(searchText.lowercased()) || $0.item.contains(searchText.lowercased())
+            return listOfStudentIDs.filter {
+                $0.studentID.lowercased().contains(searchText.lowercased()) || $0.item.lowercased().contains(searchText.lowercased())
             }
         }
     }
@@ -150,6 +149,9 @@ struct WalkUpView: View {
     }
 
     func addStudentID(_ studentID: String, newItem: String) {
+        // Ensure valid student ID before adding
+        guard !studentID.isEmpty, !newItem.isEmpty else { return }
+        
         let newStudent = Studentitem(studentID: studentID, item: newItem)
         listOfStudentIDs.append(newStudent)
     }
