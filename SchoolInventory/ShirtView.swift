@@ -19,13 +19,13 @@ struct ShirtView: View {
                         .resizable()
                         .frame(width: 200, height: 200)
                         .border(.orange, width: 5)
-                        .offset(x: -5, y: -240)
+                        .offset(x: -5, y: -200)
                     
                     Image("Bella3001CVC")
                         .resizable()
                         .frame(width: 200, height: 200)
                         .border(.orange, width: 5)
-                        .offset(x: 5, y: -240)
+                        .offset(x: 5, y: -200)
                 }
                 
                 HStack {
@@ -33,24 +33,24 @@ struct ShirtView: View {
                         TextField("Enter name", text: $gildanName)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 120)
-                            .offset(x: -45, y: -235)
+                            .offset(x: -45, y: -195)
                         
                         TextField("Enter name", text: $bellaName)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 120)
-                            .offset(x: 45, y: -235)
+                            .offset(x: 45, y: -195)
                     } else {
                         HStack{
                             VStack{
                                 Text(gildanName)
-                                    .offset(x: -45, y: -235)
+                                    .offset(x: -45, y: -195)
                                 Text("Small: 0")
                                 Text("Medium: 0")
                                 Text("Large: 0")
                             }
                             VStack{
                                 Text(bellaName)
-                                    .offset(x: 45, y: -235)
+                                    .offset(x: 45, y: -195)
                                 Text("Small: 0")
                                 Text("Medium: 0")
                                 Text("Large: 0")
