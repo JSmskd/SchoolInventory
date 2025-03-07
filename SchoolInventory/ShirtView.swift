@@ -10,7 +10,12 @@ struct ShirtView: View {
     @State private var isEditing = false
     @State private var gildanName = "Gildan5000"
     @State private var bellaName = "Bella3001CVC"
-    @State private var gildanSmallQuanity = 0
+    @State private var gildanSmallQuantity = 0
+    @State private var gildanMediumQuantity = 0
+    @State private var gildanLargeQuantity = 0
+    @State private var bellaSmallQuantity = 0
+    @State private var bellaMediumQuantity = 0
+    @State private var bellaLargeQuantity = 0
     
     var body: some View {
         NavigationView {
@@ -21,9 +26,9 @@ struct ShirtView: View {
                             .resizable()
                             .frame(width: 200, height: 200)
                         Text(gildanName)
-                        Text("Small: \(gildanSmallQuanity)")
-                        Text("Medium: 0")
-                        Text("Large: 0")
+                        Text("Small: \(gildanSmallQuantity)")
+                        Text("Medium: \(gildanMediumQuantity)")
+                        Text("Large: \(gildanLargeQuantity)")
                     }
                     .border(.orange, width: 2)
                     VStack{
@@ -31,9 +36,9 @@ struct ShirtView: View {
                             .resizable()
                             .frame(width: 200, height: 200)
                         Text(bellaName)
-                        Text("Small: 0")
-                        Text("Medium: 0")
-                        Text("Large: 0")
+                        Text("Small: \(bellaSmallQuantity)")
+                        Text("Medium: \(bellaMediumQuantity)")
+                        Text("Large: \(bellaLargeQuantity)")
                     }
                     .border(.orange, width: 2)
                 }
