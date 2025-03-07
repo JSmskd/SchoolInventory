@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 struct ShirtView: View {
     @State private var isEditing = false
     @State private var gildanName = "Gildan5000"
@@ -14,43 +15,93 @@ struct ShirtView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                HStack {
-                    VStack{
-                        Image("Gildan5000")
-                            .resizable()
-                            .frame(width: 200, height: 200)
-                        Text(gildanName)
-                        Text("Small: \(gildanSmallQuanity)")
-                        Text("Medium: 0")
-                        Text("Large: 0")
-                    }
-                    .border(.orange, width: 2)
-                    VStack{
-                        Image("Bella3001CVC")
-                            .resizable()
-                            .frame(width: 200, height: 200)
-                        Text(bellaName)
-                        Text("Small: 0")
-                        Text("Medium: 0")
-                        Text("Large: 0")
-                    }
-                    .border(.orange, width: 2)
-                }
-                
-                HStack {
-                    if isEditing {
-                        TextField("Enter name", text: $gildanName)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 120)
-                        
-                        
-                        TextField("Enter name", text: $bellaName)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 120)
-                    
-                    } else {
+            ScrollView {
+                VStack {
+                    HStack {
+                        VStack {
+                            // First Gildan Image
+                            VStack {
+                                Image("Gildan5000")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(gildanName)
+                                Text("Small: \(gildanSmallQuanity)")
+                                Text("Medium: 0")
+                                Text("Large: 0")
+                            }
+                            .border(.orange, width: 2)
                             
+                            // Second Gildan Image
+                            VStack {
+                                Image("Gildan5000")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(gildanName)
+                                Text("Small: \(gildanSmallQuanity)")
+                                Text("Medium: 0")
+                                Text("Large: 0")
+                            }
+                            .border(.orange, width: 2)
+                            
+                            // Third Gildan Image
+                            VStack {
+                                Image("Gildan5000")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(gildanName)
+                                Text("Small: \(gildanSmallQuanity)")
+                                Text("Medium: 0")
+                                Text("Large: 0")
+                            }
+                            .border(.orange, width: 2)
+                        }
+                        
+                        VStack {
+                            // First Bella Image
+                            VStack {
+                                Image("Bella3001CVC")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(bellaName)
+                                Text("Small: 0")
+                                Text("Medium: 0")
+                                Text("Large: 0")
+                            }
+                            .border(.orange, width: 2)
+                            
+                            // Second Bella Image (new one added)
+                            VStack {
+                                Image("Bella3001CVC")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(bellaName)
+                                Text("Small: 0")
+                                Text("Medium: 0")
+                                Text("Large: 0")
+                            }
+                            .border(.orange, width: 2)
+                            VStack {
+                                Image("Bella3001CVC")
+                                    .resizable()
+                                    .frame(width: 200, height: 200)
+                                Text(bellaName)
+                                Text("Small: 0")
+                                Text("Medium: 0")
+                                Text("Large: 0")
+                            }
+                            .border(.orange, width: 2)
+                        }
+                    }
+                    
+                    HStack {
+                        if isEditing {
+                            TextField("Enter name", text: $gildanName)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 120)
+                            
+                            TextField("Enter name", text: $bellaName)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 120)
                         }
                     }
                 }
@@ -63,9 +114,13 @@ struct ShirtView: View {
             }
         }
     }
+}
 
 #Preview {
     ShirtView()
+}
+
+
 
 //struct ShirtView: View {
 //    var body: some View {
@@ -95,4 +150,4 @@ struct ShirtView: View {
 //
 //#Preview {
 //    ShirtView()
-}
+//}
