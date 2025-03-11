@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 struct ShirtView: View {
     @State private var isEditing = false
     @State private var showEditSheet = false
@@ -23,6 +24,9 @@ struct ShirtView: View {
     @State private var bellaSmallQuantity = 0
     @State private var bellaMediumQuantity = 0
     @State private var bellaLargeQuantity = 0
+    
+    @State private var stockAlertMessage = ""
+    @State private var showStockAlert = false  // State for stock alert
     
     var body: some View {
         NavigationView {
@@ -54,6 +58,17 @@ struct ShirtView: View {
                             )
                         }
                     }
+                    
+                    // Button to check stock
+                    Button(action: checkStock) {
+                        Text("Check Stock")
+                            .font(.title2)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding()
                 }
                 .padding()
                 .navigationTitle("Shirts")
@@ -102,6 +117,13 @@ struct ShirtView: View {
                 }
                 .padding()
             }
+            .alert(isPresented: $showStockAlert) {
+                Alert(
+                    title: Text("Stock Status"),
+                    message: Text(stockAlertMessage),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         }
     }
     
@@ -126,6 +148,18 @@ struct ShirtView: View {
             bellaMediumQuantity = editedMedium
             bellaLargeQuantity = editedLarge
         }
+    }
+    
+    func checkStock() {
+        // Check stock for both shirts
+        if gildanSmallQuantity < 3 || gildanMediumQuantity < 3 || gildanLargeQuantity < 3 ||
+            bellaSmallQuantity < 3 || bellaMediumQuantity < 3 || bellaLargeQuantity < 3 {
+            stockAlertMessage = "Low stock! Some sizes have less than 3 items."
+        } else {
+            stockAlertMessage = "Enough stock! All sizes have more than 3 items."
+        }
+        
+        showStockAlert = true
     }
 }
 
@@ -163,6 +197,8 @@ struct ShirtItemView: View {
 
 #Preview {
     ShirtView()
+}
+
 
 //struct ShirtView: View {
 //    @State private var isEditing = false
@@ -275,7 +311,7 @@ struct ShirtItemView: View {
 //
 //#Preview {
 //    ShirtView()
-}
+//}
 
 //struct ShirtView: View {
 //    var body: some View {
