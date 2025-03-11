@@ -27,7 +27,7 @@ struct InventoryView: View {
                 }
                 
                 NavigationLink(destination: SweatpantsView()) {
-                    Text("Sweats")
+                    Text("Sweatpants")
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.darkBrown)

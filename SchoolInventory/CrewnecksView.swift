@@ -1,12 +1,12 @@
 //
-//  HoodiesView.swift
+//  CrenecksView.swift
 //  SchoolInventory
 //
 //  Created by Haasini Kala R. Police on 2/10/25.
 //
 
 import SwiftUI
-struct HoodiesView: View {
+struct CrewnecksView: View {
     @State private var isEditing = false
     @State private var showEditSheet = false
     @State private var selectedItem: String = ""
@@ -30,7 +30,7 @@ struct HoodiesView: View {
                 VStack {
                     HStack {
                         VStack {
-                            HoodieItemView(
+                            CrewneckItemView(
                                 name: $gildanName,
                                 small: $gildanSmallQuantity,
                                 medium: $gildanMediumQuantity,
@@ -42,7 +42,7 @@ struct HoodiesView: View {
                             )
                         }
                         VStack {
-                            HoodieItemView(
+                            CrewneckItemView(
                                 name: $bellaName,
                                 small: $bellaSmallQuantity,
                                 medium: $bellaMediumQuantity,
@@ -56,7 +56,7 @@ struct HoodiesView: View {
                     }
                 }
                 .padding()
-                .navigationTitle("Hoodies")
+                .navigationTitle("Crewnecks")
             }
             .sheet(isPresented: $showEditSheet) {
                 VStack {
@@ -129,7 +129,7 @@ struct HoodiesView: View {
     }
 }
 
-struct HoodieItemView: View {
+struct CrewneckItemView: View {
     @Binding var name: String
     @Binding var small: Int
     @Binding var medium: Int
@@ -162,10 +162,10 @@ struct HoodieItemView: View {
 }
 
 #Preview {
-    HoodiesView()
+    CrewnecksView()
 }
 
-//struct HoodiesView: View {
+//struct CrewnecksView: View {
 //    @State private var isEditing = false
 //    @State private var gildanName = "Gildan5000"
 //    @State private var bellaName = "Bella3001CVC"
@@ -259,10 +259,10 @@ struct HoodieItemView: View {
 //                        }
 //                    }
 //                    
-//                
+//                   
 //                }
 //                .padding()
-//                .navigationTitle("Hoodies")
+//                .navigationTitle("Crewnecks")
 //                .navigationBarItems(
 //                    trailing: Button(isEditing ? "Done" : "Edit") {
 //                        isEditing.toggle()
@@ -274,19 +274,19 @@ struct HoodieItemView: View {
 //}
 //
 //#Preview {
-//    HoodiesView()
+//    CrewnecksView()
 //}
 
 
-//struct HoodiesView: View {
+//struct CrewnecksView: View {
 //    var body: some View {
 //        VStack {
-//            Text("Grey Hoodies")
-//            Text("Orange Hoodies")
+//            Text("Grey Crewnecks")
+//            Text("Orange Crewnecks")
 //        }
 //    }
 //   
 //}
 //#Preview {
-//    HoodiesView()
+//    CrewnecksView()
 //}
