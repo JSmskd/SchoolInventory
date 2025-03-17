@@ -39,6 +39,12 @@ struct ContentView: View {
                     Image(systemName: "desktopcomputer")
                 }
             }
+            TotalOrders().tabItem {
+                HStack{
+                    Text("Total Orders")
+                    Image(systemName: "receipt")
+                }
+            }
 //            OrderContentView().tabItem {
 //                HStack {
 //                    Text("Search Bar")
