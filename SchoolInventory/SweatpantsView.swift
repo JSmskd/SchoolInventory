@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 struct SweatpantsView: View {
     @State private var isEditing = false
     @State private var showEditSheet = false
@@ -23,6 +24,9 @@ struct SweatpantsView: View {
     @State private var bellaSmallQuantity = 0
     @State private var bellaMediumQuantity = 0
     @State private var bellaLargeQuantity = 0
+    
+    @State private var stockAlertMessage = ""
+    @State private var showStockAlert = false
     
     var body: some View {
         NavigationView {
@@ -54,9 +58,25 @@ struct SweatpantsView: View {
                             )
                         }
                     }
+                    Button(action: checkStock) {
+                        Text("Check Stock")
+                            .font(.title2)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding()
                 }
                 .padding()
                 .navigationTitle("Sweatpants")
+                .alert(isPresented: $showStockAlert) {
+                    Alert(
+                        title: Text("Stock Check"),
+                        message: Text(stockAlertMessage),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
             }
             .sheet(isPresented: $showEditSheet) {
                 VStack {
@@ -103,6 +123,46 @@ struct SweatpantsView: View {
                 .padding()
             }
         }
+    }
+    
+    func checkStock() {
+        var alertMessage = "Stock Check Results:\n"
+        var isStockLow = false
+        
+        // Gildan stock check
+        if gildanSmallQuantity < 3 {
+            alertMessage += "Gildan Small: Not enough stock.\n"
+            isStockLow = true
+        }
+        if gildanMediumQuantity < 3 {
+            alertMessage += "Gildan Medium: Not enough stock.\n"
+            isStockLow = true
+        }
+        if gildanLargeQuantity < 3 {
+            alertMessage += "Gildan Large: Not enough stock.\n"
+            isStockLow = true
+        }
+        
+        // Bella stock check
+        if bellaSmallQuantity < 3 {
+            alertMessage += "Bella Small: Not enough stock.\n"
+            isStockLow = true
+        }
+        if bellaMediumQuantity < 3 {
+            alertMessage += "Bella Medium: Not enough stock.\n"
+            isStockLow = true
+        }
+        if bellaLargeQuantity < 3 {
+            alertMessage += "Bella Large: Not enough stock.\n"
+            isStockLow = true
+        }
+        
+        if !isStockLow {
+            alertMessage = "All sizes have enough stock!"
+        }
+        
+        stockAlertMessage = alertMessage
+        showStockAlert = true
     }
     
     func editItem(name: String, small: Int, medium: Int, large: Int) {
