@@ -42,7 +42,7 @@ struct ContentView: View {
             TotalOrders().tabItem {
                 HStack{
                     Text("Total Orders")
-                    Image(systemName: "receipt")
+                    Image(systemName: "text.page.fill")
                 }
             }
 //            OrderContentView().tabItem {
