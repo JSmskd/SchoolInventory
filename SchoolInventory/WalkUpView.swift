@@ -6,27 +6,29 @@
 //
 
 import SwiftUI
-
 struct Studentitem: Identifiable {
     var id = UUID()
     var studentID: String
     var item: String
+    var size: String
 }
 
 struct WalkUpView: View {
     @State private var listOfStudentIDs: [Studentitem] = [
-        Studentitem(studentID: "54321", item: "Crewneck"),
-        Studentitem(studentID: "09876", item: "Orange Hoodie"),
-        Studentitem(studentID: "12431", item: "Sweat Pants")
+        Studentitem(studentID: "54321", item: "Crewneck", size: "M"),
+        Studentitem(studentID: "09876", item: "Orange Hoodie", size: "L"),
+        Studentitem(studentID: "12431", item: "Sweat Pants", size: "S")
     ]
     @State private var searchText = ""
     @State private var showAddStudentIDSheet = false
     @State private var newStudentID = ""
     @State private var selectedItem = "Crewneck"
+    @State private var selectedSize = "M"
     @State private var isTyping = false
     @State private var isEditing = false
 
     let itemOptions = ["Crewneck", "Orange Hoodie", "Sweat Pants", "T-Shirt", "Jacket"]
+    let sizeOptions = ["XS", "S", "M", "L", "XL", "XXL"]
 
     var body: some View {
         NavigationView {
@@ -37,16 +39,21 @@ struct WalkUpView: View {
                             if isEditing {
                                 TextField("Student ID", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.studentID)
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                                
+
                                 TextField("Item", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.item)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+
+                                TextField("Size", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.size)
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
                             } else {
                                 Text(studentItem.studentID.capitalized)
                                 Spacer()
                                 Text(studentItem.item)
                                     .foregroundColor(.gray)
+                                Text("Size: \(studentItem.size)")
+                                    .foregroundColor(.blue)
                                 Image(systemName: "person.fill")
-                                    .foregroundColor(.darkOrange)
+                                    .foregroundColor(.orange)
                             }
                         }
                     }
@@ -66,7 +73,7 @@ struct WalkUpView: View {
                     HStack {
                         Text("Add Student ID And Items")
                             .padding()
-                            .background(Color.darkBrown)
+                            .background(Color.brown)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
@@ -102,14 +109,26 @@ struct WalkUpView: View {
                             .padding()
                         }
 
+                        Text("Select Size")
+                            .font(.title2)
+                            .padding()
+
+                        Picker("Size", selection: $selectedSize) {
+                            ForEach(sizeOptions, id: \.self) { size in
+                                Text(size).tag(size)
+                            }
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                        .padding()
+
                         Button(action: {
-                            addStudentID(newStudentID, newItem: selectedItem)
+                            addStudentID(newStudentID, newItem: selectedItem, newSize: selectedSize)
                             showAddStudentIDSheet = false
                         }) {
                             Text("Add")
                                 .font(.title2)
                                 .padding()
-                                .background(Color.darkOrange)
+                                .background(Color.orange)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
@@ -121,7 +140,7 @@ struct WalkUpView: View {
                             Text("Cancel")
                                 .font(.title2)
                                 .padding()
-                                .background(Color.darkBrown)
+                                .background(Color.brown)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
@@ -133,13 +152,15 @@ struct WalkUpView: View {
         }
     }
     
-    // Filtered list of student items based on search text
+    
     var filteredStudentItems: [Studentitem] {
         if searchText.isEmpty {
             return listOfStudentIDs
         } else {
             return listOfStudentIDs.filter {
-                $0.studentID.lowercased().contains(searchText.lowercased()) || $0.item.lowercased().contains(searchText.lowercased())
+                $0.studentID.lowercased().contains(searchText.lowercased()) ||
+                $0.item.lowercased().contains(searchText.lowercased()) ||
+                $0.size.lowercased().contains(searchText.lowercased())
             }
         }
     }
@@ -148,11 +169,11 @@ struct WalkUpView: View {
         listOfStudentIDs.remove(atOffsets: offsets)
     }
 
-    func addStudentID(_ studentID: String, newItem: String) {
-        // Ensure valid student ID before adding
-        guard !studentID.isEmpty, !newItem.isEmpty else { return }
+    func addStudentID(_ studentID: String, newItem: String, newSize: String) {
         
-        let newStudent = Studentitem(studentID: studentID, item: newItem)
+        guard !studentID.isEmpty, !newItem.isEmpty, !newSize.isEmpty else { return }
+        
+        let newStudent = Studentitem(studentID: studentID, item: newItem, size: newSize)
         listOfStudentIDs.append(newStudent)
     }
 }
@@ -160,6 +181,160 @@ struct WalkUpView: View {
 #Preview {
     WalkUpView()
 }
+
+//struct Studentitem: Identifiable {
+//    var id = UUID()
+//    var studentID: String
+//    var item: String
+//}
+//
+//struct WalkUpView: View {
+//    @State private var listOfStudentIDs: [Studentitem] = [
+//        Studentitem(studentID: "54321", item: "Crewneck"),
+//        Studentitem(studentID: "09876", item: "Orange Hoodie"),
+//        Studentitem(studentID: "12431", item: "Sweat Pants")
+//    ]
+//    @State private var searchText = ""
+//    @State private var showAddStudentIDSheet = false
+//    @State private var newStudentID = ""
+//    @State private var selectedItem = "Crewneck"
+//    @State private var isTyping = false
+//    @State private var isEditing = false
+//
+//    let itemOptions = ["Crewneck", "Orange Hoodie", "Sweat Pants", "T-Shirt", "Jacket"]
+//
+//    var body: some View {
+//        NavigationView {
+//            VStack {
+//                List {
+//                    ForEach(filteredStudentItems) { studentItem in
+//                        HStack {
+//                            if isEditing {
+//                                TextField("Student ID", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.studentID)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//                                
+//                                TextField("Item", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.item)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//                            } else {
+//                                Text(studentItem.studentID.capitalized)
+//                                Spacer()
+//                                Text(studentItem.item)
+//                                    .foregroundColor(.gray)
+//                                Image(systemName: "person.fill")
+//                                    .foregroundColor(.darkOrange)
+//                            }
+//                        }
+//                    }
+//                    .onDelete(perform: deleteItems)
+//                }
+//                .searchable(text: $searchText)
+//                .navigationTitle("Walk Up Orders")
+//                .navigationBarItems(
+//                    trailing: Button(isEditing ? "Done" : "Edit") {
+//                        isEditing.toggle()
+//                    }
+//                )
+//
+//                Button(action: {
+//                    showAddStudentIDSheet = true
+//                }) {
+//                    HStack {
+//                        Text("Add Student ID And Items")
+//                            .padding()
+//                            .background(Color.darkBrown)
+//                            .foregroundColor(.white)
+//                            .cornerRadius(10)
+//                    }
+//                }
+//                .sheet(isPresented: $showAddStudentIDSheet) {
+//                    VStack {
+//                        Text("Enter Student ID")
+//                            .font(.title2)
+//                            .padding()
+//                        
+//                        TextField("Student ID", text: $newStudentID)
+//                            .textFieldStyle(RoundedBorderTextFieldStyle())
+//                            .padding()
+//                        
+//                        Text("Select or Type an Item")
+//                            .font(.title2)
+//                            .padding()
+//                        
+//                        Toggle("Type Item", isOn: $isTyping)
+//                            .padding()
+//
+//                        if isTyping {
+//                            TextField("Enter Item", text: $selectedItem)
+//                                .textFieldStyle(RoundedBorderTextFieldStyle())
+//                                .padding()
+//                        } else {
+//                            Picker("Items", selection: $selectedItem) {
+//                                ForEach(itemOptions, id: \.self) { item in
+//                                    Text(item).tag(item)
+//                                }
+//                            }
+//                            .pickerStyle(WheelPickerStyle())
+//                            .padding()
+//                        }
+//
+//                        Button(action: {
+//                            addStudentID(newStudentID, newItem: selectedItem)
+//                            showAddStudentIDSheet = false
+//                        }) {
+//                            Text("Add")
+//                                .font(.title2)
+//                                .padding()
+//                                .background(Color.darkOrange)
+//                                .foregroundColor(.white)
+//                                .cornerRadius(10)
+//                        }
+//                        .padding()
+//                        
+//                        Button(action: {
+//                            showAddStudentIDSheet = false
+//                        }) {
+//                            Text("Cancel")
+//                                .font(.title2)
+//                                .padding()
+//                                .background(Color.darkBrown)
+//                                .foregroundColor(.white)
+//                                .cornerRadius(10)
+//                        }
+//                        .padding()
+//                    }
+//                    .padding()
+//                }
+//            }
+//        }
+//    }
+//    
+//    // Filtered list of student items based on search text
+//    var filteredStudentItems: [Studentitem] {
+//        if searchText.isEmpty {
+//            return listOfStudentIDs
+//        } else {
+//            return listOfStudentIDs.filter {
+//                $0.studentID.lowercased().contains(searchText.lowercased()) || $0.item.lowercased().contains(searchText.lowercased())
+//            }
+//        }
+//    }
+//
+//    func deleteItems(at offsets: IndexSet) {
+//        listOfStudentIDs.remove(atOffsets: offsets)
+//    }
+//
+//    func addStudentID(_ studentID: String, newItem: String) {
+//        // Ensure valid student ID before adding
+//        guard !studentID.isEmpty, !newItem.isEmpty else { return }
+//        
+//        let newStudent = Studentitem(studentID: studentID, item: newItem)
+//        listOfStudentIDs.append(newStudent)
+//    }
+//}
+//
+//#Preview {
+//    WalkUpView()
+//}
 
 //struct Studentitem {
 //    var studentID: String
