@@ -17,6 +17,14 @@ struct InventoryView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
+                NavigationLink(destination: BlanksView()) {
+                    Text("Blanks")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.darkBrown)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
                 NavigationLink(destination: ShirtView()) {
                     Text("Shirts")
                         .frame(maxWidth: .infinity)
