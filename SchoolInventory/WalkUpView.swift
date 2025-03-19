@@ -73,7 +73,7 @@ struct WalkUpView: View {
                     HStack {
                         Text("Add Student ID And Items")
                             .padding()
-                            .background(Color.brown)
+                            .background(Color.darkBrown)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
