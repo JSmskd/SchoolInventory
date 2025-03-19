@@ -45,7 +45,7 @@ struct SearchBarView: View {
                                 Text("Size: \(studentItem.size)")
                                     .foregroundColor(.blue)
                                 Image(systemName: "person.fill")
-                                    .foregroundColor(.brown)
+                                    .foregroundColor(.darkBrown)
                             }
                         }
                     }
