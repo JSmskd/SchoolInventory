@@ -37,12 +37,12 @@ struct ContentView: View {
                     Image(systemName: "desktopcomputer")
                 }
             }
-            TotalOrdersView(orderData: OrderData()).tabItem {
-                HStack{
-                    Text("Total Orders")
-                    Image(systemName: "text.page.fill")
-                }
-            }
+//            TotalOrdersView(orderData: OrderData()).tabItem {
+//                HStack{
+//                    Text("Total Orders")
+//                    Image(systemName: "text.page.fill")
+//                }
+          //  }
 
         }
     }
