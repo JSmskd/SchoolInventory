@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 struct HoodiesView: View {
     @State private var isEditing = false
     @State private var showEditSheet = false
@@ -23,6 +24,12 @@ struct HoodiesView: View {
     @State private var bellaSmallQuantity = 0
     @State private var bellaMediumQuantity = 0
     @State private var bellaLargeQuantity = 0
+    
+    @State private var stockStatusMessage = ""
+    
+    // New state for showing alert
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     
     var body: some View {
         NavigationView {
@@ -54,6 +61,16 @@ struct HoodiesView: View {
                             )
                         }
                     }
+                    
+                    Button(action: checkStock) {
+                        Text("Check Stock")
+                            .font(.title2)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding()
                 }
                 .padding()
                 .navigationTitle("Hoodies")
@@ -102,6 +119,12 @@ struct HoodiesView: View {
                 }
                 .padding()
             }
+            // Alert that shows the stock check result
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Stock Check"),
+                      message: Text(alertMessage),
+                      dismissButton: .default(Text("OK")))
+            }
         }
     }
     
@@ -126,6 +149,30 @@ struct HoodiesView: View {
             bellaMediumQuantity = editedMedium
             bellaLargeQuantity = editedLarge
         }
+    }
+    
+    func checkStock() {
+        var missingSizes = [String]()
+        
+        // Check Gildan stock
+        if gildanSmallQuantity < 3 { missingSizes.append("Gildan Small") }
+        if gildanMediumQuantity < 3 { missingSizes.append("Gildan Medium") }
+        if gildanLargeQuantity < 3 { missingSizes.append("Gildan Large") }
+        
+        // Check Bella stock
+        if bellaSmallQuantity < 3 { missingSizes.append("Bella Small") }
+        if bellaMediumQuantity < 3 { missingSizes.append("Bella Medium") }
+        if bellaLargeQuantity < 3 { missingSizes.append("Bella Large") }
+        
+        // Prepare the alert message
+        if missingSizes.isEmpty {
+            alertMessage = "Stock levels are sufficient for all sizes."
+        } else {
+            alertMessage = "Not enough stock for: " + missingSizes.joined(separator: ", ")
+        }
+        
+        // Show the alert
+        showAlert = true
     }
 }
 
@@ -164,4 +211,5 @@ struct HoodieItemView: View {
 #Preview {
     HoodiesView()
 }
+
 
