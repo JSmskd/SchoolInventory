@@ -5,8 +5,6 @@
 //  Created by Neha M. Darji on 12/5/24.
 //
 
-//working on moving app to playgrounds
-//getting rid of playgrounds errors 
 
 import SwiftUI
 
@@ -25,7 +23,7 @@ struct ContentView: View {
                 }
             }
             
-//            // StudentOrdersView().tabItem {
+
             SearchBarView().tabItem {
                 HStack{
                     Text("Online")
@@ -45,12 +43,7 @@ struct ContentView: View {
                     Image(systemName: "text.page.fill")
                 }
             }
-//            OrderContentView().tabItem {
-//                HStack {
-//                    Text("Search Bar")
-//                    Image(systemName: "magnifyingglass")
-//                }
-//            }
+
         }
     }
 }

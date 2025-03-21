@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        VStack(spacing: 0) { // Set spacing to 0
+        VStack(spacing: 0) { 
             Image("DawgPound")
                 .resizable()
                 .frame(width: 300, height: 175)

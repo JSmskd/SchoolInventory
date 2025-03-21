@@ -26,7 +26,7 @@ struct BlanksView: View {
         @State private var bellaLargeQuantity = 0
         
         @State private var stockAlertMessage = ""
-        @State private var showStockAlert = false  // State for stock alert
+        @State private var showStockAlert = false
         
         var body: some View {
             NavigationView {
@@ -59,7 +59,7 @@ struct BlanksView: View {
                             }
                         }
                         
-                        // Button to check stock
+                        
                         Button(action: checkStock) {
                             Text("Check Stock")
                                 .font(.title2)
@@ -151,7 +151,7 @@ struct BlanksView: View {
         }
         
         func checkStock() {
-            // Check stock for both shirts
+            
             if gildanSmallQuantity < 3 || gildanMediumQuantity < 3 || gildanLargeQuantity < 3 ||
                 bellaSmallQuantity < 3 || bellaMediumQuantity < 3 || bellaLargeQuantity < 3 {
                 stockAlertMessage = "Low stock! Some sizes have less than 3 items."
