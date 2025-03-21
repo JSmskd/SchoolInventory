@@ -6,12 +6,6 @@
 //
 
 import SwiftUI
-struct StudentItem: Identifiable {
-    var id = UUID()
-    var studentID: String
-    var item: String
-    var size: String
-}
 
 struct SearchBarView: View {
     @State private var listOfStudentIDs: [StudentItem] = [
@@ -86,4 +80,3 @@ struct SearchBarView: View {
 #Preview {
     SearchBarView()
 }
-
