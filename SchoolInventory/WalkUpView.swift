@@ -53,7 +53,7 @@ struct WalkUpView: View {
                                 Text("Size: \(studentItem.size)")
                                     .foregroundColor(.blue)
                                 Image(systemName: "person.fill")
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(.darkOrange)
                             }
                         }
                     }
