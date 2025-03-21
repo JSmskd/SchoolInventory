@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-// StudentItem model
+
 struct StudentItem: Identifiable {
     var id = UUID()
     var studentID: String

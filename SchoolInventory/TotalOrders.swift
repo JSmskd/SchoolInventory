@@ -24,7 +24,7 @@ struct TotalOrdersView: View {
     var body: some View {
         NavigationView {
             VStack {
-                // Searchable List of Student Items
+               
                 List {
                     ForEach(filteredStudentItems) { studentItem in
                         HStack {
@@ -71,7 +71,7 @@ struct TotalOrdersView: View {
                     }
                 )
 
-                // Add Student Button
+                
                 Button(action: {
                     showAddStudentIDSheet = true
                 }) {
@@ -90,7 +90,7 @@ struct TotalOrdersView: View {
         }
     }
 
-    // Filtering logic for search
+    
     var filteredStudentItems: [StudentItem] {
         if searchText.isEmpty {
             return orderData.listOfStudentIDs
@@ -103,12 +103,12 @@ struct TotalOrdersView: View {
         }
     }
 
-    // Delete items from the list
+    
     func deleteItems(at offsets: IndexSet) {
         orderData.listOfStudentIDs.remove(atOffsets: offsets)
     }
 
-    // Update student item for editing
+    
     private func updateStudentItem(_ studentItem: StudentItem, studentID: String? = nil, item: String? = nil, size: String? = nil) {
         if let studentID = studentID {
             if let index = orderData.listOfStudentIDs.firstIndex(where: { $0.id == studentItem.id }) {
