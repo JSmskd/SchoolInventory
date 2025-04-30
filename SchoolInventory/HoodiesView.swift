@@ -66,7 +66,7 @@ struct HoodiesView: View {
                         Text("Check Stock")
                             .font(.title2)
                             .padding()
-                            .background(Color.blue)
+                            .background(Color.darkOrange)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }

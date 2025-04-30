@@ -62,7 +62,7 @@ struct SweatpantsView: View {
                         Text("Check Stock")
                             .font(.title2)
                             .padding()
-                            .background(Color.blue)
+                            .background(Color.darkBrown)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
