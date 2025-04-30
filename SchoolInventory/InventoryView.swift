@@ -68,3 +68,6 @@ struct InventoryView: View {
     }
 }
 
+#Preview {
+    InventoryView()
+}
