@@ -19,6 +19,3 @@ struct OrderListView: View {
     }
 }
 
-#Preview {
-    OrderListView(currentOrderItem: OrderItem(nameOfItem: "Fake", studentID: 0))
-}
