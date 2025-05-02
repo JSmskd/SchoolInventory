@@ -24,6 +24,10 @@ struct CrewnecksView: View {
     @State private var bellaMediumQuantity = 0
     @State private var bellaLargeQuantity = 0
     
+    @State private var stockAlertMessage = ""
+    @State private var showStockAlert = false
+
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -54,6 +58,16 @@ struct CrewnecksView: View {
                             )
                         }
                     }
+                    Button(action: checkStock) {
+                        Text("Check Stock")
+                            .font(.title2)
+                            .padding()
+                            .background(Color.orange)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding()
+
                 }
                 .padding()
                 .navigationTitle("Crewnecks")
@@ -101,6 +115,14 @@ struct CrewnecksView: View {
                     .padding()
                 }
                 .padding()
+                .alert(isPresented: $showStockAlert) {
+                    Alert(
+                        title: Text("Stock Status"),
+                        message: Text(stockAlertMessage),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
+
             }
         }
     }
@@ -127,6 +149,18 @@ struct CrewnecksView: View {
             bellaLargeQuantity = editedLarge
         }
     }
+    
+    func checkStock() {
+        if gildanSmallQuantity < 3 || gildanMediumQuantity < 3 || gildanLargeQuantity < 3 ||
+            bellaSmallQuantity < 3 || bellaMediumQuantity < 3 || bellaLargeQuantity < 3 {
+            stockAlertMessage = "Low stock! Some sizes have less than 3 items."
+        } else {
+            stockAlertMessage = "Enough stock! All sizes have more than 3 items."
+        }
+
+        showStockAlert = true
+    }
+
 }
 
 struct CrewneckItemView: View {
