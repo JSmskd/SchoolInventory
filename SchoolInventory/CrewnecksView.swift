@@ -62,7 +62,7 @@ struct CrewnecksView: View {
                         Text("Check Stock")
                             .font(.title2)
                             .padding()
-                            .background(Color.orange)
+                            .background(Color.darkOrange)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
