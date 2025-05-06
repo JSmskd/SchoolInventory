@@ -70,7 +70,7 @@ struct CrewnecksView: View {
                         .padding()
                     }
                     .padding()
-                    .navigationTitle("Blanks")
+                    .navigationTitle("Crewnecks")
                 }
                 .sheet(isPresented: $showEditSheet) {
                     VStack {
