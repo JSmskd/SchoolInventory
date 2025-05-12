@@ -96,7 +96,7 @@ struct CrewnecksView: View {
                             Text("Save")
                                 .font(.title2)
                                 .padding()
-                                .background(Color.green)
+                                .background(Color.darkOrange)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
@@ -108,7 +108,7 @@ struct CrewnecksView: View {
                             Text("Cancel")
                                 .font(.title2)
                                 .padding()
-                                .background(Color.red)
+                                .background(Color.darkBrown)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
