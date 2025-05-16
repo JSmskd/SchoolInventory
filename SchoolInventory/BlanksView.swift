@@ -152,8 +152,7 @@ struct BlanksView: View {
         
         func checkStock() {
             
-            if gildanSmallQuantity < 3 || gildanMediumQuantity < 3 || gildanLargeQuantity < 3 ||
-                bellaSmallQuantity < 3 || bellaMediumQuantity < 3 || bellaLargeQuantity < 3 {
+            if gildanSmallQuantity < 3 || gildanMediumQuantity < 3 || gildanLargeQuantity < 3 || bellaSmallQuantity < 3 || bellaMediumQuantity < 3 || bellaLargeQuantity < 3 {
                 stockAlertMessage = "Low stock! Some sizes have less than 3 items."
             } else {
                 stockAlertMessage = "Enough stock! All sizes have more than 3 items."
