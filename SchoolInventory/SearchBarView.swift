@@ -99,7 +99,7 @@ struct SearchBarView: View {
 
 
     func refreshShirts() {
-        print("refsihni")
+        print("refreshing")
         listOfStudentIDs = []
         var orders:Array<order> {get {listOfStudentIDs} set {listOfStudentIDs = newValue}}
 

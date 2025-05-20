@@ -27,7 +27,6 @@ struct HoodiesView: View {
     
     @State private var stockStatusMessage = ""
     
-    // New state for showing alert
     @State private var showAlert = false
     @State private var alertMessage = ""
     
@@ -154,24 +153,20 @@ struct HoodiesView: View {
     func checkStock() {
         var missingSizes = [String]()
         
-        // Check Gildan stock
         if gildanSmallQuantity < 3 { missingSizes.append("Gildan Small") }
         if gildanMediumQuantity < 3 { missingSizes.append("Gildan Medium") }
         if gildanLargeQuantity < 3 { missingSizes.append("Gildan Large") }
-        
-        // Check Bella stock
+    
         if bellaSmallQuantity < 3 { missingSizes.append("Bella Small") }
         if bellaMediumQuantity < 3 { missingSizes.append("Bella Medium") }
         if bellaLargeQuantity < 3 { missingSizes.append("Bella Large") }
         
-        // Prepare the alert message
         if missingSizes.isEmpty {
             alertMessage = "Stock levels are sufficient for all sizes."
         } else {
             alertMessage = "Not enough stock for: " + missingSizes.joined(separator: ", ")
         }
         
-        // Show the alert
         showAlert = true
     }
 }
