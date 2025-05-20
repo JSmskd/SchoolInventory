@@ -154,7 +154,6 @@ struct ShirtView: View {
     }
     
     func checkStock() {
-        // Check stock for both shirts
         if gildanSmallQuantity < 3 || gildanMediumQuantity < 3 || gildanLargeQuantity < 3 ||
             bellaSmallQuantity < 3 || bellaMediumQuantity < 3 || bellaLargeQuantity < 3 {
             stockAlertMessage = "Low stock! Some sizes have less than 3 items."
