@@ -5,23 +5,23 @@
 //  Created by Haasini Kala R. Police on 12/11/24.
 //
 
-import SwiftUI
-
-struct StudentOrdersView: View {
-    @State var orderItems: [OrderItem] = []
-    var body: some View {
-        VStack{
-            List(orderItems, id: \.nameOfItem) { currentOrderItem in
-                    OrderListView(currentOrderItem: currentOrderItem)
-                }
-        }
-        
-        
-    }
-    
-
-}
-#Preview {
-    StudentOrdersView()
-    
-}
+//import SwiftUI
+//
+//struct StudentOrdersView: View {
+//    @State var orderItems: [OrderItem] = []
+//    var body: some View {
+//        VStack{
+//            List(orderItems, id: \.nameOfItem) { currentOrderItem in
+//                    OrderListView(currentOrderItem: currentOrderItem)
+//                }
+//        }
+//        
+//        
+//    }
+//    
+//
+//}
+//#Preview {
+//    StudentOrdersView()
+//    
+//}
