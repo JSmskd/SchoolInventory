@@ -6,7 +6,8 @@
 //
 
 import SwiftUI
-struct Studentitem: Identifiable {
+
+struct Studentitem: Identifiable, Codable {
     var id = UUID()
     var studentID: String
     var item: String
@@ -14,11 +15,7 @@ struct Studentitem: Identifiable {
 }
 
 struct WalkUpView: View {
-    @State private var listOfStudentIDs: [Studentitem] = [
-        Studentitem(studentID: "54321", item: "Crewneck", size: "M"),
-        Studentitem(studentID: "09876", item: "Orange Hoodie", size: "L"),
-        Studentitem(studentID: "12431", item: "Sweat Pants", size: "S")
-    ]
+    @State private var listOfStudentIDs: [Studentitem] = []
     @State private var searchText = ""
     @State private var showAddStudentIDSheet = false
     @State private var newStudentID = ""
@@ -148,9 +145,9 @@ struct WalkUpView: View {
                 }
             }
         }
+        .onAppear(perform: loadStudentItems) // Load data when view appears
     }
-    
-    
+
     var filteredStudentItems: [Studentitem] {
         if searchText.isEmpty {
             return listOfStudentIDs
@@ -165,18 +162,33 @@ struct WalkUpView: View {
 
     func deleteItems(at offsets: IndexSet) {
         listOfStudentIDs.remove(atOffsets: offsets)
+        saveStudentItems() // Save data after deletion
     }
 
     func addStudentID(_ studentID: String, newItem: String, newSize: String) {
-        
         guard !studentID.isEmpty, !newItem.isEmpty, !newSize.isEmpty else { return }
         
         let newStudent = Studentitem(studentID: studentID, item: newItem, size: newSize)
         listOfStudentIDs.append(newStudent)
+        saveStudentItems() // Save data after adding
+    }
+
+    // Save the data to UserDefaults
+    func saveStudentItems() {
+        if let encoded = try? JSONEncoder().encode(listOfStudentIDs) {
+            UserDefaults.standard.set(encoded, forKey: "studentItems")
+        }
+    }
+
+    // Load the data from UserDefaults
+    func loadStudentItems() {
+        if let savedData = UserDefaults.standard.data(forKey: "studentItems"),
+           let decodedItems = try? JSONDecoder().decode([Studentitem].self, from: savedData) {
+            listOfStudentIDs = decodedItems
+        }
     }
 }
 
 #Preview {
     WalkUpView()
 }
-
