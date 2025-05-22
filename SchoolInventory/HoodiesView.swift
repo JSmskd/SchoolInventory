@@ -125,6 +125,9 @@ struct HoodiesView: View {
                       dismissButton: .default(Text("OK")))
             }
         }
+        .onAppear {
+            loadStockData()
+        }
     }
     
     func editItem(name: String, small: Int, medium: Int, large: Int) {
@@ -168,6 +171,25 @@ struct HoodiesView: View {
         }
         
         showAlert = true
+    }
+    func saveStockData() {
+        UserDefaults.standard.set(gildanSmallQuantity, forKey: "gildanSmallQuantity")
+        UserDefaults.standard.set(gildanMediumQuantity, forKey: "gildanMediumQuantity")
+        UserDefaults.standard.set(gildanLargeQuantity, forKey: "gildanLargeQuantity")
+        
+        UserDefaults.standard.set(bellaSmallQuantity, forKey: "bellaSmallQuantity")
+        UserDefaults.standard.set(bellaMediumQuantity, forKey: "bellaMediumQuantity")
+        UserDefaults.standard.set(bellaLargeQuantity, forKey: "bellaLargeQuantity")
+    }
+    
+    func loadStockData() {
+        gildanSmallQuantity = UserDefaults.standard.integer(forKey: "gildanSmallQuantity")
+        gildanMediumQuantity = UserDefaults.standard.integer(forKey: "gildanMediumQuantity")
+        gildanLargeQuantity = UserDefaults.standard.integer(forKey: "gildanLargeQuantity")
+        
+        bellaSmallQuantity = UserDefaults.standard.integer(forKey: "bellaSmallQuantity")
+        bellaMediumQuantity = UserDefaults.standard.integer(forKey: "bellaMediumQuantity")
+        bellaLargeQuantity = UserDefaults.standard.integer(forKey: "bellaLargeQuantity")
     }
 }
 
