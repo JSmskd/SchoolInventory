@@ -27,14 +27,14 @@ struct ContentView: View {
             SearchBarView().tabItem {
                 HStack{
                     Text("Online")
-                    Image(systemName: "figure.walk")
+                    Image(systemName: "desktopcomputer")
                 }
             }
             
             WalkUpView().tabItem {
                 HStack{
                     Text("Walk Up")
-                    Image(systemName: "desktopcomputer")
+                    Image(systemName: "figure.walk")
                 }
             }
             TotalOrdersView().tabItem {
