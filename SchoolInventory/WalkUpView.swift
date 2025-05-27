@@ -28,7 +28,7 @@ struct WalkUpView: View {
     let sizeOptions = ["XS", "S", "M", "L", "XL", "XXL"]
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 List {
                     ForEach(filteredStudentItems) { studentItem in

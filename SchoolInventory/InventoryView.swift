@@ -16,7 +16,7 @@ extension Color {
 struct InventoryView: View {
     var body: some View {
       
-            NavigationView {
+            NavigationStack {
                 ScrollView{
                 VStack(spacing: 20) {
                     NavigationLink(destination: BlanksView()) {

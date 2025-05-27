@@ -28,7 +28,7 @@ struct CrewnecksView: View {
         @State private var showStockAlert = false
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 ScrollView {
                     VStack {
                         HStack {

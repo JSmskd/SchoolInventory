@@ -37,7 +37,7 @@ struct TotalOrdersView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 List {
                     ForEach(allOrders) { order in

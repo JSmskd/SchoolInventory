@@ -19,7 +19,7 @@ struct SearchBarView: View {
 
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 List {
                     ForEach($listOfStudentIDs, id: \.self) { studentItem in
