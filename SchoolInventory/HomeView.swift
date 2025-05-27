@@ -12,9 +12,11 @@ struct HomeView: View {
         VStack(spacing: 0) { 
             Image("DawgPound")
                 .resizable()
-                .frame(width: 300, height: 175)
+                .scaledToFit()
+                .padding()
             Text("INVENTORY")
-                .font(.custom("Impact", size: 70))
+                .font(.custom("Impact", size: 700))
+                .minimumScaleFactor(0.01)
                 .foregroundColor(.darkOrange)
         }
     }
