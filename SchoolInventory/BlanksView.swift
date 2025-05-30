@@ -105,7 +105,7 @@ struct BlanksView: View {
                         Text("Check Stock")
                             .font(.title2)
                             .padding()
-                            .background(Color.brown)
+                            .background(Color.darkBrown)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
@@ -144,7 +144,7 @@ struct BlanksView: View {
                     }
                     .font(.title2)
                     .padding()
-                    .background(Color.orange)
+                    .background(Color.darkOrange)
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     
@@ -152,7 +152,7 @@ struct BlanksView: View {
                         showEditSheet = false
                     }
                     .padding()
-                    .background(Color.gray)
+                    .background(Color.darkBrown)
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
