@@ -25,7 +25,7 @@ struct WalkUpView: View {
     @State private var isEditing = false
 
     let itemOptions = ["Crewneck", "Orange Hoodie", "Sweat Pants", "T-Shirt", "Jacket"]
-    let sizeOptions = ["XS", "S", "M", "L", "XL", "XXL"]
+    let sizeOptions = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"]
 
     var body: some View {
         NavigationStack {
