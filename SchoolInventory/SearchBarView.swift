@@ -47,8 +47,11 @@ struct SearchBarView: View {
                                 //                                Image(systemName: "person.fill")
                                 //                                    .foregroundColor(.darkOrange)
                                 //                            }
-                                Text("ID: \(studentItem.wrappedValue.pickupIdentifier)")
-                                Text("\(studentItem.wrappedValue.itemsOrdered.count) unique items")
+                                
+                                
+                                
+                                Text("ID: "/*\(studentItem.wrappedValue.pickupIdentifier)"*/)
+                                Text(/*"\(studentItem.wrappedValue.itemsOrdered.count)*/" unique items")
                             }
 
                             .tint(studentItem.wrappedValue.orderFulfilledBy == "" ? .white : .gray)
@@ -110,13 +113,23 @@ struct SearchBarView: View {
             let _ = results.map {
             $0.matchResults.map({
 //                print($1)
-                $1.map{ record in
+                var i = 0
+                let _ = $1.map({ record in
                 //                        newItems.append(order(record))
                 //                                            print("newItem")
                 DispatchQueue.main.async {
-                    _listOfStudentIDs.wrappedValue.append(order(record))
+                    let t = order(record)
+                    if i < listOfStudentIDs.count {
+                        listOfStudentIDs[i] = t
+                    } else {
+                        listOfStudentIDs.append(t)
+                    }
+                    i += 1
                 }
 
+                })
+                while (i < listOfStudentIDs.count) {
+                    listOfStudentIDs.popLast()
                 }
             })
             }.self
@@ -135,11 +148,11 @@ struct OrderItemV: View {
     var body: some View {
         VStack{
             Button("MARK DELIVERED"){
-                o.record.setObject("ADMIN" as __CKRecordObjCValue, forKey: "orderFilfilledBy")
+                o.orderFulfilledBy = "ADMIN" //record.setObject("ADMIN" as __CKRecordObjCValue, forKey: "orderFilfilledBy")
                 upload()
             }
             Button("MARK NOT DELIVERED"){
-                o.record.setObject("" as __CKRecordObjCValue, forKey: "orderFilfilledBy")
+                o.orderFulfilledBy = "" //record.setObject("" as __CKRecordObjCValue, forKey: "orderFilfilledBy")
                 upload()
             }
             Text(toPrice(totalPrice))
@@ -159,148 +172,145 @@ struct OrderItemV: View {
 
     }
     func upload() {
-        DispatchQueue.main.schedule {
-            CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.save(o.record, completionHandler: { r, e in
-
-                if e == nil {
-                    o.record = r!
-                } else {
-                    print(e!)
-                }
-            })
-        }
+        o.upload()
     }
     func ref() {
         itemsOrdered = []
         let db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
-        for ords in o.itemsOrdered {
+        for ords in o.itemsOrdered! {
             //            print(ords.recordID)
-            //get the orderItem
-            db.fetch(withRecordID: ords.recordID) { record, error in
-                if record != nil {
-                    //                    print("itemOrder")
-                    let r:CKRecord = record.unsafelyUnwrapped
-                    //                            a.wrappedValue.name = r["brandName"] as? String ?? a.wrappedValue.name
-
-
-                    //                    r["quantity"] as? Int64 ?? 0
-                    if r["Item"] as? CKRecord.Reference != nil {
-                        ///item
-                        var i:Item?
-                        print(r.recordType)
-                        let r2 = r["Item"] as! CKRecord.Reference
-                        //item of orderItem
-                        db.fetch(withRecordID: r2.recordID) { record, error in
-                            if record != nil {
-                                print("item")
-                                let r:CKRecord = record.unsafelyUnwrapped
-                                i = Item.init(title: r["title"] as? String ?? "CAN NOT GET", description: r["description"] as? String ?? "CAN NOT GET", price: Int(r["cost"] as? Int64 ?? 0), images: nil, id: r, reference: nil)
-                                //                            i = .init(record: r)
-
-                                db.fetch(withRecordID: ords.recordID) { record, error in
-                                    if record != nil {
-                                        //                                    print("blank")
-                                        let r:CKRecord = record.unsafelyUnwrapped
-                                        ///blank
-                                        let b:blank = blank.init(record: r)
-                                        ///blankSize
-                                        var s:blankSize?
-                                        db.fetch(withRecordID: ords.recordID) { record, error in
-                                            if record != nil {
-                                                //                                            print("size")
-                                                let r:CKRecord = record.unsafelyUnwrapped
-                                                s = .init(record: r)
-                                                if i != nil && s != nil {
-                                                    print("all good")
-                                                    itemsOrdered.append(io.init(i!, r["quantity"] as? Int64 ?? 0, b, id: nil, s!))
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
+            
         }
     }
 }
 ///itemsOrdered
 struct io: Hashable, Identifiable {
-        var id:CKRecord.Reference?
+        var id:CKRecord.ID
         var item:Item//price
         var quantity:Int64
         var style:blank//
         var blnk:blankSize//price
-    var indvPrice:Int {get{item.price + style.price + blnk.price}}
+    var indvPrice:Int {get{item.price + Int(style.price ?? -99) + Int(blnk.price ?? -99)}}
     var price:Int {get{indvPrice*Int(quantity)}}
-    init (_ ref:Item,_ qty:Int64, _ sty:blank, id:CKRecord.Reference? = nil, _ selected:blankSize) {
+    init (_ ref:Item,_ qty:Int64, _ sty:blank, id:CKRecord.ID? = nil, _ selected:blankSize) {
         //            itm = Item(reference: ref)
+        self.id = id ?? .init(recordName: "434A2534-3591-4163-8E84-327582A1DE11")
         quantity = qty
         style = sty
         item = ref
         blnk = selected
     }
+    init (_ ref: CKRecord.ID) {
+        var tid:CKRecord.ID = ref
+        var titm:CKRecord.ID?
+        var tqnt:Int64?
+        var tblnID: CKRecord.ID?
+        
+        CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withRecordID: ref) { r, e in
+            if e == nil {
+                //r is the record of the ordered item
+                var recer = r!
+                titm = (recer.value(forKey: "Item") as? CKRecord.Reference)?.recordID
+tqnt = recer.value(forKey: "quantity") as? Int64
+tblnID = (recer.value(forKey: "blankSize") as? CKRecord.Reference)?.recordID
+//                tblnID (final)blank id
+                
+            }
+        }
+        id = tid
+        item = Item(titm ?? CKRecord.ID.init(recordName: "F527E4A8-2B46-4930-8535-D51E6CCDC31B"))
+        quantity = tqnt ?? -1
+        blnk = blankSize(tblnID ?? CKRecord.ID.init(recordName: "478BD526-5E40-4ACD-89AC-EAB617929B61"))
+        var nexID = (blnk.record.value(forKey: "blank") as? CKRecord.Reference)
+        style = blank(nexID == nil ? CKRecord.ID.init(recordName: "FA9FAB4D-F49F-4B26-B365-7F3210C8D9EE") : nexID!.recordID )
+    }//FA9FAB4D-F49F-4B26-B365-7F3210C8D9EE
     static func == (lhs: io, rhs: io) -> Bool {
         lhs.id == rhs.id
     }
 }
 struct blankSize:Hashable, Identifiable, CustomStringConvertible {
-    var description: String {get {name}}
+    var description: String {get {name?.description ?? "Nil"}}
     var id : Int { get { hashValue}}
-    var name:String
-    var n:String
-    ///cost multiplied my 10000 {10.423  ->  10423}
-    var price:Int
-    var quantity:Int
-    var record:CKRecord?
-    init (shortName:String,longName:String,cost:Int,quantity:Int) {
-        self.price = cost
-        self.quantity = quantity
-        self.name = longName
-        self.n = shortName
-    }
-    mutating func updateSelf () {
-        if record?.recordID == nil { print("fail"); return}
-        var shortname = ""
-        var longname = ""
-        var p = 0
-        var qty = 0
-        var rec = record
-        CKContainer.default().publicCloudDatabase.fetch(withRecordID: record.unsafelyUnwrapped.recordID) { record, e in
-
-            if record != nil {
-                rec = record.unsafelyUnwrapped
-                let r = record.unsafelyUnwrapped
-
-                shortname =  r["shortName"] as? String ?? "err"
-                longname = r["longName"] as? String ?? "error"
-                qty = r["quantity"] as? Int ?? 0
-                p = r["cost"] as? Int ?? 0
-            }
-
+    var name:String? {
+        get {
+            record.value(forKey: "") as? String
+        } set {
+            if newValue == nil {return}
+            record.setObject(newValue! as __CKRecordObjCValue, forKey: "")
         }
-        //fetch(withRecordID: reference) { record, error in
-        price = p
-        quantity = qty
-        name = longname
-        n = shortname
-        record = rec
+    }
+    var n:String? {
+        get {
+            record.value(forKey: "shortName") as? String
+        } set {
+            if newValue == nil {return}
+            record.setObject(newValue! as __CKRecordObjCValue, forKey: "shortName")
+        }
+    }
+    ///cost multiplied my 10000 {10.423  ->  10423}
+    var price:Int64? {
+        get {
+            record.value(forKey: "cost") as? Int64
+        } set {
+            if newValue == nil {return}
+            self.record.setObject(newValue! as __CKRecordObjCValue, forKey: "cost")
+        }
+    }
+    var quantity:Int64? {
+        get {
+            record.value(forKey: "quantity") as? Int64
+        } set {
+            if newValue == nil {return}
+            record.setObject(newValue! as __CKRecordObjCValue, forKey: "quantity")
+        }
+    }
+    var record:CKRecord
+//    init (shortName:String,longName:String,cost:Int,quantity:Int) {
+//        CKR
+//        self.price = cost
+//        self.quantity = quantity
+//        self.name = longName
+//        self.n = shortName
+//    }
+    var isERR:Bool { get {record.recordType == "dumb"} }
+    init(_ ref : CKRecord.ID) {
+        var tr:CKRecord = CKRecord(recordType: "dumb")
+        CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withRecordID: ref) { r, e in
+            if e == nil {
+                tr = r!
+            }
+        }
+            record = tr
+    }
+    mutating func updateSelf (_ ident:CKRecord.ID) {
+        var tr:CKRecord = CKRecord(recordType: "")
+        CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withRecordID: ident) { r, e in
+            if e == nil {
+                tr = r!
+            }
+        }
+        if tr.recordType != "" {
+            record = tr
+        }
+    }
+    mutating func updateSelf() {
+        updateSelf(record.recordID)
     }
     init (record r : CKRecord) {
         record = r
-        n =  r["shortName"] as? String ?? "err"
-        name = r["longName"] as? String ?? "error"
-        quantity = r["quantity"] as? Int ?? 0
-        price = Int(truncatingIfNeeded:r["cost"] as? Int ?? 0)
     }
 }
 
 struct blank:CustomStringConvertible , Hashable, Identifiable{
-    var id : Int { get { hashValue}}
-    var name:String
+    var id : CKRecord.ID {record.recordID}
+    var name:String? {
+        get {
+            record["brandName"] as? String
+        } set {
+            if(newValue != nil){return}
+            record["brandName"] = newValue
+        }
+    }
     func getCol() -> Color {
         switch name {
             case "orange":
@@ -313,56 +323,106 @@ struct blank:CustomStringConvertible , Hashable, Identifiable{
                 return.clear
         }
     }
-    var sizes:[CKRecord.Reference]
-    var record:CKRecord?
-    var price:Int
-    var description: String {get {name}}
-    init (name:String,sizes:[CKRecord.Reference], record:CKRecord? = nil) {
-        self.name = name
-        self.sizes = sizes
-        self.record = record
-        price = 0
+    var sizes:[CKRecord.ID]? {
+        get {
+            var temp = record["sizes"] as? [CKRecord.Reference]
+            if temp == nil {return nil}
+            var tea :[CKRecord.ID] = []
+            for i in temp! {
+                tea.append(i.recordID)
+            }
+            return tea
+        } set {
+            if(newValue != nil){return}
+            var t:[CKRecord.Reference] = []
+            for i in newValue! {
+                t.append(CKRecord.Reference(record: .init(recordType: "blankSIZE", recordID: i), action: .none))
+            }
+            record["sizes"] = t
+        }
     }
+    var record:CKRecord
+    var price:Int? {
+        get {
+            Int(truncatingIfNeeded: record["cost"] as? Int64 ?? 0)
+        } set {
+            if(newValue != nil){return}
+            record["cost"] = newValue
+        }
+    }
+    var description: String {get {name?.description ?? "Nill"}}
+    init(_ ref : CKRecord.ID) {
+        var tr:CKRecord = CKRecord(recordType: "dumb")
+        CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withRecordID: ref) { r, e in
+            if e == nil {
+                tr = r!
+            }
+        }
+            record = tr
+    }
+//    init (name:String,sizes:[CKRecord.Reference], record:CKRecord? = nil) {
+//        self.name = name
+//        self.sizes = sizes
+//        self.record = record
+//        price = 0
+//    }
     init(record r:CKRecord) {
         //        print("new blank")
         //["color", "sizes", "brandName"]
         record = r
-        name = r["brandName"] as? String ?? "ERR"
-        sizes = r["sizes"] as? [CKRecord.Reference] ?? []
+//        name = r["brandName"] as? String ?? "ERR"
+//        sizes = r["sizes"] as? [CKRecord.Reference] ?? []
         //        print(r["sizes"])
-        price = Int(truncatingIfNeeded: r["cost"] as? Int64 ?? 0)
+//        price = Int(truncatingIfNeeded: r["cost"] as? Int64 ?? 0)
     }
 }
 struct Item:Identifiable, CustomStringConvertible, Hashable/*, Codable*/ {
     var description: String {
         return "\(title) : \(price)"
     }
-    var id: CKRecord.ID? {get {
-        record?.recordID
+    var id: CKRecord.ID {get {
+        record.recordID
     }}
-    var record:CKRecord?
+    var record:CKRecord
     var title:String
     var Itemdescription:String
-    var reference:CKRecord.Reference?
-    var images:[CKAsset]?
-    var price:Int
+//    var reference:CKRecord.Reference?
+    var images:[CKAsset]
+    private var PRICE:Int64
+    var price:Int {get {Int(PRICE)} set {PRICE = Int64(newValue)}}
     //    var dollar:Int {get {price / 100}}
     //    var cent:Int {get {price - (dollar * 1000)}}
+    init(_ ref : CKRecord.ID) {
+        var tr:CKRecord = CKRecord(recordType: "dumb")
+        CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withRecordID: ref) { r, e in
+            if e == nil {
+                tr = r!
+            }
+        }
+            record = tr
+        title = tr["title"] as? String ?? ""
+        Itemdescription = tr["description"] as? String ?? ""
+        images = tr["images"] as? [CKAsset] ?? []
+        PRICE = tr["price"] as? Int64 ?? -1
+        
+        
+        
+    }
     init(title: String, description: String, price: Int, images: [CKAsset]? = [], id: CKRecord? = nil,reference: CKRecord.Reference? = nil) {
-        self.record = id
+        self.record = id!
         self.title = title
         self.Itemdescription = description
-        self.images = images
-        self.price = price
-        self.reference = reference
+        self.images = images ?? []
+        self.PRICE = Int64(price)
+//        self.reference = reference
     }
     init(_ title: String, _ description: String, _ price: Int, images: [CKAsset]? = [], id: CKRecord? = nil, reference: CKRecord.Reference? = nil) {
-        self.record = id
+        self.record = id!
         self.title = title
         self.Itemdescription = description
-        self.images = images
-        self.price = price
-        self.reference = reference
+        self.images = images ?? []
+        self.PRICE = Int64(price)
+//        self.reference = reference
     }
 }
 func toPrice(_ doub:Int) -> String {
