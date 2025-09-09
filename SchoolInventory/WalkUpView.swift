@@ -24,8 +24,9 @@ struct WalkUpView: View {
     @State private var isTyping = false
     @State private var isEditing = false
 
-    let itemOptions = ["Crewneck", "Orange Hoodie", "Sweat Pants", "T-Shirt", "Jacket"]
-    let sizeOptions = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"]
+    @State var items:[Item] = []
+    @State var styles:[blank] = []
+    @State var sizes:[blankSize] = []
 
     var body: some View {
         NavigationStack {
@@ -82,64 +83,72 @@ struct WalkUpView: View {
                         TextField("Student ID", text: $newStudentID)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
-                        
-                        Text("Select or Type an Item")
-                            .font(.title2)
-                            .padding()
-                        
-                        Toggle("Type Item", isOn: $isTyping)
-                            .padding()
+//                        
+//                        Text("Select or Type an Item")
+//                            .font(.title2)
+//                            .padding()
+//                        
+//                        Toggle("Type Item", isOn: $isTyping)
+//                            .padding()
 
-                        if isTyping {
+//                        if isTyping {
+                        HStack {
                             TextField("Enter Item", text: $selectedItem)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .padding()
-                        } else {
-                            Picker("Items", selection: $selectedItem) {
-                                ForEach(itemOptions, id: \.self) { item in
-                                    Text(item).tag(item)
-                                }
-                            }
-                            .pickerStyle(WheelPickerStyle())
-                            .padding()
+                            Image(systemName: "magnifyingglass").foregroundStyle(.background).bold().padding().background(.blue).clipShape(RoundedRectangle(cornerSize: .init(width: 5, height: 5)))
                         }
+                        
+                        //list of items go here
+                        
+//                        } else {
+//                            Picker("Items", selection: $selectedItem) {
+//                                ForEach(itemOptions, id: \.self) { item in
+//                                    Text(item).tag(item)
+//                                }
+//                            }
+//                            .pickerStyle(WheelPickerStyle())
+//                            .padding()
+//                        }
 
                         Text("Select Size")
                             .font(.title2)
                             .padding()
 
                         Picker("Size", selection: $selectedSize) {
-                            ForEach(sizeOptions, id: \.self) { size in
-                                Text(size).tag(size)
-                            }
+//                            ForEach(sizeOptions, id: \.self) { size in
+                                Text("a").tag("a")
+//                            }
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         .padding()
-
-                        Button(action: {
-                            addStudentID(newStudentID, newItem: selectedItem, newSize: selectedSize)
-                            showAddStudentIDSheet = false
-                        }) {
-                            Text("Add")
-                                .font(.title2)
-                                .padding()
-                                .background(Color.darkOrange)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                        }
-                        .padding()
                         
-                        Button(action: {
-                            showAddStudentIDSheet = false
-                        }) {
-                            Text("Cancel")
-                                .font(.title2)
-                                .padding()
-                                .background(Color.darkBrown)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
+                        HStack{
+                            Button(action: {
+                                addStudentID(newStudentID, newItem: selectedItem, newSize: selectedSize)
+                                showAddStudentIDSheet = false
+                            }) {
+                                Text("Add")
+                                    .font(.title2)
+                                    .padding()
+                                    .background(Color.darkOrange)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                            .padding()
+                            
+                            Button(action: {
+                                showAddStudentIDSheet = false
+                            }) {
+                                Text("Cancel")
+                                    .font(.title2)
+                                    .padding()
+                                    .background(Color.darkBrown)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                            .padding()
                         }
-                        .padding()
                     }
                     .padding()
                 }
