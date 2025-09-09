@@ -129,7 +129,7 @@ struct SearchBarView: View {
 
                 })
                 while (i < listOfStudentIDs.count) {
-                    listOfStudentIDs.popLast()
+                    _ = listOfStudentIDs.popLast()
                 }
             })
             }.self
