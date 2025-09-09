@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CloudKit
 
 struct Studentitem: Identifiable, Codable {
     var id = UUID()
@@ -96,7 +97,15 @@ struct WalkUpView: View {
                             TextField("Enter Item", text: $selectedItem)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .padding()
-                            Image(systemName: "magnifyingglass").foregroundStyle(.background).bold().padding().background(.blue).clipShape(RoundedRectangle(cornerSize: .init(width: 5, height: 5)))
+                            Button {
+                                CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withQuery: CKQuery(recordType: "Item", predicate: NSPredicate(format: "title TOKENMATCHES[cdl] %@", searchText)), resultsLimit: 5) { a in
+
+                                }
+
+                            } label: {
+                                
+                                Image(systemName: "magnifyingglass").foregroundStyle(.background).bold().padding().background(.blue).clipShape(RoundedRectangle(cornerSize: .init(width: 5, height: 5)))
+                            }
                         }
                         
                         //list of items go here
