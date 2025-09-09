@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		6FF8C06C2D09FC2800632242 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6FF8C06B2D09FC2800632242 /* FirebaseFirestore */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		6F02C3C92D0212DD00F16CAD /* SchoolInventory.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchoolInventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -27,7 +23,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FF8C06C2D09FC2800632242 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +65,6 @@
 			);
 			name = SchoolInventory;
 			packageProductDependencies = (
-				6FF8C06B2D09FC2800632242 /* FirebaseFirestore */,
 			);
 			productName = SchoolInventory;
 			productReference = 6F02C3C92D0212DD00F16CAD /* SchoolInventory.app */;
@@ -101,7 +95,6 @@
 			mainGroup = 6F02C3C02D0212DD00F16CAD;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				6FF8C06A2D09FC2800632242 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6F02C3CA2D0212DD00F16CAD /* Products */;
@@ -335,25 +328,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		6FF8C06A2D09FC2800632242 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 11.6.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		6FF8C06B2D09FC2800632242 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6FF8C06A2D09FC2800632242 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6F02C3C12D0212DD00F16CAD /* Project object */;
 }
