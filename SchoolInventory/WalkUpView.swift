@@ -24,6 +24,7 @@ struct WalkUpView: View {
     @State private var selectedSize = "M"
     @State private var isTyping = false
     @State private var isEditing = false
+    @State var searchItem = ""
 
     @State var items:[Item] = []
     @State var styles:[blank] = []
@@ -94,12 +95,22 @@ struct WalkUpView: View {
 
 //                        if isTyping {
                         HStack {
-                            TextField("Enter Item", text: $selectedItem)
+                            TextField("Enter Item", text: $searchItem)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .padding()
                             Button {
-                                CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withQuery: CKQuery(recordType: "Item", predicate: NSPredicate(format: "title TOKENMATCHES[cdl] %@", searchText)), resultsLimit: 5) { a in
+                                print(searchItem)
+                                //TOKENMATCHES[cdl]
 
+                                let qur = CKQuery(recordType: "Item", predicate: NSPredicate(format: "title CONTAINS '\(searchItem.replacingOccurrences(of: "'", with: "\\'"))'"))
+                                print(qur)
+                                CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withQuery: qur, resultsLimit: 5) { a in
+print(a)
+                                    a.map { b in
+                                        for c in b.matchResults {
+                                            print(c.0)
+                                        }
+                                    }
                                 }
 
                             } label: {
@@ -207,6 +218,6 @@ struct WalkUpView: View {
     }
 }
 
-#Preview {
-    WalkUpView()
-}
+//#Preview {
+//    WalkUpView()
+//}
