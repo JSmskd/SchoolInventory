@@ -177,10 +177,10 @@ struct OrderItemV: View {
     func ref() {
         itemsOrdered = []
         let db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
-        for ords in o.itemsOrdered! {
+//        for ords in o.itemsOrdered! {
             //            print(ords.recordID)
             
-        }
+//        }
     }
 }
 ///itemsOrdered
@@ -407,6 +407,13 @@ struct Item:Identifiable, CustomStringConvertible, Hashable/*, Codable*/ {
         
         
         
+    }
+    init (_ tr:CKRecord) {
+        record = tr
+    title = tr["title"] as? String ?? ""
+    Itemdescription = tr["description"] as? String ?? ""
+    images = tr["images"] as? [CKAsset] ?? []
+    PRICE = tr["price"] as? Int64 ?? -1
     }
     init(title: String, description: String, price: Int, images: [CKAsset]? = [], id: CKRecord? = nil,reference: CKRecord.Reference? = nil) {
         self.record = id!

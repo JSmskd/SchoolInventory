@@ -14,63 +14,66 @@ extension Color {
 
 
 struct InventoryView: View {
+    let catagories: [String] = ["", "Shirts", "Sweatpants", "Hoodies", "Crewnecks"]
     var body: some View {
-      
-            NavigationStack {
-                ScrollView{
-                VStack(spacing: 20) {
-                    NavigationLink(destination: BlanksView()) {
-                        Text("Blanks")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.darkBrown)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                    NavigationLink(destination: ShirtView()) {
-                        Text("Shirts")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.darkOrange)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
+        
+        NavigationStack {
+            ScrollView{
+                ForEach(0..<catagories.count, id: \.self) { i in
                     
-                    NavigationLink(destination: SweatpantsView()) {
-                        Text("Sweatpants")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.darkBrown)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                    
-                    NavigationLink(destination: HoodiesView()) {
-                        Text("Hoodies")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.darkOrange)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                    
-                    NavigationLink(destination: CrewnecksView()) {
-                        Text("Crewnecks")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.darkBrown)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
+                    VStack(spacing: 20) {
+                        NavigationLink {
+                            BlanksView(catagories[i])
+                        } label: {
+                            Text(catagories[i])
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(i % 2 == 0 ? Color.darkBrown : Color.orange)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                        
                     }
                 }
-                .padding()
-                .navigationTitle("Inventory")
-                
             }
         }
     }
-    }
-
-#Preview {
-    InventoryView()
 }
+
+//#Preview {
+//    InventoryView()
+//}
+
+
+//struct newItem:Identifiable, Hashable, CustomDebugStringConvertible, CustomStringConvertible{
+//    var id: CKRecord.ID
+//    var debugDescription: String { get {id.recordName}}
+//    var description: String {debugDescription}
+//    var styles:[newStyle]
+//    func createRecord() /*-> CKRecord*/{
+//        for i in styles {
+//            CKRecord.Reference.init(recordID: i.id, action: .none)
+//            
+//        }
+//    }
+//}
+//
+//struct newStyle:Identifiable, Hashable, CustomDebugStringConvertible, CustomStringConvertible{
+//    var id: CKRecord.ID = .init()
+//    var debugDescription: String { get {id.recordName}}
+//    var description: String {debugDescription}
+//    var sizes:[newSize]
+//    func createRecord(_ parent: CKRecord.ID) -> CKRecord{
+//        CKRecord(recordType: "<#stylename#>")
+//        CKRecord.Reference.init(recordID: parent, action: .none)
+//    }
+//}
+//struct newSize:Identifiable, Hashable, CustomDebugStringConvertible, CustomStringConvertible{
+//    var id: CKRecord.ID
+//    var debugDescription: String { get {id.recordName}}
+//    var description: String {debugDescription}
+//    func createRecord(_ parent: CKRecord.ID) -> CKRecord {
+//        CKRecord(recordType: "<#sizename#>")
+//        CKRecord.Reference.init(recordID: parent, action: .none)
+//    }
+//}
