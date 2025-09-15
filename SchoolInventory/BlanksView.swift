@@ -34,18 +34,24 @@ struct BlanksView: View {
     @State private var stockAlertMessage = ""
     @State private var showStockAlert = false
     
-    let availableColors = ["White","Orange", "Black", "Red", "Blue", "Green", "Yellow", "Pink", "Grey"]
-    
+//    let availableColors = ["White","Orange", "Black", "Red", "Blue", "Green", "Yellow", "Pink", "Grey"]
+    let FILTERTEXT: String
     var predicate : NSPredicate
     init(_ filter: String = "") {
-//        if filter == ""{
+        if filter == ""{
             predicate = .init(value: true)
-//        } else {
-//            predicate = .init(format: "tags CONTAINS %@", filter)
-//        }
+        } else {
+            predicate = .init(format: "tags CONTAINS %@", filter)
+        }
+FILTERTEXT = filter
     }
-    init (filter:String) {
+    init (filter:String, filterText: String = "") {
         predicate = .init(format: filter)
+        if filterText == ""{
+            FILTERTEXT = ""
+        } else {
+            FILTERTEXT = filterText
+        }
         
     }
     @State var items: [Item] = []
@@ -144,13 +150,26 @@ struct BlanksView: View {
                     }
                     .padding(.horizontal)
                     
-                    Button(action: checkStock) {
-                        Text("Check Stock")
-                            .font(.title2)
-                            .padding()
-                            .background(Color.darkBrown)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
+                    HStack {
+                        Button(action: checkStock) {
+                            Text("Check Stock")
+                                .font(.title2)
+                                .padding()
+                                .background(Color.darkBrown)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+
+                        NavigationLink {
+                            newItemView(FILTERTEXT)
+                        } label: {
+                            Text("Add blank")
+                                .font(.title2)
+                                .padding()
+                                .background(Color.orange)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
                     }
                 }
                 .padding()
@@ -167,9 +186,9 @@ struct BlanksView: View {
                         .padding()
                     
                     Picker("Color", selection: $editedColor) {
-                        ForEach(availableColors, id: \.self) { color in
-                            Text(color).tag(color)
-                        }
+//                        ForEach(availableColors, id: \.self) { color in
+//                            Text(color).tag(color)
+//                        }
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     .padding()

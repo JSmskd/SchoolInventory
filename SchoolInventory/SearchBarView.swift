@@ -366,6 +366,28 @@ struct blank:CustomStringConvertible , Hashable, Identifiable{
 //        self.record = record
 //        price = 0
 //    }
+    static func newReccord(brandName:String = "", color:String = "", cost:Int64 = -1, materials:[String] = []) -> blank {
+        var r:CKRecord = CKRecord(recordType: "blank")
+        if cost >= 0 {
+            r["cost"] = cost
+        }
+        if !color.isEmpty {
+            r["color"] = color
+        }
+        if !brandName.isEmpty {
+            r["brandName"] = brandName
+        }
+        if !materials.isEmpty {
+            
+        }
+        
+        
+        
+        
+        return blank(record: r)
+        
+        
+    }
     init(record r:CKRecord) {
         //        print("new blank")
         //["color", "sizes", "brandName"]
