@@ -121,6 +121,8 @@ struct BlanksView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     ScrollView {
+                        
+
                         LazyVGrid(columns: [GridItem.init(),GridItem.init(),GridItem.init()]) {
                             //                            <#code#>
                             //                        }
@@ -156,8 +158,13 @@ struct BlanksView: View {
                                     //                                    .resizable()
                                     //                                    .scaledToFit()
                                     //                                    .frame(height: 100)
-                                    Text(itm.name)
-                                        .font(.headline)
+
+                                    Button {
+                                        UIPasteboard.general.string = "JSI" + itm.name
+                                    } label : {
+                                        Text(itm.name)
+                                            .font(.headline)
+                                    }
                                     //                            Text("Color: \(gildanColor)")
                                     //                                .font(.subheadline)
                                     //                                .foregroundColor(.gray)
@@ -196,7 +203,7 @@ struct BlanksView: View {
                         }
                         
                         NavigationLink {
-                            newItemView(FILTERTEXT)
+                            newItemView(FILTERTEXT, recordType)
                         } label: {
                             Text("Add blank")
                                 .font(.title2)
