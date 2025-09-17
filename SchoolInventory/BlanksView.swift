@@ -18,23 +18,23 @@ struct BlanksView: View {
     @State private var editedLarge: Int = 0
     @State private var editedColor: String = "White"
     
-//    @State private var gildanName = "Gildan5000"
-//    @State private var bellaName = "Bella3001CVC"
-//    
-//    @State private var gildanSmallQuantity = 0
-//    @State private var gildanMediumQuantity = 0
-//    @State private var gildanLargeQuantity = 0
-//    @State private var bellaSmallQuantity = 0
-//    @State private var bellaMediumQuantity = 0
-//    @State private var bellaLargeQuantity = 0
-//    
-//    @State private var gildanColor = "White"
-//    @State private var bellaColor = "White"
+    //    @State private var gildanName = "Gildan5000"
+    //    @State private var bellaName = "Bella3001CVC"
+    //
+    //    @State private var gildanSmallQuantity = 0
+    //    @State private var gildanMediumQuantity = 0
+    //    @State private var gildanLargeQuantity = 0
+    //    @State private var bellaSmallQuantity = 0
+    //    @State private var bellaMediumQuantity = 0
+    //    @State private var bellaLargeQuantity = 0
+    //
+    //    @State private var gildanColor = "White"
+    //    @State private var bellaColor = "White"
     
     @State private var stockAlertMessage = ""
     @State private var showStockAlert = false
     
-//    let availableColors = ["White","Orange", "Black", "Red", "Blue", "Green", "Yellow", "Pink", "Grey"]
+    //    let availableColors = ["White","Orange", "Black", "Red", "Blue", "Green", "Yellow", "Pink", "Grey"]
     private let recordType:String
     let FILTERTEXT: String
     var predicate : NSPredicate
@@ -44,7 +44,7 @@ struct BlanksView: View {
         } else {
             predicate = .init(format: "tags CONTAINS %@", blank)
         }
-FILTERTEXT = blank
+        FILTERTEXT = blank
         recordType = "blank"
     }
     init(design: String = "") {
@@ -53,27 +53,27 @@ FILTERTEXT = blank
         } else {
             predicate = .init(format: "tags CONTAINS %@", design)
         }
-FILTERTEXT = design
+        FILTERTEXT = design
         recordType = "Item"
     }
-//    init (filter:String, filterText: String = "") {
-//        predicate = .init(format: filter)
-//        if filterText == ""{
-//            FILTERTEXT = ""
-//        } else {
-//            FILTERTEXT = filterText
-//        }
-//        
-//    }
-//    init (filter:String, filterText: String = "") {
-//        predicate = .init(format: filter)
-//        if filterText == ""{
-//            FILTERTEXT = ""
-//        } else {
-//            FILTERTEXT = filterText
-//        }
-//        
-//    }
+    //    init (filter:String, filterText: String = "") {
+    //        predicate = .init(format: filter)
+    //        if filterText == ""{
+    //            FILTERTEXT = ""
+    //        } else {
+    //            FILTERTEXT = filterText
+    //        }
+    //
+    //    }
+    //    init (filter:String, filterText: String = "") {
+    //        predicate = .init(format: filter)
+    //        if filterText == ""{
+    //            FILTERTEXT = ""
+    //        } else {
+    //            FILTERTEXT = filterText
+    //        }
+    //
+    //    }
     @State var listems: [blDe] = []
     func fetchData () {
         let p = NSPredicate(value: true)
@@ -82,99 +82,109 @@ FILTERTEXT = design
             listems = []
             var mm : (matchResults: [(CKRecord.ID, Result<CKRecord, any Error>)], queryCursor: CKQueryOperation.Cursor?)?
             do {
-//                m.get
+                //                m.get
                 mm = try m.get()
                 
             } catch {
                 print(error)
             }
             if mm != nil {
-                    for res in mm!.matchResults {
-                        //                    itms
-                        do {
-                            var b = try? res.1.get()
-                            if b != nil {
-                            let a = blDe(b!)
-//
-//                            Item()
-//                            DispatchQueue.main.async {
-                            print(b)
-                            if a != nil {
-                                listems.append(a!)
-                            }
-//                            items
-                            }
-                        } catch {
-                            print(error)
+                for res in mm!.matchResults {
+                    //                    itms
+                    //                        do {
+                    let b = try? res.1.get()
+                    if b != nil {
+                        let a = blDe(b!)
+                        //
+                        //                            Item()
+                        //                            DispatchQueue.main.async {
+                        //                            print(b)
+                        if a != nil {
+                            listems.append(a!)
                         }
-                        
+                        //                            items
                     }
+                    //                        } catch {
+                    //                            print(error)
+                    //                        }
+                    
+                }
             }
             
         }
-//        db.fetch(withQuery: .init(recordType: "Item", predicate: predicate))
-//        print(itms)
-//        return itms
+        //        db.fetch(withQuery: .init(recordType: "Item", predicate: predicate))
+        //        print(itms)
+        //        return itms
     }
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    
-                    HStack(spacing: 16) {
-                        ForEach(0..<listems.count, id:\.self) { i in
-                        // Gildan View
-                            VStack(spacing: 10) {
-                                let itm:blDe = listems[i]
-                                
-                                //Gildan5000
-                                //                            do {
-                                //                            Text("")
-                                //                            } catch {
-                                //                            Text("")
-                                //                            }
-                                //                            let img = items[i].images
-                                //                            if img.first != nil ? img.first!.fileURL != nil ? true : false : false {
-                                //                                Image(items[i].images.first != nil ? items[i].images.first!.fileURL ?? "Gildan5000" : "Gildan5000")
-                                //                                    .resizable()
-                                //                                    .scaledToFit()
-                                //                                    .frame(height: 100)
-                                //                            } else {
-                                //                                Image(items[i].images.first != nil ? items[i].images.first!.fileURL ?? "Gildan5000" : "Gildan5000")
-                                //                                    .resizable()
-                                //                                    .scaledToFit()
-                                //                                    .frame(height: 100)
-                                //                            }
-//                                Image(i)
-//                                    .resizable()
-//                                    .scaledToFit()
-//                                    .frame(height: 100)
-                                Text(itm.name)
-                                .font(.headline)
-//                            Text("Color: \(gildanColor)")
-//                                .font(.subheadline)
-//                                .foregroundColor(.gray)
-                            
-//                            Text("Small: \(gildanSmallQuantity)")
-//                            Text("Medium: \(gildanMediumQuantity)")
-//                            Text("Large: \(gildanLargeQuantity)")
-                            
-                            Button("Edit") {
-//                                editShirt(name: gildanName, small: gildanSmallQuantity, medium: gildanMediumQuantity, large: gildanLargeQuantity, color: gildanColor)
+                    ScrollView {
+                        LazyVGrid(columns: [GridItem.init(),GridItem.init(),GridItem.init()]) {
+                            //                            <#code#>
+                            //                        }
+                            //                        LazyHStack {
+                            //                        <#code#>
+                            //                    }
+                            //                    LazyHGrid(rows: [], content: <#T##() -> View#>)
+                            //                    HStack(spacing: 16) {
+                            ForEach(0..<listems.count, id:\.self) { i in
+                                // Gildan View
+                                VStack(spacing: 10) {
+                                    let itm:blDe = listems[i]
+                                    
+                                    //Gildan5000
+                                    //                            do {
+                                    //                            Text("")
+                                    //                            } catch {
+                                    //                            Text("")
+                                    //                            }
+                                    //                            let img = items[i].images
+                                    //                            if img.first != nil ? img.first!.fileURL != nil ? true : false : false {
+                                    //                                Image(items[i].images.first != nil ? items[i].images.first!.fileURL ?? "Gildan5000" : "Gildan5000")
+                                    //                                    .resizable()
+                                    //                                    .scaledToFit()
+                                    //                                    .frame(height: 100)
+                                    //                            } else {
+                                    //                                Image(items[i].images.first != nil ? items[i].images.first!.fileURL ?? "Gildan5000" : "Gildan5000")
+                                    //                                    .resizable()
+                                    //                                    .scaledToFit()
+                                    //                                    .frame(height: 100)
+                                    //                            }
+                                    //                                Image(i)
+                                    //                                    .resizable()
+                                    //                                    .scaledToFit()
+                                    //                                    .frame(height: 100)
+                                    Text(itm.name)
+                                        .font(.headline)
+                                    //                            Text("Color: \(gildanColor)")
+                                    //                                .font(.subheadline)
+                                    //                                .foregroundColor(.gray)
+                                    
+                                    //                            Text("Small: \(gildanSmallQuantity)")
+                                    //                            Text("Medium: \(gildanMediumQuantity)")
+                                    //                            Text("Large: \(gildanLargeQuantity)")
+                                    ForEach(itm.self.to/*do not rememove the slef*/ , id:\.self) { sty in
+                                        
+                                        Text(sty.self.self.recordName).padding() .background(Color.gray).cornerRadius(8)
+                                    }
+                                    Button("Edit") {
+                                        //                                editShirt(name: gildanName, small: gildanSmallQuantity, medium: gildanMediumQuantity, large: gildanLargeQuantity, color: gildanColor)
+                                    }
+                                    .padding(6)
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(8)
+                                }
+                                .padding()
+                                .background(Color(.systemGroupedBackground))
+                                .cornerRadius(12)
                             }
-                            .padding(6)
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
                         }
-                        .padding()
-                        .background(Color(.systemGroupedBackground))
-                        .cornerRadius(12)
-                        }
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
-                    
                     HStack {
                         Button(action: checkStock) {
                             Text("Check Stock")
@@ -184,7 +194,7 @@ FILTERTEXT = design
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
-
+                        
                         NavigationLink {
                             newItemView(FILTERTEXT)
                         } label: {
@@ -211,9 +221,9 @@ FILTERTEXT = design
                         .padding()
                     
                     Picker("Color", selection: $editedColor) {
-//                        ForEach(availableColors, id: \.self) { color in
-//                            Text(color).tag(color)
-//                        }
+                        //                        ForEach(availableColors, id: \.self) { color in
+                        //                            Text(color).tag(color)
+                        //                        }
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     .padding()
@@ -254,10 +264,10 @@ FILTERTEXT = design
             }
         }
         .onAppear {
-//            loadStockData()
-//            DispatchQueue.main.async {
-                fetchData()
-//            }
+            //            loadStockData()
+            //            DispatchQueue.main.async {
+            fetchData()
+            //            }
         }
     }
     
@@ -272,54 +282,54 @@ FILTERTEXT = design
     }
     
     func saveChanges() {
-//        if selectedShirt == gildanName {
-//            gildanName = editedName
-//            gildanSmallQuantity = editedSmall
-//            gildanMediumQuantity = editedMedium
-//            gildanLargeQuantity = editedLarge
-//            gildanColor = editedColor
-//        } else if selectedShirt == bellaName {
-//            bellaName = editedName
-//            bellaSmallQuantity = editedSmall
-//            bellaMediumQuantity = editedMedium
-//            bellaLargeQuantity = editedLarge
-//            bellaColor = editedColor
-//        }
+        //        if selectedShirt == gildanName {
+        //            gildanName = editedName
+        //            gildanSmallQuantity = editedSmall
+        //            gildanMediumQuantity = editedMedium
+        //            gildanLargeQuantity = editedLarge
+        //            gildanColor = editedColor
+        //        } else if selectedShirt == bellaName {
+        //            bellaName = editedName
+        //            bellaSmallQuantity = editedSmall
+        //            bellaMediumQuantity = editedMedium
+        //            bellaLargeQuantity = editedLarge
+        //            bellaColor = editedColor
+        //        }
         saveStockData()
     }
     
     func checkStock() {
-//        if gildanSmallQuantity < 3 || gildanMediumQuantity < 3 || gildanLargeQuantity < 3 ||
-//            bellaSmallQuantity < 3 || bellaMediumQuantity < 3 || bellaLargeQuantity < 3 {
-//            stockAlertMessage = "Low stock! Some sizes have less than 3 items."
-//        } else {
-//            stockAlertMessage = "Enough stock! All sizes have more than 3 items."
-//        }
+        //        if gildanSmallQuantity < 3 || gildanMediumQuantity < 3 || gildanLargeQuantity < 3 ||
+        //            bellaSmallQuantity < 3 || bellaMediumQuantity < 3 || bellaLargeQuantity < 3 {
+        //            stockAlertMessage = "Low stock! Some sizes have less than 3 items."
+        //        } else {
+        //            stockAlertMessage = "Enough stock! All sizes have more than 3 items."
+        //        }
         showStockAlert = true
     }
     
     func saveStockData() {
-//        UserDefaults.standard.set(gildanSmallQuantity, forKey: "gildanSmallQuantity")
-//        UserDefaults.standard.set(gildanMediumQuantity, forKey: "gildanMediumQuantity")
-//        UserDefaults.standard.set(gildanLargeQuantity, forKey: "gildanLargeQuantity")
-//        UserDefaults.standard.set(gildanColor, forKey: "gildanColor")
-//        
-//        UserDefaults.standard.set(bellaSmallQuantity, forKey: "bellaSmallQuantity")
-//        UserDefaults.standard.set(bellaMediumQuantity, forKey: "bellaMediumQuantity")
-//        UserDefaults.standard.set(bellaLargeQuantity, forKey: "bellaLargeQuantity")
-//        UserDefaults.standard.set(bellaColor, forKey: "bellaColor")
+        //        UserDefaults.standard.set(gildanSmallQuantity, forKey: "gildanSmallQuantity")
+        //        UserDefaults.standard.set(gildanMediumQuantity, forKey: "gildanMediumQuantity")
+        //        UserDefaults.standard.set(gildanLargeQuantity, forKey: "gildanLargeQuantity")
+        //        UserDefaults.standard.set(gildanColor, forKey: "gildanColor")
+        //
+        //        UserDefaults.standard.set(bellaSmallQuantity, forKey: "bellaSmallQuantity")
+        //        UserDefaults.standard.set(bellaMediumQuantity, forKey: "bellaMediumQuantity")
+        //        UserDefaults.standard.set(bellaLargeQuantity, forKey: "bellaLargeQuantity")
+        //        UserDefaults.standard.set(bellaColor, forKey: "bellaColor")
     }
     
     func loadStockData() {
-//        gildanSmallQuantity = UserDefaults.standard.integer(forKey: "gildanSmallQuantity")
-//        gildanMediumQuantity = UserDefaults.standard.integer(forKey: "gildanMediumQuantity")
-//        gildanLargeQuantity = UserDefaults.standard.integer(forKey: "gildanLargeQuantity")
-//        gildanColor = UserDefaults.standard.string(forKey: "gildanColor") ?? "White"
-//        
-//        bellaSmallQuantity = UserDefaults.standard.integer(forKey: "bellaSmallQuantity")
-//        bellaMediumQuantity = UserDefaults.standard.integer(forKey: "bellaMediumQuantity")
-//        bellaLargeQuantity = UserDefaults.standard.integer(forKey: "bellaLargeQuantity")
-//        bellaColor = UserDefaults.standard.string(forKey: "bellaColor") ?? "White"
+        //        gildanSmallQuantity = UserDefaults.standard.integer(forKey: "gildanSmallQuantity")
+        //        gildanMediumQuantity = UserDefaults.standard.integer(forKey: "gildanMediumQuantity")
+        //        gildanLargeQuantity = UserDefaults.standard.integer(forKey: "gildanLargeQuantity")
+        //        gildanColor = UserDefaults.standard.string(forKey: "gildanColor") ?? "White"
+        //
+        //        bellaSmallQuantity = UserDefaults.standard.integer(forKey: "bellaSmallQuantity")
+        //        bellaMediumQuantity = UserDefaults.standard.integer(forKey: "bellaMediumQuantity")
+        //        bellaLargeQuantity = UserDefaults.standard.integer(forKey: "bellaLargeQuantity")
+        //        bellaColor = UserDefaults.standard.string(forKey: "bellaColor") ?? "White"
     }
 }
 struct blDe : Identifiable, CustomStringConvertible, Hashable {
@@ -355,7 +365,7 @@ return nil
             out.append(i.recordID)
         }
         to = out
-        
+
         
     }
     

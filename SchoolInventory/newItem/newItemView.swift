@@ -75,7 +75,7 @@ struct newItemView: View {
                         i.wrappedValue.addPrice = o
                     }), format: .number)
                     .frame(maxWidth: 24 * 2)
-                        .background(Color.yellow).grayscale(1).cornerRadius(3)
+                    .background(Color.yellow).grayscale(1).cornerRadius(3)
                     Text(".")
                     TextField("addPrice", value: Binding(get: {
                         (i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))
@@ -85,50 +85,47 @@ struct newItemView: View {
                         
                     }), format: .number)
                     .frame(maxWidth: 24 * 2)
-                        .background(Color.yellow).grayscale(1).cornerRadius(3)
+                    .background(Color.yellow).grayscale(1).cornerRadius(3)
                     Text("cost: \(i.wrappedValue.addPrice / 10000)")
                     Text("cost: \(i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))")
                     Text("cost: \(i.wrappedValue.addPrice)")
                 }
                 
-                ForEach(i.s as! Binding<[(addPrice:Int,name:String,n:String)]>, id:\.wrappedValue.name) { n in
-                        HStack {
-//                            Button {
-                                Text("•\t" + n.name.wrappedValue)
-//                                n.wrappedValue.s.append((addPrice:0,name:"hi",n:"h"))
-//                            } label: {
-//                                Text("Add Size")
-//                            }
-                            
-                            Text("$")
-                            TextField("addPrice", value: Binding(get: {
-
-                                n.wrappedValue.addPrice / 10000
-                            }, set: { v in
-                                let p = n.wrappedValue.addPrice
-                                var o : Int = 0
-                                o -= p; o /= 10000; o *= 10000; o += p; o += v * 10000
-                                
-                                n.wrappedValue.addPrice = o
-                            }), format: .number)
-                            .frame(maxWidth: 24 * 2)
-                                .background(Color.yellow).grayscale(1).cornerRadius(3)
-                            Text(".")
-                            TextField("addPrice", value: Binding(get: {
-                                (n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))
-                            }, set: { v in
-                                let p = n.wrappedValue.addPrice
-                                n.wrappedValue.addPrice = p / 10000 * 10000 + v
-                                
-                            }), format: .number)
-                            .frame(maxWidth: 24 * 2)
-                                .background(Color.yellow).grayscale(1).cornerRadius(3)
-                            Text("cost: \(n.wrappedValue.addPrice / 10000)")
-                            Text("cost: \(n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))")
-                            Text("cost: \(n.wrappedValue.addPrice)")
-                        }
-
-                    }
+                //                ForEach(i.s as! Binding<[(addPrice:Int,name:String,n:String)]>, id:\.wrappedValue.name) { n in
+                //                        HStack {
+                ////                            Button {
+                //                                Text("•\t" + n.name.wrappedValue)
+                ////                                n.wrappedValue.s.append((addPrice:0,name:"hi",n:"h"))
+                ////                            } label: {
+                ////                                Text("Add Size")
+                ////                            }
+                //
+                //                            Text("$")
+                //                            TextField("addPrice", value: Binding(get: {
+                //
+                //                                n.wrappedValue.addPrice / 10000
+                //                            }, set: { v in
+                //                                let p = n.wrappedValue.addPrice
+                //                                var o : Int = 0
+                //                                o -= p; o /= 10000; o *= 10000; o += p; o += v * 10000
+                //
+                //                                n.wrappedValue.addPrice = o
+                //                            }), format: .number)
+                //                            .frame(maxWidth: 24 * 2)
+                //                                .background(Color.yellow).grayscale(1).cornerRadius(3)
+                //                            Text(".")
+                //                            TextField("addPrice", value: Binding(get: {
+                //                                (n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))
+                //                            }, set: { v in
+                //                                let p = n.wrappedValue.addPrice
+                //                                n.wrappedValue.addPrice = p / 10000 * 10000 + v
+                //
+                //                            }), format: .number)
+                //                            .frame(maxWidth: 24 * 2)
+                //                                .background(Color.yellow).grayscale(1).cornerRadius(3)
+                //                            Text("cost: \(n.wrappedValue.addPrice / 10000)")
+                //                            Text("cost: \(n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))")
+                //                            Text("cost: \(n.wrappedValue.addPrice)")
             }
         }
         Button("Cancel") {
