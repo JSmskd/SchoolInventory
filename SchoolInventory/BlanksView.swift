@@ -35,31 +35,51 @@ struct BlanksView: View {
     @State private var showStockAlert = false
     
 //    let availableColors = ["White","Orange", "Black", "Red", "Blue", "Green", "Yellow", "Pink", "Grey"]
+    private let recordType:String
     let FILTERTEXT: String
     var predicate : NSPredicate
-    init(_ filter: String = "") {
-        if filter == ""{
+    init(blank: String = "") {
+        if blank == ""{
             predicate = .init(value: true)
         } else {
-            predicate = .init(format: "tags CONTAINS %@", filter)
+            predicate = .init(format: "tags CONTAINS %@", blank)
         }
-FILTERTEXT = filter
+FILTERTEXT = blank
+        recordType = "blank"
     }
-    init (filter:String, filterText: String = "") {
-        predicate = .init(format: filter)
-        if filterText == ""{
-            FILTERTEXT = ""
+    init(design: String = "") {
+        if design == ""{
+            predicate = .init(value: true)
         } else {
-            FILTERTEXT = filterText
+            predicate = .init(format: "tags CONTAINS %@", design)
         }
-        
+FILTERTEXT = design
+        recordType = "Item"
     }
-    @State var items: [Item] = []
+//    init (filter:String, filterText: String = "") {
+//        predicate = .init(format: filter)
+//        if filterText == ""{
+//            FILTERTEXT = ""
+//        } else {
+//            FILTERTEXT = filterText
+//        }
+//        
+//    }
+//    init (filter:String, filterText: String = "") {
+//        predicate = .init(format: filter)
+//        if filterText == ""{
+//            FILTERTEXT = ""
+//        } else {
+//            FILTERTEXT = filterText
+//        }
+//        
+//    }
+    @State var listems: [blDe] = []
     func fetchData () {
         let p = NSPredicate(value: true)
         let db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
-        db.fetch(withQuery: .init(recordType: "Item", predicate: p)) { m in
-            items = []
+        db.fetch(withQuery: .init(recordType: recordType, predicate: p)) { m in
+            listems = []
             var mm : (matchResults: [(CKRecord.ID, Result<CKRecord, any Error>)], queryCursor: CKQueryOperation.Cursor?)?
             do {
 //                m.get
@@ -72,13 +92,18 @@ FILTERTEXT = filter
                     for res in mm!.matchResults {
                         //                    itms
                         do {
-                            
-                            let a = (Item(try res.1.get()))
+                            var b = try? res.1.get()
+                            if b != nil {
+                            let a = blDe(b!)
+//
+//                            Item()
 //                            DispatchQueue.main.async {
-                                print(a)
-                                items.append(a)
+                            print(b)
+                            if a != nil {
+                                listems.append(a!)
+                            }
 //                            items
-//                            }
+                            }
                         } catch {
                             print(error)
                         }
@@ -97,10 +122,10 @@ FILTERTEXT = filter
                 VStack(spacing: 20) {
                     
                     HStack(spacing: 16) {
-                        ForEach(items) { i in
+                        ForEach(0..<listems.count, id:\.self) { i in
                         // Gildan View
                             VStack(spacing: 10) {
-                                let itm:Item = i
+                                let itm:blDe = listems[i]
                                 
                                 //Gildan5000
                                 //                            do {
@@ -124,7 +149,7 @@ FILTERTEXT = filter
 //                                    .resizable()
 //                                    .scaledToFit()
 //                                    .frame(height: 100)
-                                Text(itm.title)
+                                Text(itm.name)
                                 .font(.headline)
 //                            Text("Color: \(gildanColor)")
 //                                .font(.subheadline)
@@ -296,4 +321,42 @@ FILTERTEXT = filter
 //        bellaLargeQuantity = UserDefaults.standard.integer(forKey: "bellaLargeQuantity")
 //        bellaColor = UserDefaults.standard.string(forKey: "bellaColor") ?? "White"
     }
+}
+struct blDe : Identifiable, CustomStringConvertible, Hashable {
+    var description: String { get { "\(name) \(price)"}}
+    var id: String {get {name}}
+    var name:String = ""
+    var price : Int64
+    
+    var type:String
+    
+    var record:CKRecord
+    
+    var to:[CKRecord.ID]
+    init? (_ res: CKRecord?) {
+        if res == nil {return nil}
+        var trecord:CKRecord? = nil
+        do {
+            let a = res
+            print(res)
+            trecord = a
+        } catch {
+return nil
+        }
+        if trecord == nil {return nil}
+            var a = trecord!
+            self.record = a
+            type = a.recordType
+        name = a.recordType == "Item" ? a["title"] as? String ?? "ERR" : a.recordID.recordName
+            price = a[a.recordType == "Item" ? "price" : "cost"] as? Int64 ?? -1
+        let refs = a[a.recordType == "Item" ? "blanks" : "sizes"] as? [CKRecord.Reference] ?? []
+        var out:[CKRecord.ID] = []
+        for i in refs {
+            out.append(i.recordID)
+        }
+        to = out
+        
+        
+    }
+    
 }

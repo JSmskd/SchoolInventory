@@ -19,20 +19,35 @@ struct InventoryView: View {
         
         NavigationStack {
             ScrollView{
-                ForEach(0..<catagories.count, id: \.self) { i in
-                    
-                    VStack(spacing: 20) {
-                        NavigationLink {
-                            BlanksView(catagories[i])
-                        } label: {
-                            Text(catagories[i])
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(i % 2 == 0 ? Color.darkBrown : Color.orange)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
+                ForEach(0..<catagories.count + 1, id: \.self) { i in
+                    if i == 0 {
+                        VStack(spacing: 20) {
+                            NavigationLink {
+                                BlanksView(blank: "")
+                            } label: {
+                                Text("Blanks")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(i % 2 == 0 ? Color.darkBrown : Color.orange)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                            
                         }
-                        
+                    } else {
+                        VStack(spacing: 20) {
+                            NavigationLink {
+                                BlanksView(design: catagories[i - 1])
+                            } label: {
+                                Text(catagories[i - 1])
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(i % 2 == 0 ? Color.darkBrown : Color.orange)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                            
+                        }
                     }
                 }
             }

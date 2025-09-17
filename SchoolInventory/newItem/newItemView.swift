@@ -137,6 +137,3 @@ struct newItemView: View {
         .navigationBarBackButtonHidden()
     }
 }
-#Preview {
-    newItemView("hi")
-}
