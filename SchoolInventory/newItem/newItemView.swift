@@ -31,7 +31,7 @@ struct newItemView: View {
         //
         //    }
     }
-    @State var things:[(addPrice:Int,name:String,n:String, s:[(addPrice:Int,name:String,n:String)])] = []
+    @State var things:[String]
     @State var whole : Int = 9
     @State var fraction : Int = 99
     let recordType:String
@@ -40,6 +40,7 @@ struct newItemView: View {
         catagory = c == "" ? nil : c
         recordType = rt
         RECORDNAME = nil
+        things = []
     }
     var hbed : blDe? = nil
     init (bed:blDe) {
@@ -48,14 +49,14 @@ struct newItemView: View {
         recordType = bed.type
         catagory = nil
         hbed = bed
-        getThings()
-    }
-    func getThings() {
-        if hbed == nil {return}
-
-        for i in hbed!.to {
-            
+//        print("[")
+        var t:[String] = []
+        for i in bed.to {
+            t.append(i.recordName)
+            print("\t\(i.recordName)")
         }
+        things = t
+//        print("]")/
     }
     var body: some View {
         Text("Hello, World!")
@@ -78,7 +79,7 @@ struct newItemView: View {
         }
         HStack {
             Button {
-                things.append((addPrice:0,name:"ITEM\(iter)",n:"\(iter)", s:[]))
+                things.append("ITEM\(iter)")
                 iter += 1
             } label: {
                 Text("Add size")
@@ -89,16 +90,15 @@ struct newItemView: View {
 //                Text("Add color")
 //            }
         }
-        List {
-            ForEach($things, id: \.name) { i in
+        List($things, id: \.self, editActions: .all) { i in
                 HStack {
-                    TextField("ID", text: i.n)
+                    TextField("ID", text: i)
                     Button("Paste ID") {
                         if UIPasteboard.general.string != nil {
                             if UIPasteboard.general.string!.starts(with: "JSI") {
                                 var it = UIPasteboard.general.string!
                                 it.removeFirst();it.removeFirst();it.removeFirst()
-                                i.wrappedValue.n = it
+                                i.wrappedValue = it
                             }
                         }
                     }
@@ -178,19 +178,18 @@ struct newItemView: View {
                 //                            Text("cost: \(n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))")
                 //                            Text("cost: \(n.wrappedValue.addPrice)")
             }
-        }
         Button("Cancel") {
             dismiss()
         }
         Button("Push") {
-            let db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
+            let db = gbl.db
             
             var rec:CKRecord = CKRecord(recordType: recordType, recordID: CKRecord.ID(recordName: name.wrappedValue))
             
             rec["cost"] = Int64(whole * 10000 + fraction)
             var ider:[CKRecord.Reference] = []
             for i in things {
-                ider.append(.init(recordID: CKRecord.ID(recordName: i.n), action: .none))  // i.n
+                ider.append(.init(recordID: CKRecord.ID(recordName: i), action: .none))  // i.n
             }
             rec[recordType == "Item" ? "blanks" : "sizes"] = ider
             
@@ -207,4 +206,8 @@ struct newItemView: View {
         }.disabled(name.wrappedValue == "")
         .navigationBarBackButtonHidden()
     }
+}
+
+struct gbl {
+    static var db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
 }

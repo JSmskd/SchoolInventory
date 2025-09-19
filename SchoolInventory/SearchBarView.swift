@@ -416,7 +416,7 @@ struct Item:Identifiable, CustomStringConvertible, Hashable/*, Codable*/ {
     //    var cent:Int {get {price - (dollar * 1000)}}
     init(_ ref : CKRecord.ID) {
         var tr:CKRecord = CKRecord(recordType: "dumb")
-        CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withRecordID: ref) { r, e in
+        gbl.db.fetch(withRecordID: ref) { r, e in
             if e == nil {
                 tr = r!
             }

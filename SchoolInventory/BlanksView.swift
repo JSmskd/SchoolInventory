@@ -77,7 +77,7 @@ struct BlanksView: View {
     @State var listems: [blDe] = []
     func fetchData () {
         let p = NSPredicate(value: true)
-        let db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
+        let db = gbl.db
         db.fetch(withQuery: .init(recordType: recordType, predicate: p)) { m in
             listems = []
             var mm : (matchResults: [(CKRecord.ID, Result<CKRecord, any Error>)], queryCursor: CKQueryOperation.Cursor?)?
@@ -389,5 +389,19 @@ return nil
         to = out
         
     }
+//    init(rtype:String) {
+//        name = ""
+//        record = CKRecord
+//    }
+//    init (addPrice:Int,name:String,n:String,s:[String]) {
+//        price = Int64(addPrice)
+//        self.name = name
+//        var t:[CKRecord.ID] = []
+//        for i in s {
+//            t.append(CKRecord.ID(recordName: i))
+//        }
+//        
+//    }
+    
     
 }
