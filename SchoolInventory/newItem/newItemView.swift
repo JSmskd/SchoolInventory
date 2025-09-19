@@ -14,18 +14,52 @@ struct newItemView: View {
     @Environment(\.dismiss) private var dismiss
     let catagory:String?
     @State var iter:Int = 0
-    @State var name:String = ""
+    @State private var recName:String = ""
+    var name:Binding<String> {Binding {
+        RECORDNAME ?? recName
+    } set: { newValue in
+        if RECORDNAME == nil {
+            recName = newValue
+        }
+    }
+        //  get {
+        //        RECORDNAME ?? recName
+        //    } set {
+        //        if RECORDNAME == nil {
+        //            recName = newValue
+        //        }
+        //
+        //    }
+    }
     @State var things:[(addPrice:Int,name:String,n:String, s:[(addPrice:Int,name:String,n:String)])] = []
     @State var whole : Int = 9
     @State var fraction : Int = 99
     let recordType:String
+    let RECORDNAME:String?
     init (_ c:String, _ rt:String) {
         catagory = c == "" ? nil : c
         recordType = rt
+        RECORDNAME = nil
+    }
+    var hbed : blDe? = nil
+    init (bed:blDe) {
+//        catagory = be
+        RECORDNAME = bed.name
+        recordType = bed.type
+        catagory = nil
+        hbed = bed
+        getThings()
+    }
+    func getThings() {
+        if hbed == nil {return}
+
+        for i in hbed!.to {
+            
+        }
     }
     var body: some View {
         Text("Hello, World!")
-        TextField("Enter Item Name", text: $name)
+        TextField("Enter Item Name", text:name)
         
         HStack {
             Text(" Defualt Price : $")
@@ -151,7 +185,7 @@ struct newItemView: View {
         Button("Push") {
             let db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
             
-            var rec:CKRecord = CKRecord(recordType: recordType, recordID: CKRecord.ID(recordName: name))
+            var rec:CKRecord = CKRecord(recordType: recordType, recordID: CKRecord.ID(recordName: name.wrappedValue))
             
             rec["cost"] = Int64(whole * 10000 + fraction)
             var ider:[CKRecord.Reference] = []
@@ -161,10 +195,16 @@ struct newItemView: View {
             rec[recordType == "Item" ? "blanks" : "sizes"] = ider
             
 //            rec[recordType == "Item" ? ""]
-            db.save(rec) { r, e in
-                print(e)
-            }
-        }.disabled(name == "")
+//            db.
+//            db.save(rec) { r, e in
+//                print(e)
+//                e == CKError.
+//            }
+            let operation = CKModifyRecordsOperation(recordsToSave: [rec], recordIDsToDelete: nil)
+            operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
+             db.add(operation)
+            
+        }.disabled(name.wrappedValue == "")
         .navigationBarBackButtonHidden()
     }
 }

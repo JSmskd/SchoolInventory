@@ -17,7 +17,7 @@ struct BlanksView: View {
     @State private var editedMedium: Int = 0
     @State private var editedLarge: Int = 0
     @State private var editedColor: String = "White"
-    
+    @State var editing:String? = nil
     //    @State private var gildanName = "Gildan5000"
     //    @State private var bellaName = "Bella3001CVC"
     //
@@ -176,9 +176,11 @@ struct BlanksView: View {
                                         
                                         Text(sty.self.self.recordName).padding() .background(Color.gray).cornerRadius(8)
                                     }
-                                    Button("Edit") {
-                                        //                                editShirt(name: gildanName, small: gildanSmallQuantity, medium: gildanMediumQuantity, large: gildanLargeQuantity, color: gildanColor)
+                                    NavigationLink("Edit") {
+                                        newItemView(bed: itm)
+//                                        newItemView(<#T##String#>, <#T##String#>)
                                     }
+                                        //                                editShirt(name: gildanName, small: gildanSmallQuantity, medium: gildanMediumQuantity, large: gildanLargeQuantity, color: gildanColor)
                                     .padding(6)
                                     .frame(maxWidth: .infinity)
                                     .background(Color.blue)
@@ -188,6 +190,17 @@ struct BlanksView: View {
                                 .padding()
                                 .background(Color(.systemGroupedBackground))
                                 .cornerRadius(12)
+//                                .navigationDestination(isPresented: Binding(get: {
+//                                    
+//                                }, set: { v in
+//                                    if v == false {
+//                                        editing = nil
+//                                    } else {
+//                                        editing = listems[i].id
+//                                    }
+//                                })) {
+//                                    Text("hi")
+//                                }
                             }
                         }
                         .padding(.horizontal)
@@ -217,6 +230,8 @@ struct BlanksView: View {
                 .padding()
                 .navigationTitle("Blanks")
             }
+            
+            
             .sheet(isPresented: $showEditSheet) {
                 VStack {
                     Text("Edit \(selectedShirt)")
@@ -355,7 +370,7 @@ struct blDe : Identifiable, CustomStringConvertible, Hashable {
         var trecord:CKRecord? = nil
         do {
             let a = res
-            print(res)
+//            print(res)
             trecord = a
         } catch {
 return nil
@@ -364,7 +379,7 @@ return nil
             var a = trecord!
             self.record = a
             type = a.recordType
-        name = a.recordType == "Item" ? a["title"] as? String ?? "ERR" : a.recordID.recordName
+        name = a.recordType == "Item" ? a["title"] as? String ?? a.recordID.recordName : a.recordID.recordName
             price = a[a.recordType == "Item" ? "price" : "cost"] as? Int64 ?? -1
         let refs = a[a.recordType == "Item" ? "blanks" : "sizes"] as? [CKRecord.Reference] ?? []
         var out:[CKRecord.ID] = []
@@ -372,7 +387,6 @@ return nil
             out.append(i.recordID)
         }
         to = out
-
         
     }
     
