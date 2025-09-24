@@ -12,8 +12,8 @@ import CloudKit
 
 struct newItemView: View {
     @Environment(\.dismiss) private var dismiss
-    let catagory:String?
-    @State var iter:Int = 0
+    @State var catagory:[String]
+//    @State var iter:Int = 0
     @State private var recName:String = ""
     var name:Binding<String> {Binding {
         RECORDNAME ?? recName
@@ -31,25 +31,29 @@ struct newItemView: View {
         //
         //    }
     }
-    @State var things:[String]
+    @State var originals:[CKRecord.ID]
+    @State var things:[String]; @State var stuff:[snake] = []
     @State var whole : Int = 9
     @State var fraction : Int = 99
+    @FocusState var isFocused: Int?
     let recordType:String
     let RECORDNAME:String?
     init (_ c:String, _ rt:String) {
-        catagory = c == "" ? nil : c
+        catagory = c == "" ? [] : [c]
         recordType = rt
         RECORDNAME = nil
         things = []
+        originals = []
     }
     var hbed : blDe? = nil
     init (bed:blDe) {
 //        catagory = be
         RECORDNAME = bed.name
         recordType = bed.type
-        catagory = nil
+        catagory = bed.cats
         hbed = bed
 //        print("[")
+        originals = bed.to
         var t:[String] = []
         for i in bed.to {
             t.append(i.recordName)
@@ -57,6 +61,44 @@ struct newItemView: View {
         }
         things = t
 //        print("]")/
+    }
+    init (blank:blDe) {
+        RECORDNAME = blank.name
+        recordType = blank.type
+        catagory = blank.cats
+        hbed = blank
+        originals = blank.to
+//        print("[")
+        var t:[String] = []
+        for i in blank.to {
+            t.append(i.recordName)
+//            print("\t\(i.recordName)")
+        }
+        things = t
+        stuff = []
+    }
+    func getstuff() {
+        stuff = []
+//        var ready:[snake] = []
+        gbl.db.fetch(withRecordIDs: originals) { r in
+            var recs:[snake] = []
+            do {
+                var ta = try? r.get()
+                if ta != nil {
+                    for i in ta! {
+                        var tb = try? i.value.get()
+                        if tb != nil {
+                            recs.append(snake(tb!))
+                        }
+                        
+                    }
+                }
+            }
+            stuff = recs
+//            snake()
+//            stuff
+            //            if recs.isEmpty {return}
+        }
     }
     var body: some View {
         Text("Hello, World!")
@@ -79,8 +121,12 @@ struct newItemView: View {
         }
         HStack {
             Button {
-                things.append("ITEM\(iter)")
-                iter += 1
+                if recordType == "Item" {
+                    things.append("\(Int.random(in: 0..<10000))")
+                } else {
+                    stuff
+                }
+//                iter += 1
             } label: {
                 Text("Add size")
             }
@@ -90,7 +136,41 @@ struct newItemView: View {
 //                Text("Add color")
 //            }
         }
-        List($things, id: \.self, editActions: .all) { i in
+//        Button("hi"){isFocused=nil;print(isFocused)}
+        VStack{
+            HStack {
+                ForEach(0..<catagory.count, id: \.self) { i in
+                    HStack {
+                        Button {
+                            catagory.remove(at: i)
+                        } label: {
+                            Image(systemName: "xmark.circle.fill").foregroundStyle(.red)
+                        }
+                        .disabled((isFocused ?? -1) == i)
+                        TextField("Name", text: $catagory[i])
+                    }
+                    .padding().focused($isFocused,equals: i)
+                }
+                Button {
+                    catagory.append("")
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                    
+                }
+            }
+                .padding()
+                
+                HStack {
+                    ForEach(0..<catagory.count, id:\.self) { i in
+                        if i != 0 {
+                            Text(", ")
+                        }
+                        Text(catagory[i])
+                    }
+                }
+            }
+        if recordType == "Item" {
+            List($things, id: \.self, editActions: .all) { i in
                 HStack {
                     TextField("ID", text: i)
                     Button("Paste ID") {
@@ -102,45 +182,45 @@ struct newItemView: View {
                             }
                         }
                     }
-//                    Button {
-//                        i.wrappedValue.s.append((addPrice:0,name:"hi",n:"h"))
-//                    } label: {
-//                        Text("Add Size")
-//                    }
+                    //                    Button {
+                    //                        i.wrappedValue.s.append((addPrice:0,name:"hi",n:"h"))
+                    //                    } label: {
+                    //                        Text("Add Size")
+                    //                    }
                     
-//                    Text("$")
-//                    TextField("addPrice", value: Binding(get: {
-//                        i.wrappedValue.addPrice / 10000
-//                    }, set: { v in
-//                        let p = i.wrappedValue.addPrice
-//                        var o : Int = 0
-//                        o -= p
-//                        o /= 10000
-//                        o *= 10000
-//                        o += p
-//                        
-//                        o += v * 10000
-//                        
-//                        i.wrappedValue.addPrice = o
-//                    }), format: .number)
-//                    .frame(maxWidth: 24 * 2)
-//                    .background(Color.yellow).grayscale(1).cornerRadius(3)
-//                    Text(".")
-//                    TextField("addPrice", value: Binding(get: {
-//                        (i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))
-//                    }, set: { v in
-//                        let p = i.wrappedValue.addPrice
-//                        i.wrappedValue.addPrice = p / 10000 * 10000 + v
-//                        
-//                    }), format: .number)
-//                    .frame(maxWidth: 24 * 2)
-//                    .background(Color.yellow).grayscale(1).cornerRadius(3)
-//                    Text("cost: \(i.wrappedValue.addPrice / 10000)")
-//                    Text("cost: \(i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))")
-//                    Text("cost: \(i.wrappedValue.addPrice)")
+                    //                    Text("$")
+                    //                    TextField("addPrice", value: Binding(get: {
+                    //                        i.wrappedValue.addPrice / 10000
+                    //                    }, set: { v in
+                    //                        let p = i.wrappedValue.addPrice
+                    //                        var o : Int = 0
+                    //                        o -= p
+                    //                        o /= 10000
+                    //                        o *= 10000
+                    //                        o += p
+                    //
+                    //                        o += v * 10000
+                    //
+                    //                        i.wrappedValue.addPrice = o
+                    //                    }), format: .number)
+                    //                    .frame(maxWidth: 24 * 2)
+                    //                    .background(Color.yellow).grayscale(1).cornerRadius(3)
+                    //                    Text(".")
+                    //                    TextField("addPrice", value: Binding(get: {
+                    //                        (i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))
+                    //                    }, set: { v in
+                    //                        let p = i.wrappedValue.addPrice
+                    //                        i.wrappedValue.addPrice = p / 10000 * 10000 + v
+                    //
+                    //                    }), format: .number)
+                    //                    .frame(maxWidth: 24 * 2)
+                    //                    .background(Color.yellow).grayscale(1).cornerRadius(3)
+                    //                    Text("cost: \(i.wrappedValue.addPrice / 10000)")
+                    //                    Text("cost: \(i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))")
+                    //                    Text("cost: \(i.wrappedValue.addPrice)")
                 }
-                    
-                    
+                
+                
                 
                 //                ForEach(i.s as! Binding<[(addPrice:Int,name:String,n:String)]>, id:\.wrappedValue.name) { n in
                 //                        HStack {
@@ -178,6 +258,42 @@ struct newItemView: View {
                 //                            Text("cost: \(n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))")
                 //                            Text("cost: \(n.wrappedValue.addPrice)")
             }
+        } else {
+            List{
+                HStack{Text("name :").foregroundStyle(.red)
+                    Text("n :").foregroundStyle(.yellow)
+                    Text("quantity :")
+                    Text("cost * 10000") .foregroundStyle(.blue)
+                }
+                ForEach(0..<stuff.count, id:\.self) { i in
+                    HStack {
+                        Text(stuff[i].id).foregroundStyle(.gray)
+                        
+                        TextField("", text: $stuff[i].name).foregroundStyle(.red)
+                        //                    Text(stuff[i].name)
+                        
+                        TextField("", text: $stuff[i].n).foregroundStyle(.yellow)
+                        
+                        TextField("", text: Binding(get: {
+                            stuff[i].q.description
+                        }, set: { v in
+                            var b = stuff[i].q
+                            stuff[i].q = Int64(v) ?? b
+                            //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
+                            //                        Int()
+                        }) )
+                        TextField("", text: Binding(get: {
+                            stuff[i].price.description
+                        }, set: { v in
+                                                    var b = stuff[i].price
+                            stuff[i].price = Int64(v) ?? b
+                            //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
+                            //                        Int()
+                        })).foregroundStyle(.blue)
+                    }
+                }
+            }
+        }
         Button("Cancel") {
             dismiss()
         }
@@ -192,6 +308,11 @@ struct newItemView: View {
                 ider.append(.init(recordID: CKRecord.ID(recordName: i), action: .none))  // i.n
             }
             rec[recordType == "Item" ? "blanks" : "sizes"] = ider
+//            if recordType == "Item" {
+                if catagory != [] {
+                    rec[recordType == "Item" ? "tags" : "materials"] = catagory
+                }
+//            }
             
 //            rec[recordType == "Item" ? ""]
 //            db.
@@ -205,9 +326,47 @@ struct newItemView: View {
             
         }.disabled(name.wrappedValue == "")
         .navigationBarBackButtonHidden()
+        .onAppear {
+            if recordType == "blankSize" {
+                getstuff()
+            }
+//            print(stuff)
+        }
     }
 }
 
 struct gbl {
     static var db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
+}
+//#Preview {
+//    newItemView("abc", "def")
+//}
+//sillySize => ss => ssssss => snake
+struct snake : Identifiable, Hashable {
+    var id:String
+    var q:Int64
+    var name:String
+    var n:String
+    var price:Int64
+    init() {
+        id = UUID().uuidString
+        q = 0
+        name = "NONE"
+        n = "NNE"
+        price = 0
+    }
+    init (_ record:CKRecord) {
+        id = record.recordID.recordName
+        q = record["quantity"] as! Int64
+        name = record["longName"] as! String
+        n = record["shortName"] as! String
+        price = record["cost"] as! Int64
+    }
+    init(id:String, cost:Int64, name:String, n:String,quantity:Int64) {
+        self.id = id
+        self.price = cost
+        self.name = name
+        self.n = n
+        self.q = quantity
+    }
 }

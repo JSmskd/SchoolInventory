@@ -14,12 +14,12 @@ extension Color {
 
 
 struct InventoryView: View {
-    let catagories: [String] = ["", "Shirts", "Sweatpants", "Hoodies", "Crewnecks"]
+    let catagories: [String] = ["Shirts", "Sweatpants", "Hoodies", "Crewnecks"]
     var body: some View {
         
         NavigationStack {
             ScrollView{
-                ForEach(0..<catagories.count + 1, id: \.self) { i in
+                ForEach(0..<catagories.count + 2, id: \.self) { i in
                     if i == 0 {
                         VStack(spacing: 20) {
                             NavigationLink {
@@ -34,12 +34,26 @@ struct InventoryView: View {
                             }
                             
                         }
+                    }else if i == 1 {
+                        VStack(spacing: 20) {
+                            NavigationLink {
+                                BlanksView(design: "")
+                            } label: {
+                                Text("Items")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(i % 2 == 0 ? Color.darkBrown : Color.orange)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                            
+                        }
                     } else {
                         VStack(spacing: 20) {
                             NavigationLink {
-                                BlanksView(design: catagories[i - 1])
+                                BlanksView(design: catagories[i - 2])
                             } label: {
-                                Text(catagories[i - 1])
+                                Text(catagories[i - 2])
                                     .frame(maxWidth: .infinity)
                                     .padding()
                                     .background(i % 2 == 0 ? Color.darkBrown : Color.orange)

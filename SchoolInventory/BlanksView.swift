@@ -39,20 +39,20 @@ struct BlanksView: View {
     let FILTERTEXT: String
     var predicate : NSPredicate
     init(blank: String = "") {
-        if blank == ""{
+//        if blank == ""{
             predicate = .init(value: true)
-        } else {
-            predicate = .init(format: "tags CONTAINS %@", blank)
-        }
+//        } else {
+//            predicate = .init(format: "tags CONTAINS %@", blank)
+//        }
         FILTERTEXT = blank
         recordType = "blank"
     }
     init(design: String = "") {
-        if design == ""{
+//        if design == ""{
             predicate = .init(value: true)
-        } else {
-            predicate = .init(format: "tags CONTAINS %@", design)
-        }
+//        } else {
+//            predicate = .init(format: "tags CONTAINS %@", design)
+//        }
         FILTERTEXT = design
         recordType = "Item"
     }
@@ -232,51 +232,51 @@ struct BlanksView: View {
             }
             
             
-            .sheet(isPresented: $showEditSheet) {
-                VStack {
-                    Text("Edit \(selectedShirt)")
-                        .font(.title2)
-                        .padding()
-                    
-                    TextField("Enter new name", text: $editedName)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                    
-                    Picker("Color", selection: $editedColor) {
-                        //                        ForEach(availableColors, id: \.self) { color in
-                        //                            Text(color).tag(color)
-                        //                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding()
-                    
-                    Stepper("Small: \(editedSmall)", value: $editedSmall, in: 0...100)
-                        .padding()
-                    Stepper("Medium: \(editedMedium)", value: $editedMedium, in: 0...100)
-                        .padding()
-                    Stepper("Large: \(editedLarge)", value: $editedLarge, in: 0...100)
-                        .padding()
-                    
-                    Button("Save") {
-                        saveChanges()
-                        showEditSheet = false
-                    }
-                    .font(.title2)
-                    .padding()
-                    .background(Color.darkOrange)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    
-                    Button("Cancel") {
-                        showEditSheet = false
-                    }
-                    .padding()
-                    .background(Color.darkBrown)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                }
-                .padding()
-            }
+//            .sheet(isPresented: $showEditSheet) {
+//                VStack {
+//                    Text("Edit \(selectedShirt)")
+//                        .font(.title2)
+//                        .padding()
+//                    
+//                    TextField("Enter new name", text: $editedName)
+//                        .textFieldStyle(RoundedBorderTextFieldStyle())
+//                        .padding()
+//                    
+//                    Picker("Color", selection: $editedColor) {
+//                        //                        ForEach(availableColors, id: \.self) { color in
+//                        //                            Text(color).tag(color)
+//                        //                        }
+//                    }
+//                    .pickerStyle(SegmentedPickerStyle())
+//                    .padding()
+//                    
+//                    Stepper("Small: \(editedSmall)", value: $editedSmall, in: 0...100)
+//                        .padding()
+//                    Stepper("Medium: \(editedMedium)", value: $editedMedium, in: 0...100)
+//                        .padding()
+//                    Stepper("Large: \(editedLarge)", value: $editedLarge, in: 0...100)
+//                        .padding()
+//                    
+//                    Button("Save") {
+//                        saveChanges()
+//                        showEditSheet = false
+//                    }
+//                    .font(.title2)
+//                    .padding()
+//                    .background(Color.darkOrange)
+//                    .foregroundColor(.white)
+//                    .cornerRadius(10)
+//                    
+//                    Button("Cancel") {
+//                        showEditSheet = false
+//                    }
+//                    .padding()
+//                    .background(Color.darkBrown)
+//                    .foregroundColor(.white)
+//                    .cornerRadius(10)
+//                }
+//                .padding()
+//            }
             .alert(isPresented: $showStockAlert) {
                 Alert(
                     title: Text("Stock Status"),
@@ -361,7 +361,7 @@ struct blDe : Identifiable, CustomStringConvertible, Hashable {
     var price : Int64
     
     var type:String
-    
+    var cats:[String]
     var record:CKRecord
     
     var to:[CKRecord.ID]
@@ -378,8 +378,10 @@ return nil
         if trecord == nil {return nil}
             var a = trecord!
             self.record = a
+        if a.recordID.recordName == "65D2492E-1C25-4668-A294-A6975C2DDF7E" {print(a)}
             type = a.recordType
         name = a.recordType == "Item" ? a["title"] as? String ?? a.recordID.recordName : a.recordID.recordName
+        cats = (a.recordType == "Item" ? a["tags"] : a["materials"]) as? [String] ?? [] 
             price = a[a.recordType == "Item" ? "price" : "cost"] as? Int64 ?? -1
         let refs = a[a.recordType == "Item" ? "blanks" : "sizes"] as? [CKRecord.Reference] ?? []
         var out:[CKRecord.ID] = []
