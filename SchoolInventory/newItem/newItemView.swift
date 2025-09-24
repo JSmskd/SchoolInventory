@@ -124,7 +124,7 @@ struct newItemView: View {
                 if recordType == "Item" {
                     things.append("\(Int.random(in: 0..<10000))")
                 } else {
-                    stuff
+                    stuff.append(.init());
                 }
 //                iter += 1
             } label: {
@@ -304,8 +304,16 @@ struct newItemView: View {
             
             rec["cost"] = Int64(whole * 10000 + fraction)
             var ider:[CKRecord.Reference] = []
-            for i in things {
-                ider.append(.init(recordID: CKRecord.ID(recordName: i), action: .none))  // i.n
+            if recordType == "Item" {
+                for i in things {
+                    ider.append(.init(recordID: CKRecord.ID(recordName: i), action: .none))  // i.n
+                }
+            } else if recordType == "blank" {
+                for i in stuff {
+                    if hbed != nil {
+                        ider.append(.init(record: i.generateCKRecord(hbed!), action: .none))  // i.n
+                    }
+                }
             }
             rec[recordType == "Item" ? "blanks" : "sizes"] = ider
 //            if recordType == "Item" {
@@ -321,9 +329,11 @@ struct newItemView: View {
 //                e == CKError.
 //            }
             var svec:[CKRecord] = [rec]
-            for i in stuff {
-                svec.append(i.generateCKRecord())
-            }
+            if hbed != nil {
+                for i in stuff {
+                    svec.append(i.generateCKRecord(hbed!))
+                }
+            } else {print("ISNIL")}
             let operation = CKModifyRecordsOperation(recordsToSave: svec, recordIDsToDelete: nil)
             operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
              db.add(operation)
@@ -373,12 +383,13 @@ struct snake : Identifiable, Hashable {
         self.n = n
         self.q = quantity
     }
-    func generateCKRecord() -> CKRecord {
+    func generateCKRecord(_ parentID:blDe) -> CKRecord {
         var record = CKRecord(recordType: "blankSize", recordID: .init(recordName: id))
         record["quantity"] = q
         record["longName"] = name
         record["shortName"] = n
         record["cost"] = price
+        record["blank"] = CKRecord.Reference.init(record: parentID.record, action: .none)
         return record
     }
 }
