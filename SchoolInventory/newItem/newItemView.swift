@@ -320,7 +320,11 @@ struct newItemView: View {
 //                print(e)
 //                e == CKError.
 //            }
-            let operation = CKModifyRecordsOperation(recordsToSave: [rec], recordIDsToDelete: nil)
+            var svec:[CKRecord] = [rec]
+            for i in stuff {
+                svec.append(i.generateCKRecord())
+            }
+            let operation = CKModifyRecordsOperation(recordsToSave: svec, recordIDsToDelete: nil)
             operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
              db.add(operation)
             
@@ -368,5 +372,13 @@ struct snake : Identifiable, Hashable {
         self.name = name
         self.n = n
         self.q = quantity
+    }
+    func generateCKRecord() -> CKRecord {
+        var record = CKRecord(recordType: "blankSize", recordID: .init(recordName: id))
+        record["quantity"] = q
+        record["longName"] = name
+        record["shortName"] = n
+        record["cost"] = price
+        return record
     }
 }
