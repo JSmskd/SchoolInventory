@@ -331,7 +331,7 @@ struct newItemView: View {
         }.disabled(name.wrappedValue == "")
         .navigationBarBackButtonHidden()
         .onAppear {
-            if recordType == "blankSize" {
+            if recordType == "blank" {
                 getstuff()
             }
 //            print(stuff)
