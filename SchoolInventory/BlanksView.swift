@@ -11,69 +11,31 @@ import SwiftUI
 
 struct BlanksView: View {
     @State private var showEditSheet = false
-    @State private var selectedShirt: String = ""
-    @State private var editedName: String = ""
-    @State private var editedSmall: Int = 0
-    @State private var editedMedium: Int = 0
-    @State private var editedLarge: Int = 0
-    @State private var editedColor: String = "White"
-    @State var editing:String? = nil
-    //    @State private var gildanName = "Gildan5000"
-    //    @State private var bellaName = "Bella3001CVC"
-    //
-    //    @State private var gildanSmallQuantity = 0
-    //    @State private var gildanMediumQuantity = 0
-    //    @State private var gildanLargeQuantity = 0
-    //    @State private var bellaSmallQuantity = 0
-    //    @State private var bellaMediumQuantity = 0
-    //    @State private var bellaLargeQuantity = 0
-    //
-    //    @State private var gildanColor = "White"
-    //    @State private var bellaColor = "White"
     
     @State private var stockAlertMessage = ""
     @State private var showStockAlert = false
     
-    //    let availableColors = ["White","Orange", "Black", "Red", "Blue", "Green", "Yellow", "Pink", "Grey"]
     private let recordType:String
     let FILTERTEXT: String
     var predicate : NSPredicate
     init(blank: String = "") {
-//        if blank == ""{
+        if blank == ""{
             predicate = .init(value: true)
-//        } else {
-//            predicate = .init(format: "tags CONTAINS %@", blank)
-//        }
+        } else {
+            predicate = .init(format: "tags CONTAINS %@", blank)
+        }
         FILTERTEXT = blank
         recordType = "blank"
     }
     init(design: String = "") {
-//        if design == ""{
+        if design == ""{
             predicate = .init(value: true)
-//        } else {
-//            predicate = .init(format: "tags CONTAINS %@", design)
-//        }
+        } else {
+            predicate = .init(format: "tags CONTAINS %@", design)
+        }
         FILTERTEXT = design
         recordType = "Item"
     }
-    //    init (filter:String, filterText: String = "") {
-    //        predicate = .init(format: filter)
-    //        if filterText == ""{
-    //            FILTERTEXT = ""
-    //        } else {
-    //            FILTERTEXT = filterText
-    //        }
-    //
-    //    }
-    //    init (filter:String, filterText: String = "") {
-    //        predicate = .init(format: filter)
-    //        if filterText == ""{
-    //            FILTERTEXT = ""
-    //        } else {
-    //            FILTERTEXT = filterText
-    //        }
-    //
-    //    }
     @State var listems: [blDe] = []
     func fetchData () {
         let p = NSPredicate(value: true)
@@ -90,31 +52,18 @@ struct BlanksView: View {
             }
             if mm != nil {
                 for res in mm!.matchResults {
-                    //                    itms
-                    //                        do {
+                    
                     let b = try? res.1.get()
                     if b != nil {
                         let a = blDe(b!)
-                        //
-                        //                            Item()
-                        //                            DispatchQueue.main.async {
-                        //                            print(b)
+
                         if a != nil {
                             listems.append(a!)
                         }
-                        //                            items
                     }
-                    //                        } catch {
-                    //                            print(error)
-                    //                        }
-                    
                 }
             }
-            
         }
-        //        db.fetch(withQuery: .init(recordType: "Item", predicate: predicate))
-        //        print(itms)
-        //        return itms
     }
     var body: some View {
         NavigationStack {
@@ -124,13 +73,6 @@ struct BlanksView: View {
                         
 
                         LazyVGrid(columns: [GridItem.init(),GridItem.init(),GridItem.init()]) {
-                            //                            <#code#>
-                            //                        }
-                            //                        LazyHStack {
-                            //                        <#code#>
-                            //                    }
-                            //                    LazyHGrid(rows: [], content: <#T##() -> View#>)
-                            //                    HStack(spacing: 16) {
                             ForEach(0..<listems.count, id:\.self) { i in
                                 // Gildan View
                                 VStack(spacing: 10) {
@@ -178,9 +120,7 @@ struct BlanksView: View {
                                     }
                                     NavigationLink("Edit") {
                                         newItemView(bed: itm)
-//                                        newItemView(<#T##String#>, <#T##String#>)
                                     }
-                                        //                                editShirt(name: gildanName, small: gildanSmallQuantity, medium: gildanMediumQuantity, large: gildanLargeQuantity, color: gildanColor)
                                     .padding(6)
                                     .frame(maxWidth: .infinity)
                                     .background(Color.blue)
@@ -190,17 +130,6 @@ struct BlanksView: View {
                                 .padding()
                                 .background(Color(.systemGroupedBackground))
                                 .cornerRadius(12)
-//                                .navigationDestination(isPresented: Binding(get: {
-//                                    
-//                                }, set: { v in
-//                                    if v == false {
-//                                        editing = nil
-//                                    } else {
-//                                        editing = listems[i].id
-//                                    }
-//                                })) {
-//                                    Text("hi")
-//                                }
                             }
                         }
                         .padding(.horizontal)
@@ -210,7 +139,7 @@ struct BlanksView: View {
                             Text("Check Stock")
                                 .font(.title2)
                                 .padding()
-                                .background(Color.darkBrown)
+                                .background(gbl.darkBrown)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                         }
@@ -230,53 +159,6 @@ struct BlanksView: View {
                 .padding()
                 .navigationTitle("Blanks")
             }
-            
-            
-//            .sheet(isPresented: $showEditSheet) {
-//                VStack {
-//                    Text("Edit \(selectedShirt)")
-//                        .font(.title2)
-//                        .padding()
-//                    
-//                    TextField("Enter new name", text: $editedName)
-//                        .textFieldStyle(RoundedBorderTextFieldStyle())
-//                        .padding()
-//                    
-//                    Picker("Color", selection: $editedColor) {
-//                        //                        ForEach(availableColors, id: \.self) { color in
-//                        //                            Text(color).tag(color)
-//                        //                        }
-//                    }
-//                    .pickerStyle(SegmentedPickerStyle())
-//                    .padding()
-//                    
-//                    Stepper("Small: \(editedSmall)", value: $editedSmall, in: 0...100)
-//                        .padding()
-//                    Stepper("Medium: \(editedMedium)", value: $editedMedium, in: 0...100)
-//                        .padding()
-//                    Stepper("Large: \(editedLarge)", value: $editedLarge, in: 0...100)
-//                        .padding()
-//                    
-//                    Button("Save") {
-//                        saveChanges()
-//                        showEditSheet = false
-//                    }
-//                    .font(.title2)
-//                    .padding()
-//                    .background(Color.darkOrange)
-//                    .foregroundColor(.white)
-//                    .cornerRadius(10)
-//                    
-//                    Button("Cancel") {
-//                        showEditSheet = false
-//                    }
-//                    .padding()
-//                    .background(Color.darkBrown)
-//                    .foregroundColor(.white)
-//                    .cornerRadius(10)
-//                }
-//                .padding()
-//            }
             .alert(isPresented: $showStockAlert) {
                 Alert(
                     title: Text("Stock Status"),
@@ -286,37 +168,11 @@ struct BlanksView: View {
             }
         }
         .onAppear {
-            //            loadStockData()
-            //            DispatchQueue.main.async {
             fetchData()
-            //            }
         }
     }
     
-    func editShirt(name: String, small: Int, medium: Int, large: Int, color: String) {
-        selectedShirt = name
-        editedName = name
-        editedSmall = small
-        editedMedium = medium
-        editedLarge = large
-        editedColor = color
-        showEditSheet = true
-    }
-    
     func saveChanges() {
-        //        if selectedShirt == gildanName {
-        //            gildanName = editedName
-        //            gildanSmallQuantity = editedSmall
-        //            gildanMediumQuantity = editedMedium
-        //            gildanLargeQuantity = editedLarge
-        //            gildanColor = editedColor
-        //        } else if selectedShirt == bellaName {
-        //            bellaName = editedName
-        //            bellaSmallQuantity = editedSmall
-        //            bellaMediumQuantity = editedMedium
-        //            bellaLargeQuantity = editedLarge
-        //            bellaColor = editedColor
-        //        }
         saveStockData()
     }
     
@@ -331,27 +187,11 @@ struct BlanksView: View {
     }
     
     func saveStockData() {
-        //        UserDefaults.standard.set(gildanSmallQuantity, forKey: "gildanSmallQuantity")
-        //        UserDefaults.standard.set(gildanMediumQuantity, forKey: "gildanMediumQuantity")
-        //        UserDefaults.standard.set(gildanLargeQuantity, forKey: "gildanLargeQuantity")
-        //        UserDefaults.standard.set(gildanColor, forKey: "gildanColor")
-        //
-        //        UserDefaults.standard.set(bellaSmallQuantity, forKey: "bellaSmallQuantity")
-        //        UserDefaults.standard.set(bellaMediumQuantity, forKey: "bellaMediumQuantity")
-        //        UserDefaults.standard.set(bellaLargeQuantity, forKey: "bellaLargeQuantity")
-        //        UserDefaults.standard.set(bellaColor, forKey: "bellaColor")
+        
     }
     
     func loadStockData() {
-        //        gildanSmallQuantity = UserDefaults.standard.integer(forKey: "gildanSmallQuantity")
-        //        gildanMediumQuantity = UserDefaults.standard.integer(forKey: "gildanMediumQuantity")
-        //        gildanLargeQuantity = UserDefaults.standard.integer(forKey: "gildanLargeQuantity")
-        //        gildanColor = UserDefaults.standard.string(forKey: "gildanColor") ?? "White"
-        //
-        //        bellaSmallQuantity = UserDefaults.standard.integer(forKey: "bellaSmallQuantity")
-        //        bellaMediumQuantity = UserDefaults.standard.integer(forKey: "bellaMediumQuantity")
-        //        bellaLargeQuantity = UserDefaults.standard.integer(forKey: "bellaLargeQuantity")
-        //        bellaColor = UserDefaults.standard.string(forKey: "bellaColor") ?? "White"
+        
     }
 }
 struct blDe : Identifiable, CustomStringConvertible, Hashable {
@@ -367,16 +207,7 @@ struct blDe : Identifiable, CustomStringConvertible, Hashable {
     var to:[CKRecord.ID]
     init? (_ res: CKRecord?) {
         if res == nil {return nil}
-        var trecord:CKRecord? = nil
-        do {
-            let a = res
-//            print(res)
-            trecord = a
-        } catch {
-return nil
-        }
-        if trecord == nil {return nil}
-            var a = trecord!
+            let a = res!
             self.record = a
         if a.recordID.recordName == "65D2492E-1C25-4668-A294-A6975C2DDF7E" {print(a)}
             type = a.recordType
@@ -391,19 +222,5 @@ return nil
         to = out
         
     }
-//    init(rtype:String) {
-//        name = ""
-//        record = CKRecord
-//    }
-//    init (addPrice:Int,name:String,n:String,s:[String]) {
-//        price = Int64(addPrice)
-//        self.name = name
-//        var t:[CKRecord.ID] = []
-//        for i in s {
-//            t.append(CKRecord.ID(recordName: i))
-//        }
-//        
-//    }
-    
     
 }

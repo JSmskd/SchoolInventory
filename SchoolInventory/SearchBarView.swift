@@ -9,15 +9,11 @@ import SwiftUI
 import CloudKit
 
 struct SearchBarView: View {
-    @State private var listOfStudentIDs: [order/*StudentItem*/] = [
-        //        StudentItem(studentID: "12345", item: "Shirt", size: "M"),
-        //        StudentItem(studentID: "67890", item: "Hoodie", size: "L"),
-        //        StudentItem(studentID: "54321", item: "Shorts", size: "S")
-    ]
+    @State private var listOfStudentIDs: [order/*StudentItem*/] = []
     @State private var searchText = ""
     @State private var isEditing = false
-
-
+    
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -49,15 +45,14 @@ struct SearchBarView: View {
                                 //                            }
                                 
                                 
-                                
-                                Text("ID: "/*\(studentItem.wrappedValue.pickupIdentifier)"*/)
-                                Text(/*"\(studentItem.wrappedValue.itemsOrdered.count)*/" unique items")
+                                Text("ID: \(studentItem.wrappedValue.pickupIdentifier ?? "ERR")")
+                                Text("\((studentItem.wrappedValue.itemsOrdered ?? []).count) unique items")
                             }
-
+                            
                             .tint(studentItem.wrappedValue.orderFulfilledBy == "" ? .white : .gray)
                         }
                     }
-//                    .onDelete(perform: deleteItems)
+                    //                    .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
                 .navigationTitle("Online Orders")
@@ -78,65 +73,40 @@ struct SearchBarView: View {
             //            }
         }
     }
-
+    
     var studentItems: [order] {
         listOfStudentIDs
-        //        let lcStudentItems = listOfStudentIDs.map {
-        //            StudentItem(studentID: $0.studentID.lowercased(), item: $0.item.lowercased(), size: $0.size)
-        //        }
-        //
-        //        if searchText.isEmpty {
-        //            return []//listOfStudentIDs
-        //        } else {
-        //            return lcStudentItems.filter {
-        //                $0.studentID.contains(searchText.lowercased()) ||
-        //                $0.item.contains(searchText.lowercased()) ||
-        //                $0.size.contains(searchText.lowercased())
-        //            }
-        //        }
     }
-
-//    func deleteItems(at offsets: IndexSet) {
-//        listOfStudentIDs//.remove(atOffsets: offsets)
-//    }
-
-
+    
+    
     func refreshShirts() {
         print("refreshing")
         listOfStudentIDs = []
         var orders:Array<order> {get {listOfStudentIDs} set {listOfStudentIDs = newValue}}
-
+        
         let query = CKQuery(recordType: "Order", predicate: .init(value: true))
         query.sortDescriptors = [NSSortDescriptor(key: "___createTime", ascending: false)]
-
-        CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withQuery: query) { results in
+        
+        gbl.db.fetch(withQuery: query) { results in
             let _ = results.map {
-            $0.matchResults.map({
-//                print($1)
-                var i = 0
-                let _ = $1.map({ record in
-                //                        newItems.append(order(record))
-                //                                            print("newItem")
-                DispatchQueue.main.async {
-                    let t = order(record)
-                    if i < listOfStudentIDs.count {
-                        listOfStudentIDs[i] = t
-                    } else {
-                        listOfStudentIDs.append(t)
-                    }
-                    i += 1
-                }
-
+                $0.matchResults.map({
+                    var i = 0
+                    let _ = $1.map({ record in
+                        DispatchQueue.main.async {
+                            let t = order(record)
+                            if i < listOfStudentIDs.count {
+                                listOfStudentIDs[i] = t
+                            } else {
+                                listOfStudentIDs.append(t)
+                            }
+                            i += 1
+                        }
+                        
+                    })
+                    while (i < listOfStudentIDs.count) {listOfStudentIDs.popLast()}
                 })
-                while (i < listOfStudentIDs.count) {
-                    _ = listOfStudentIDs.popLast()
-                }
-            })
             }.self
-
         }
-        //        print(newItems)
-
     }
 }
 
@@ -148,21 +118,21 @@ struct OrderItemV: View {
     var body: some View {
         VStack{
             Button("MARK DELIVERED"){
-                o.orderFulfilledBy = "ADMIN" //record.setObject("ADMIN" as __CKRecordObjCValue, forKey: "orderFilfilledBy")
+                o.orderFulfilledBy = "ADMIN"
                 upload()
             }
             Button("MARK NOT DELIVERED"){
-                o.orderFulfilledBy = "" //record.setObject("" as __CKRecordObjCValue, forKey: "orderFilfilledBy")
+                o.orderFulfilledBy = ""
                 upload()
             }
-            Text(toPrice(totalPrice))
+            Text(gbl.toPrice(totalPrice))
             .clipShape(RoundedRectangle(cornerSize: .init(width: 100, height: 100)))
             List {
                 ForEach($itemsOrdered, id:\.self ) { i in
                     HStack{
                         Text("\(i.wrappedValue.item.title)")
                         Spacer()
-                        Text("\(toPrice(i.wrappedValue.indvPrice)) x \(i.wrappedValue.quantity.description) : \(toPrice(i.wrappedValue.price))")
+                        Text("\(gbl.toPrice(i.wrappedValue.indvPrice)) x \(i.wrappedValue.quantity.description) : \(gbl.toPrice(i.wrappedValue.price))")
                     }
                 }
             }
@@ -453,18 +423,4 @@ struct Item:Identifiable, CustomStringConvertible, Hashable/*, Codable*/ {
         self.PRICE = Int64(price)
 //        self.reference = reference
     }
-}
-func toPrice(_ doub:Int) -> String {
-    let cuttoff = 10000
-    let dollars:Int = doub / cuttoff
-    let cent = doub % cuttoff
-    var cents = cent.description
-    while cents.last == "0" {
-        cents.removeLast()
-    }
-    while cents.count < 2 {
-        cents += "0"
-    }
-    //    let cents:Int = doub - (dollars * 10000)
-    return "$\(dollars).\(cents)"
 }

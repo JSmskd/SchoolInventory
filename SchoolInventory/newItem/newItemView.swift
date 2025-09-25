@@ -6,38 +6,33 @@
 //
 
 import SwiftUI
-import UIKit // Required for UIPasteboard
+import UIKit
 import CloudKit
 
 
 struct newItemView: View {
     @Environment(\.dismiss) private var dismiss
     @State var catagory:[String]
-//    @State var iter:Int = 0
     @State private var recName:String = ""
-    var name:Binding<String> {Binding {
-        RECORDNAME ?? recName
-    } set: { newValue in
-        if RECORDNAME == nil {
-            recName = newValue
-        }
-    }
-        //  get {
-        //        RECORDNAME ?? recName
-        //    } set {
-        //        if RECORDNAME == nil {
-        //            recName = newValue
-        //        }
-        //
-        //    }
-    }
     @State var originals:[CKRecord.ID]
     @State var things:[String]; @State var stuff:[snake] = []
     @State var whole : Int = 9
     @State var fraction : Int = 99
     @FocusState var isFocused: Int?
+    
     let recordType:String
     let RECORDNAME:String?
+    
+    var hbed : blDe? = nil
+    
+    var name:Binding<String> {
+        Binding {
+            RECORDNAME ?? recName
+        } set: { newValue in
+            if RECORDNAME == nil { recName = newValue }
+        }
+    }
+    
     init (_ c:String, _ rt:String) {
         catagory = c == "" ? [] : [c]
         recordType = rt
@@ -45,7 +40,7 @@ struct newItemView: View {
         things = []
         originals = []
     }
-    var hbed : blDe? = nil
+    
     init (bed:blDe) {
 //        catagory = be
         RECORDNAME = bed.name
@@ -77,29 +72,7 @@ struct newItemView: View {
         things = t
         stuff = []
     }
-    func getstuff() {
-        stuff = []
-//        var ready:[snake] = []
-        gbl.db.fetch(withRecordIDs: originals) { r in
-            var recs:[snake] = []
-            do {
-                var ta = try? r.get()
-                if ta != nil {
-                    for i in ta! {
-                        var tb = try? i.value.get()
-                        if tb != nil {
-                            recs.append(snake(tb!))
-                        }
-                        
-                    }
-                }
-            }
-            stuff = recs
-//            snake()
-//            stuff
-            //            if recs.isEmpty {return}
-        }
-    }
+
     var body: some View {
         Text("Hello, World!")
         TextField("Enter Item Name", text:name)
@@ -347,11 +320,31 @@ struct newItemView: View {
 //            print(stuff)
         }
     }
+    func getstuff() {
+        stuff = []
+//        var ready:[snake] = []
+        gbl.db.fetch(withRecordIDs: originals) { r in
+            var recs:[snake] = []
+            do {
+                var ta = try? r.get()
+                if ta != nil {
+                    for i in ta! {
+                        var tb = try? i.value.get()
+                        if tb != nil {
+                            recs.append(snake(tb!))
+                        }
+                        
+                    }
+                }
+            }
+            stuff = recs
+//            snake()
+//            stuff
+            //            if recs.isEmpty {return}
+        }
+    }
 }
 
-struct gbl {
-    static var db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
-}
 //#Preview {
 //    newItemView("abc", "def")
 //}

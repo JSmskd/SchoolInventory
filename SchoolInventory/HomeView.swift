@@ -26,6 +26,3 @@ extension Color {
     static let darkOrange = Color(red: 244/255, green: 108/255, blue: 44/255)
 }
 
-#Preview {
-    HomeView()
-}

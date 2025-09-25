@@ -109,7 +109,7 @@ struct ShirtView: View {
                         Text("Cancel")
                             .font(.title2)
                             .padding()
-                            .background(Color.darkBrown)
+                            .background(gbl.darkBrown)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
@@ -163,25 +163,8 @@ struct ShirtView: View {
         
         showStockAlert = true
     }
-    func saveStockData() {
-        UserDefaults.standard.set(gildanSmallQuantity, forKey: "gildanSmallQuantity")
-        UserDefaults.standard.set(gildanMediumQuantity, forKey: "gildanMediumQuantity")
-        UserDefaults.standard.set(gildanLargeQuantity, forKey: "gildanLargeQuantity")
-        
-        UserDefaults.standard.set(bellaSmallQuantity, forKey: "bellaSmallQuantity")
-        UserDefaults.standard.set(bellaMediumQuantity, forKey: "bellaMediumQuantity")
-        UserDefaults.standard.set(bellaLargeQuantity, forKey: "bellaLargeQuantity")
-    }
-    
-    func loadStockData() {
-        gildanSmallQuantity = UserDefaults.standard.integer(forKey: "gildanSmallQuantity")
-        gildanMediumQuantity = UserDefaults.standard.integer(forKey: "gildanMediumQuantity")
-        gildanLargeQuantity = UserDefaults.standard.integer(forKey: "gildanLargeQuantity")
-        
-        bellaSmallQuantity = UserDefaults.standard.integer(forKey: "bellaSmallQuantity")
-        bellaMediumQuantity = UserDefaults.standard.integer(forKey: "bellaMediumQuantity")
-        bellaLargeQuantity = UserDefaults.standard.integer(forKey: "bellaLargeQuantity")
-    }
+    func saveStockData() {}
+    func loadStockData() {}
 }
 
 struct ShirtItemView: View {
@@ -206,7 +189,6 @@ struct ShirtItemView: View {
                         .foregroundColor(.blue)
                 }
             }
-            
             Text("Small: \(small)")
             Text("Medium: \(medium)")
             Text("Large: \(large)")
@@ -215,9 +197,3 @@ struct ShirtItemView: View {
         .padding()
     }
 }
-
-#Preview {
-    ShirtView()
-}
-
-

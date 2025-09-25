@@ -94,7 +94,7 @@ struct OrderRow: View {
                 Text("Size: \(order.size)")
                     .foregroundColor(.darkOrange)
                 Image(systemName: "person.fill")
-                    .foregroundColor(.darkBrown)
+                    .foregroundColor(gbl.darkBrown)
             }
         }
     }

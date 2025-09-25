@@ -51,7 +51,7 @@ struct WalkUpView: View {
                                 Text(studentItem.item)
                                     .foregroundColor(.gray)
                                 Text("Size: \(studentItem.size)")
-                                    .foregroundColor(.darkBrown)
+                                    .foregroundColor(gbl.darkBrown)
                             }
                         }
                     }
@@ -71,7 +71,7 @@ struct WalkUpView: View {
                     HStack {
                         Text("Add Student ID And Items")
                             .padding()
-                            .background(Color.darkBrown)
+                            .background(gbl.darkBrown)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
@@ -85,13 +85,7 @@ struct WalkUpView: View {
                         TextField("Student ID", text: $newStudentID)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
-//                        
-//                        Text("Select or Type an Item")
-//                            .font(.title2)
-//                            .padding()
-//                        
-//                        Toggle("Type Item", isOn: $isTyping)
-//                            .padding()
+
 
 //                        if isTyping {
                         HStack {
@@ -100,11 +94,10 @@ struct WalkUpView: View {
                                 .padding()
                             Button {
                                 print(searchItem)
-                                //TOKENMATCHES[cdl]
 
                                 let qur = CKQuery(recordType: "Item", predicate: NSPredicate(format: "title CONTAINS '\(searchItem.replacingOccurrences(of: "'", with: "\\'"))'"))
                                 print(qur)
-                                CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withQuery: qur, resultsLimit: 5) { a in
+                                gbl.db.fetch(withQuery: qur, resultsLimit: 5) { a in
 print(a)
                                     a.map { b in
                                         for c in b.matchResults {
@@ -151,7 +144,7 @@ print(a)
                                 Text("Add")
                                     .font(.title2)
                                     .padding()
-                                    .background(Color.darkOrange)
+                                    .background(gbl.darkOrange)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
                             }
@@ -163,7 +156,7 @@ print(a)
                                 Text("Cancel")
                                     .font(.title2)
                                     .padding()
-                                    .background(Color.darkBrown)
+                                    .background(gbl.darkBrown)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
                             }

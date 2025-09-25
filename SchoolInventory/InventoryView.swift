@@ -8,10 +8,9 @@
 import SwiftUI
 
 extension Color {
-    static let darkBrown = Color(red: 92/255, green: 64/255, blue: 51/255)
+    
     
 }
-
 
 struct InventoryView: View {
     let catagories: [String] = ["Shirts", "Sweatpants", "Hoodies", "Crewnecks"]
@@ -28,7 +27,7 @@ struct InventoryView: View {
                                 Text("Blanks")
                                     .frame(maxWidth: .infinity)
                                     .padding()
-                                    .background(i % 2 == 0 ? Color.darkBrown : Color.orange)
+                                    .background(i % 2 == 0 ? gbl.darkBrown : Color.orange)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
                             }
@@ -42,7 +41,7 @@ struct InventoryView: View {
                                 Text("Items")
                                     .frame(maxWidth: .infinity)
                                     .padding()
-                                    .background(i % 2 == 0 ? Color.darkBrown : Color.orange)
+                                    .background(i % 2 == 0 ? gbl.darkBrown : Color.orange)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
                             }
@@ -56,7 +55,7 @@ struct InventoryView: View {
                                 Text(catagories[i - 2])
                                     .frame(maxWidth: .infinity)
                                     .padding()
-                                    .background(i % 2 == 0 ? Color.darkBrown : Color.orange)
+                                    .background(i % 2 == 0 ? gbl.darkBrown : Color.orange)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
                             }
@@ -68,41 +67,3 @@ struct InventoryView: View {
         }
     }
 }
-
-//#Preview {
-//    InventoryView()
-//}
-
-
-//struct newItem:Identifiable, Hashable, CustomDebugStringConvertible, CustomStringConvertible{
-//    var id: CKRecord.ID
-//    var debugDescription: String { get {id.recordName}}
-//    var description: String {debugDescription}
-//    var styles:[newStyle]
-//    func createRecord() /*-> CKRecord*/{
-//        for i in styles {
-//            CKRecord.Reference.init(recordID: i.id, action: .none)
-//            
-//        }
-//    }
-//}
-//
-//struct newStyle:Identifiable, Hashable, CustomDebugStringConvertible, CustomStringConvertible{
-//    var id: CKRecord.ID = .init()
-//    var debugDescription: String { get {id.recordName}}
-//    var description: String {debugDescription}
-//    var sizes:[newSize]
-//    func createRecord(_ parent: CKRecord.ID) -> CKRecord{
-//        CKRecord(recordType: "<#stylename#>")
-//        CKRecord.Reference.init(recordID: parent, action: .none)
-//    }
-//}
-//struct newSize:Identifiable, Hashable, CustomDebugStringConvertible, CustomStringConvertible{
-//    var id: CKRecord.ID
-//    var debugDescription: String { get {id.recordName}}
-//    var description: String {debugDescription}
-//    func createRecord(_ parent: CKRecord.ID) -> CKRecord {
-//        CKRecord(recordType: "<#sizename#>")
-//        CKRecord.Reference.init(recordID: parent, action: .none)
-//    }
-//}

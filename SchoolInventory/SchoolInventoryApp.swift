@@ -6,14 +6,9 @@
 //
 
 import SwiftUI
-//import Firebase
 
 @main
 struct SchoolInventoryApp: App {
-    
-//    init() {
-//        FirebaseApp.configure()
-//    }
     var body: some Scene {
         WindowGroup {
             ContentView()

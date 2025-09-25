@@ -77,7 +77,7 @@ struct CrewnecksView: View {
                         Text("Check Stock")
                             .font(.title2)
                             .padding()
-                            .background(Color.darkBrown)
+                            .background(gbl.darkBrown)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
@@ -230,7 +230,7 @@ struct CrewnecksView: View {
                     .font(.title2)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.darkBrown)
+                    .background(gbl.darkBrown)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
@@ -290,8 +290,4 @@ struct CrewnecksView: View {
             }
         }
     }
-}
-
-#Preview {
-    CrewnecksView()
 }
