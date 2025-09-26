@@ -13,7 +13,9 @@ import CloudKit
 struct newItemView: View {
     @Environment(\.dismiss) private var dismiss
     @State var catagory:[String]
-    @State private var recName:String = ""
+    @State private var recName:String
+    @State var NAME:String
+    @State var name:String
     @State var originals:[CKRecord.ID]
     @State var things:[String]; @State var stuff:[snake] = []
     @State var whole : Int = 9
@@ -21,32 +23,27 @@ struct newItemView: View {
     @FocusState var isFocused: Int?
     
     let recordType:String
-    let RECORDNAME:String?
     
     var hbed : blDe? = nil
-    
-    var name:Binding<String> {
-        Binding {
-            RECORDNAME ?? recName
-        } set: { newValue in
-            if RECORDNAME == nil { recName = newValue }
-        }
-    }
     
     init (_ c:String, _ rt:String) {
         catagory = c == "" ? [] : [c]
         recordType = rt
-        RECORDNAME = nil
+        recName = UUID().uuidString
+        name = ""
+        NAME = ""
         things = []
         originals = []
     }
     
     init (bed:blDe) {
 //        catagory = be
-        RECORDNAME = bed.name
+        recName = bed.id
         recordType = bed.type
         catagory = bed.cats
         hbed = bed
+        name = bed.n ?? "400"
+        NAME = bed.name
 //        print("[")
         originals = bed.to
         var t:[String] = []
@@ -58,11 +55,13 @@ struct newItemView: View {
 //        print("]")/
     }
     init (blank:blDe) {
-        RECORDNAME = blank.name
+        recName = blank.id
         recordType = blank.type
         catagory = blank.cats
         hbed = blank
         originals = blank.to
+        name = blank.name
+        NAME = blank.n ?? "400"
 //        print("[")
         var t:[String] = []
         for i in blank.to {
@@ -75,7 +74,8 @@ struct newItemView: View {
 
     var body: some View {
         Text("Hello, World!")
-        TextField("Enter Item Name", text:name)
+//        Text
+        TextField("Enter Item Name", text:$name)
         
         HStack {
             Text(" Defualt Price : $")
@@ -263,7 +263,7 @@ struct newItemView: View {
                             //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
                             //                        Int()
                         })).foregroundStyle(.blue)
-                    }
+                    }.textFieldStyle(.roundedBorder)
                 }
             }
         }
@@ -273,7 +273,7 @@ struct newItemView: View {
         Button("Push") {
             let db = gbl.db
             
-            var rec:CKRecord = CKRecord(recordType: recordType, recordID: CKRecord.ID(recordName: name.wrappedValue))
+            var rec:CKRecord = CKRecord(recordType: recordType, recordID: CKRecord.ID(recordName: recName))
             
             rec["cost"] = Int64(whole * 10000 + fraction)
             var ider:[CKRecord.Reference] = []
@@ -311,7 +311,7 @@ struct newItemView: View {
             operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
              db.add(operation)
             
-        }.disabled(name.wrappedValue == "")
+        }.disabled(name == "")
         .navigationBarBackButtonHidden()
         .onAppear {
             if recordType == "blank" {
@@ -348,6 +348,7 @@ struct newItemView: View {
 //#Preview {
 //    newItemView("abc", "def")
 //}
+
 //sillySize => ss => ssssss => snake
 struct snake : Identifiable, Hashable {
     var id:String

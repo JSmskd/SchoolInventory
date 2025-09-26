@@ -142,7 +142,7 @@ struct BlanksView: View {
                                 .background(gbl.darkBrown)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
-                        }
+                        }//.disabled()
                         
                         NavigationLink {
                             newItemView(FILTERTEXT, recordType)
@@ -157,15 +157,16 @@ struct BlanksView: View {
                     }
                 }
                 .padding()
-                .navigationTitle("Blanks")
+//                .navigationTitle(FILTERTEXT)
+                
             }
-            .alert(isPresented: $showStockAlert) {
-                Alert(
-                    title: Text("Stock Status"),
-                    message: Text(stockAlertMessage),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
+//            .alert(isPresented: $showStockAlert) {
+//                Alert(
+//                    title: Text("Stock Status"),
+//                    message: Text(stockAlertMessage),
+//                    dismissButton: .default(Text("OK"))
+//                )
+//            }
         }
         .onAppear {
             fetchData()
@@ -173,7 +174,7 @@ struct BlanksView: View {
     }
     
     func saveChanges() {
-        saveStockData()
+//        saveStockData()
     }
     
     func checkStock() {
@@ -193,36 +194,6 @@ struct BlanksView: View {
     func loadStockData() {
         
     }
-}
-struct blDe : Identifiable, CustomStringConvertible, Hashable {
-    var description: String { get { "\(name) \(price)"}}
-    var id: String {get {name}}
-    var name:String = ""
-    var price : Int64
-    
-    var type:String
-    var cats:[String]
-    var record:CKRecord
-    
-    var to:[CKRecord.ID]
-    init? (_ res: CKRecord?) {
-        if res == nil {return nil}
-            let a = res!
-            self.record = a
-        if a.recordID.recordName == "65D2492E-1C25-4668-A294-A6975C2DDF7E" {print(a)}
-            type = a.recordType
-        name = a.recordType == "Item" ? a["title"] as? String ?? a.recordID.recordName : a.recordID.recordName
-        cats = (a.recordType == "Item" ? a["tags"] : a["materials"]) as? [String] ?? [] 
-            price = a[a.recordType == "Item" ? "price" : "cost"] as? Int64 ?? -1
-        let refs = a[a.recordType == "Item" ? "blanks" : "sizes"] as? [CKRecord.Reference] ?? []
-        var out:[CKRecord.ID] = []
-        for i in refs {
-            out.append(i.recordID)
-        }
-        to = out
-        
-    }
-    
 }
 
 #Preview {
