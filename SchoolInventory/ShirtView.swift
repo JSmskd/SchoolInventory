@@ -197,3 +197,14 @@ struct ShirtItemView: View {
         .padding()
     }
 }
+
+#Preview {
+    ShirtItemView(
+                name: .constant("Gildan5000"),
+                small: .constant(12),
+                medium: .constant(25),
+                large: .constant(8),
+                imageName: "Gildan5000",
+                onEdit: {} 
+            )
+}

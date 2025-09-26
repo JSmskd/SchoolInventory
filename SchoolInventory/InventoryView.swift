@@ -30,8 +30,9 @@ struct InventoryView: View {
                                     .background(i % 2 == 0 ? gbl.darkBrown : Color.orange)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
+                                    .font(.largeTitle)
                             }
-                            
+                            .padding()
                         }
                     }else if i == 1 {
                         VStack(spacing: 20) {
@@ -44,7 +45,9 @@ struct InventoryView: View {
                                     .background(i % 2 == 0 ? gbl.darkBrown : Color.orange)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
+                                    .font(.largeTitle)
                             }
+                            .padding()
                             
                         }
                     } else {
@@ -58,12 +61,17 @@ struct InventoryView: View {
                                     .background(i % 2 == 0 ? gbl.darkBrown : Color.orange)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
+                                    .font(.largeTitle)
                             }
-                            
+                            .padding()
                         }
                     }
                 }
             }
         }
     }
+}
+
+#Preview {
+    InventoryView()
 }

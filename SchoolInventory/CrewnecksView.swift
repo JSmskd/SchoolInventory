@@ -17,22 +17,22 @@ struct ShirtItem: Identifiable, Hashable {
 }
 
 struct CrewnecksView: View {
-    @State private var shirts: [ShirtItem] = []
+    @State var shirts: [ShirtItem] = []
     
     @State private var selectedShirt: ShirtItem? = nil
     @State private var showEditSheet = false
     @State private var showAddSheet = false
-
+    
     @State private var editedName: String = ""
     @State private var editedSmall: Int = 0
     @State private var editedMedium: Int = 0
     @State private var editedLarge: Int = 0
     @State private var editedImage: UIImage? = nil
     @State private var editedImageFilename: String? = nil
-
+    
     @State private var stockAlertMessage = ""
     @State private var showStockAlert = false
-
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -41,7 +41,7 @@ struct CrewnecksView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text(shirt.name)
                                 .font(.headline)
-
+                            
                             if let image = loadImage(filename: shirt.imageFilename) {
                                 Image(uiImage: image)
                                     .resizable()
@@ -54,14 +54,14 @@ struct CrewnecksView: View {
                                     .frame(height: 120)
                                     .overlay(Text("No Image"))
                             }
-
+                            
                             HStack {
                                 Text("S: \(shirt.small)")
                                 Text("M: \(shirt.medium)")
                                 Text("L: \(shirt.large)")
                             }
                             .font(.subheadline)
-
+                            
                             Button("Edit") {
                                 editShirt(shirt)
                             }
@@ -72,7 +72,7 @@ struct CrewnecksView: View {
                         .cornerRadius(12)
                         .padding(.bottom, 10)
                     }
-
+                    
                     Button(action: checkStock) {
                         Text("Check Stock")
                             .font(.title2)
@@ -108,7 +108,7 @@ struct CrewnecksView: View {
             .onAppear(perform: loadStockData)
         }
     }
-
+    
     func editShirt(_ shirt: ShirtItem) {
         selectedShirt = shirt
         editedName = shirt.name
@@ -119,14 +119,14 @@ struct CrewnecksView: View {
         editedImage = loadImage(filename: shirt.imageFilename)
         showEditSheet = true
     }
-
+    
     func saveChanges(isNew: Bool) {
         var filename = editedImageFilename
         
         if let img = editedImage {
             filename = saveImageToDisk(image: img)
         }
-
+        
         let newShirt = ShirtItem(
             name: editedName,
             small: editedSmall,
@@ -140,10 +140,10 @@ struct CrewnecksView: View {
         } else if let selected = selectedShirt, let index = shirts.firstIndex(of: selected) {
             shirts[index] = newShirt
         }
-
+        
         saveStockData()
     }
-
+    
     func checkStock() {
         if shirts.contains(where: { $0.small < 3 || $0.medium < 3 || $0.large < 3 }) {
             stockAlertMessage = "Low stock! Some sizes have less than 3 items."
@@ -152,7 +152,7 @@ struct CrewnecksView: View {
         }
         showStockAlert = true
     }
-
+    
     func clearEditFields() {
         editedName = ""
         editedSmall = 0
@@ -161,12 +161,12 @@ struct CrewnecksView: View {
         editedImage = nil
         editedImageFilename = nil
     }
-
+    
     func editSheet(isNew: Bool) -> some View {
         VStack(spacing: 20) {
             Text(isNew ? "Add New Shirt" : "Edit Shirt")
                 .font(.title2)
-
+            
             Rectangle()
                 .fill(Color.gray.opacity(0.2))
                 .frame(height: 200)
@@ -194,14 +194,14 @@ struct CrewnecksView: View {
                     }
                     return false
                 }
-
+            
             TextField("Shirt Name", text: $editedName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-
+            
             Stepper("Small: \(editedSmall)", value: $editedSmall, in: 0...100)
             Stepper("Medium: \(editedMedium)", value: $editedMedium, in: 0...100)
             Stepper("Large: \(editedLarge)", value: $editedLarge, in: 0...100)
-
+            
             Button(action: {
                 saveChanges(isNew: isNew)
                 if isNew {
@@ -218,7 +218,7 @@ struct CrewnecksView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
-
+            
             Button(action: {
                 if isNew {
                     showAddSheet = false
@@ -237,9 +237,9 @@ struct CrewnecksView: View {
         }
         .padding()
     }
-
+    
     // MARK: - Image File Saving & Loading
-
+    
     func saveImageToDisk(image: UIImage) -> String? {
         guard let data = image.jpegData(compressionQuality: 0.8) else { return nil }
         let filename = UUID().uuidString + ".jpg"
@@ -252,19 +252,19 @@ struct CrewnecksView: View {
             return nil
         }
     }
-
+    
     func loadImage(filename: String?) -> UIImage? {
         guard let filename = filename else { return nil }
         let url = getDocumentsDirectory().appendingPathComponent(filename)
         return UIImage(contentsOfFile: url.path)
     }
-
+    
     func getDocumentsDirectory() -> URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
-
+    
     // MARK: - UserDefaults Persistence
-
+    
     func saveStockData() {
         let data = shirts.map { [
             "id": $0.id.uuidString,
@@ -276,7 +276,7 @@ struct CrewnecksView: View {
         ]}
         UserDefaults.standard.set(data, forKey: "shirtsData")
     }
-
+    
     func loadStockData() {
         if let data = UserDefaults.standard.array(forKey: "shirtsData") as? [[String: Any]] {
             shirts = data.compactMap { dict in
@@ -284,10 +284,21 @@ struct CrewnecksView: View {
                       let small = dict["small"] as? Int,
                       let medium = dict["medium"] as? Int,
                       let large = dict["large"] as? Int else { return nil }
-
+                
                 let filename = dict["imageFilename"] as? String
                 return ShirtItem(name: name, small: small, medium: medium, large: large, imageFilename: filename)
             }
         }
     }
+}
+
+#Preview {
+    let mockData: [ShirtItem] = [
+        ShirtItem(name: "Classic Grey Crew", small: 10, medium: 15, large: 5, imageFilename: nil),
+        ShirtItem(name: "Navy Blue Special", small: 2, medium: 8, large: 12, imageFilename: nil),
+        ShirtItem(name: "Forest Green Vintage", small: 20, medium: 3, large: 9, imageFilename: nil)
+    ]
+    
+    CrewnecksView(shirts: mockData)
+    
 }

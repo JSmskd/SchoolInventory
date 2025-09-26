@@ -224,3 +224,10 @@ struct blDe : Identifiable, CustomStringConvertible, Hashable {
     }
     
 }
+
+#Preview {
+
+    BlanksView(design: "Test")
+    
+}
+
