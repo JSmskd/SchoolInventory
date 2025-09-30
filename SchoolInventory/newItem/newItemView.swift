@@ -247,23 +247,14 @@ struct newItemView: View {
                 } else if recordType == "blank" {
                     for i in stuff {
                         if hbed != nil {
-                            ider.append(.init(record: i.generateCKRecord(hbed!), action: .none))  // i.n
+                            ider.append(.init(record: i.generateCKRecord(hbed!), action: .none))
                         }
                     }
                 }
                 rec[recordType == "Item" ? "blanks" : "sizes"] = ider
-                //            if recordType == "Item" {
                 if catagory != [] {
                     rec[recordType == "Item" ? "tags" : "materials"] = catagory
                 }
-                //            }
-                
-                //            rec[recordType == "Item" ? ""]
-                //            db.
-                //            db.save(rec) { r, e in
-                //                print(e)
-                //                e == CKError.
-                //            }
                 var svec:[CKRecord] = [rec]
                 if hbed != nil {
                     for i in stuff {
@@ -316,16 +307,9 @@ struct newItemView: View {
                 }
             }
             stuff = recs
-            //            snake()
-            //            stuff
-            //            if recs.isEmpty {return}
         }
     }
 }
-
-//#Preview {
-//    newItemView("abc", "def")
-//}
 
 //sillySize => ss => ssssss => snake
 struct snake : Identifiable, Hashable {
