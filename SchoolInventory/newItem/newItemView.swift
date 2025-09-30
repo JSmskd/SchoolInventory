@@ -12,6 +12,9 @@ import CloudKit
 
 struct newItemView: View {
     @Environment(\.dismiss) private var dismiss
+    @State var images:[UIImage] = []
+    @State var image: Image? = nil
+    @State var showCaptureImageView = false
     @State var catagory:[String]
     @State private var recName:String
     @State var NAME:String
@@ -37,14 +40,14 @@ struct newItemView: View {
     }
     
     init (bed:blDe) {
-//        catagory = be
+        //        catagory = be
         recName = bed.id
         recordType = bed.type
         catagory = bed.cats
         hbed = bed
         name = bed.n ?? "400"
         NAME = bed.name
-//        print("[")
+        //        print("[")
         originals = bed.to
         var t:[String] = []
         for i in bed.to {
@@ -52,7 +55,7 @@ struct newItemView: View {
             print("\t\(i.recordName)")
         }
         things = t
-//        print("]")/
+        //        print("]")/
     }
     init (blank:blDe) {
         recName = blank.id
@@ -62,75 +65,76 @@ struct newItemView: View {
         originals = blank.to
         name = blank.name
         NAME = blank.n ?? "400"
-//        print("[")
+        //        print("[")
         var t:[String] = []
         for i in blank.to {
             t.append(i.recordName)
-//            print("\t\(i.recordName)")
+            //            print("\t\(i.recordName)")
         }
         things = t
         stuff = []
     }
-
+    
     var body: some View {
-        Text("Hello, World!")
-//        Text
-        TextField("Enter Item Name", text:$name)
-        
-        HStack {
-            Text(" Defualt Price : $")
-            TextField("Enter the whole dollar amount", value: $whole, format: .number).frame(maxWidth: 24 * 2)
-                .background(Color.yellow).grayscale(1).cornerRadius(3)
-            Text(".")
-            TextField("enter the decimal amount", value: $fraction, format: .number).frame(maxWidth: 24 * 2)
-                .background(Color.yellow).grayscale(1).cornerRadius(3)
-        }.textFieldStyle(.plain)
-            .border(.gray, width: 1)
-        
-        
-        Text("Item preview")
-        VStack {
-            Text("Price : $\(whole).\(fraction)  ")
-        }
-        HStack {
-            Button {
-                if recordType == "Item" {
-                    things.append("\(Int.random(in: 0..<10000))")
-                } else {
-                    stuff.append(.init());
-                }
-//                iter += 1
-            } label: {
-                Text("Add size")
-            }
-//            Button {
-//                
-//            } label: {
-//                Text("Add color")
-//            }
-        }
-//        Button("hi"){isFocused=nil;print(isFocused)}
-        VStack{
+        ZStack { VStack {
+            Text("Hello, World!")
+            //        Text
+            TextField("Enter Item Name", text:$name)
+            
             HStack {
-                ForEach(0..<catagory.count, id: \.self) { i in
-                    HStack {
-                        Button {
-                            catagory.remove(at: i)
-                        } label: {
-                            Image(systemName: "xmark.circle.fill").foregroundStyle(.red)
-                        }
-                        .disabled((isFocused ?? -1) == i)
-                        TextField("Name", text: $catagory[i])
-                    }
-                    .padding().focused($isFocused,equals: i)
-                }
-                Button {
-                    catagory.append("")
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                    
-                }
+                Text(" Defualt Price : $")
+                TextField("Enter the whole dollar amount", value: $whole, format: .number).frame(maxWidth: 24 * 2)
+                    .background(Color.yellow).grayscale(1).cornerRadius(3)
+                Text(".")
+                TextField("enter the decimal amount", value: $fraction, format: .number).frame(maxWidth: 24 * 2)
+                    .background(Color.yellow).grayscale(1).cornerRadius(3)
+            }.textFieldStyle(.plain)
+                .border(.gray, width: 1)
+            
+            
+            Text("Item preview")
+            VStack {
+                Text("Price : $\(whole).\(fraction)  ")
             }
+            HStack {
+                Button {
+                    if recordType == "Item" {
+                        things.append("\(Int.random(in: 0..<10000))")
+                    } else {
+                        stuff.append(.init());
+                    }
+                    //                iter += 1
+                } label: {
+                    Text("Add size")
+                }
+                //            Button {
+                //
+                //            } label: {
+                //                Text("Add color")
+                //            }
+            }
+            //        Button("hi"){isFocused=nil;print(isFocused)}
+            VStack{
+                HStack {
+                    ForEach(0..<catagory.count, id: \.self) { i in
+                        HStack {
+                            Button {
+                                catagory.remove(at: i)
+                            } label: {
+                                Image(systemName: "xmark.circle.fill").foregroundStyle(.red)
+                            }
+                            .disabled((isFocused ?? -1) == i)
+                            TextField("Name", text: $catagory[i])
+                        }
+                        .padding().focused($isFocused,equals: i)
+                    }
+                    Button {
+                        catagory.append("")
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                        
+                    }
+                }
                 .padding()
                 
                 HStack {
@@ -142,187 +146,217 @@ struct newItemView: View {
                     }
                 }
             }
-        if recordType == "Item" {
-            List($things, id: \.self, editActions: .all) { i in
-                HStack {
-                    TextField("ID", text: i)
-                    Button("Paste ID") {
-                        if UIPasteboard.general.string != nil {
-                            if UIPasteboard.general.string!.starts(with: "JSI") {
-                                var it = UIPasteboard.general.string!
-                                it.removeFirst();it.removeFirst();it.removeFirst()
-                                i.wrappedValue = it
+            if recordType == "Item" {
+                VStack {
+                    Button(action: {
+                        self.showCaptureImageView.toggle()
+                    }) {
+                        Text("Choose photos")
+                    }
+                    HStack {
+                        ForEach(0..<images.count, id:\.self) { i in
+                            Button {
+                                images.remove(at: i)
+                            } label: {
+                                Image(systemName: "xmark.circle.fill").resizable().foregroundStyle(.gray)
+                                    .frame(width: 32, height: 32)
+                                    .clipShape(Circle())
+                                //                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                                //                                .shadow(radius: 10)
                             }
+                            Image(uiImage: images[i]).resizable()
+                                .frame(width: 250, height: 200)
+//                                .clipShape(Circle())
+//                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
+//                                .shadow(radius: 10)
                         }
                     }
-                    //                    Button {
-                    //                        i.wrappedValue.s.append((addPrice:0,name:"hi",n:"h"))
-                    //                    } label: {
-                    //                        Text("Add Size")
-                    //                    }
-                    
-                    //                    Text("$")
-                    //                    TextField("addPrice", value: Binding(get: {
-                    //                        i.wrappedValue.addPrice / 10000
-                    //                    }, set: { v in
-                    //                        let p = i.wrappedValue.addPrice
-                    //                        var o : Int = 0
-                    //                        o -= p
-                    //                        o /= 10000
-                    //                        o *= 10000
-                    //                        o += p
-                    //
-                    //                        o += v * 10000
-                    //
-                    //                        i.wrappedValue.addPrice = o
-                    //                    }), format: .number)
-                    //                    .frame(maxWidth: 24 * 2)
-                    //                    .background(Color.yellow).grayscale(1).cornerRadius(3)
-                    //                    Text(".")
-                    //                    TextField("addPrice", value: Binding(get: {
-                    //                        (i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))
-                    //                    }, set: { v in
-                    //                        let p = i.wrappedValue.addPrice
-                    //                        i.wrappedValue.addPrice = p / 10000 * 10000 + v
-                    //
-                    //                    }), format: .number)
-                    //                    .frame(maxWidth: 24 * 2)
-                    //                    .background(Color.yellow).grayscale(1).cornerRadius(3)
-                    //                    Text("cost: \(i.wrappedValue.addPrice / 10000)")
-                    //                    Text("cost: \(i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))")
-                    //                    Text("cost: \(i.wrappedValue.addPrice)")
                 }
-                
-                
-                
-                //                ForEach(i.s as! Binding<[(addPrice:Int,name:String,n:String)]>, id:\.wrappedValue.name) { n in
-                //                        HStack {
-                ////                            Button {
-                //                                Text("•\t" + n.name.wrappedValue)
-                ////                                n.wrappedValue.s.append((addPrice:0,name:"hi",n:"h"))
-                ////                            } label: {
-                ////                                Text("Add Size")
-                ////                            }
-                //
-                //                            Text("$")
-                //                            TextField("addPrice", value: Binding(get: {
-                //
-                //                                n.wrappedValue.addPrice / 10000
-                //                            }, set: { v in
-                //                                let p = n.wrappedValue.addPrice
-                //                                var o : Int = 0
-                //                                o -= p; o /= 10000; o *= 10000; o += p; o += v * 10000
-                //
-                //                                n.wrappedValue.addPrice = o
-                //                            }), format: .number)
-                //                            .frame(maxWidth: 24 * 2)
-                //                                .background(Color.yellow).grayscale(1).cornerRadius(3)
-                //                            Text(".")
-                //                            TextField("addPrice", value: Binding(get: {
-                //                                (n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))
-                //                            }, set: { v in
-                //                                let p = n.wrappedValue.addPrice
-                //                                n.wrappedValue.addPrice = p / 10000 * 10000 + v
-                //
-                //                            }), format: .number)
-                //                            .frame(maxWidth: 24 * 2)
-                //                                .background(Color.yellow).grayscale(1).cornerRadius(3)
-                //                            Text("cost: \(n.wrappedValue.addPrice / 10000)")
-                //                            Text("cost: \(n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))")
-                //                            Text("cost: \(n.wrappedValue.addPrice)")
-            }
-        } else {
-            List{
-                HStack{Text("name :").foregroundStyle(.red)
-                    Text("n :").foregroundStyle(.yellow)
-                    Text("quantity :")
-                    Text("cost * 10000") .foregroundStyle(.blue)
-                }
-                ForEach(0..<stuff.count, id:\.self) { i in
+                List($things, id: \.self, editActions: .all) { i in
                     HStack {
-                        Text(stuff[i].id).foregroundStyle(.gray)
+                        TextField("ID", text: i)
+                        Button("Paste ID") {
+                            if UIPasteboard.general.string != nil {
+                                if UIPasteboard.general.string!.starts(with: "JSI") {
+                                    var it = UIPasteboard.general.string!
+                                    it.removeFirst();it.removeFirst();it.removeFirst()
+                                    i.wrappedValue = it
+                                }
+                            }
+                        }
+                        //                    Button {
+                        //                        i.wrappedValue.s.append((addPrice:0,name:"hi",n:"h"))
+                        //                    } label: {
+                        //                        Text("Add Size")
+                        //                    }
                         
-                        TextField("", text: $stuff[i].name).foregroundStyle(.red)
-                        //                    Text(stuff[i].name)
-                        
-                        TextField("", text: $stuff[i].n).foregroundStyle(.yellow)
-                        
-                        TextField("", text: Binding(get: {
-                            stuff[i].q.description
-                        }, set: { v in
-                            var b = stuff[i].q
-                            stuff[i].q = Int64(v) ?? b
-                            //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
-                            //                        Int()
-                        }) )
-                        TextField("", text: Binding(get: {
-                            stuff[i].price.description
-                        }, set: { v in
-                                                    var b = stuff[i].price
-                            stuff[i].price = Int64(v) ?? b
-                            //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
-                            //                        Int()
-                        })).foregroundStyle(.blue)
-                    }.textFieldStyle(.roundedBorder)
+                        //                    Text("$")
+                        //                    TextField("addPrice", value: Binding(get: {
+                        //                        i.wrappedValue.addPrice / 10000
+                        //                    }, set: { v in
+                        //                        let p = i.wrappedValue.addPrice
+                        //                        var o : Int = 0
+                        //                        o -= p
+                        //                        o /= 10000
+                        //                        o *= 10000
+                        //                        o += p
+                        //
+                        //                        o += v * 10000
+                        //
+                        //                        i.wrappedValue.addPrice = o
+                        //                    }), format: .number)
+                        //                    .frame(maxWidth: 24 * 2)
+                        //                    .background(Color.yellow).grayscale(1).cornerRadius(3)
+                        //                    Text(".")
+                        //                    TextField("addPrice", value: Binding(get: {
+                        //                        (i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))
+                        //                    }, set: { v in
+                        //                        let p = i.wrappedValue.addPrice
+                        //                        i.wrappedValue.addPrice = p / 10000 * 10000 + v
+                        //
+                        //                    }), format: .number)
+                        //                    .frame(maxWidth: 24 * 2)
+                        //                    .background(Color.yellow).grayscale(1).cornerRadius(3)
+                        //                    Text("cost: \(i.wrappedValue.addPrice / 10000)")
+                        //                    Text("cost: \(i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))")
+                        //                    Text("cost: \(i.wrappedValue.addPrice)")
+                    }
+                    
+                    
+                    
+                    //                ForEach(i.s as! Binding<[(addPrice:Int,name:String,n:String)]>, id:\.wrappedValue.name) { n in
+                    //                        HStack {
+                    ////                            Button {
+                    //                                Text("•\t" + n.name.wrappedValue)
+                    ////                                n.wrappedValue.s.append((addPrice:0,name:"hi",n:"h"))
+                    ////                            } label: {
+                    ////                                Text("Add Size")
+                    ////                            }
+                    //
+                    //                            Text("$")
+                    //                            TextField("addPrice", value: Binding(get: {
+                    //
+                    //                                n.wrappedValue.addPrice / 10000
+                    //                            }, set: { v in
+                    //                                let p = n.wrappedValue.addPrice
+                    //                                var o : Int = 0
+                    //                                o -= p; o /= 10000; o *= 10000; o += p; o += v * 10000
+                    //
+                    //                                n.wrappedValue.addPrice = o
+                    //                            }), format: .number)
+                    //                            .frame(maxWidth: 24 * 2)
+                    //                                .background(Color.yellow).grayscale(1).cornerRadius(3)
+                    //                            Text(".")
+                    //                            TextField("addPrice", value: Binding(get: {
+                    //                                (n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))
+                    //                            }, set: { v in
+                    //                                let p = n.wrappedValue.addPrice
+                    //                                n.wrappedValue.addPrice = p / 10000 * 10000 + v
+                    //
+                    //                            }), format: .number)
+                    //                            .frame(maxWidth: 24 * 2)
+                    //                                .background(Color.yellow).grayscale(1).cornerRadius(3)
+                    //                            Text("cost: \(n.wrappedValue.addPrice / 10000)")
+                    //                            Text("cost: \(n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))")
+                    //                            Text("cost: \(n.wrappedValue.addPrice)")
                 }
-            }
-        }
-        Button("Cancel") {
-            dismiss()
-        }
-        Button("Push") {
-            let db = gbl.db
-            
-            var rec:CKRecord = CKRecord(recordType: recordType, recordID: CKRecord.ID(recordName: recName))
-            
-            rec["cost"] = Int64(whole * 10000 + fraction)
-            var ider:[CKRecord.Reference] = []
-            if recordType == "Item" {
-                for i in things {
-                    ider.append(.init(recordID: CKRecord.ID(recordName: i), action: .none))  // i.n
-                }
-            } else if recordType == "blank" {
-                for i in stuff {
-                    if hbed != nil {
-                        ider.append(.init(record: i.generateCKRecord(hbed!), action: .none))  // i.n
+            } else {
+                List{
+                    HStack{Text("name :").foregroundStyle(.red)
+                        Text("n :").foregroundStyle(.yellow)
+                        Text("quantity :")
+                        Text("cost * 10000") .foregroundStyle(.blue)
+                    }
+                    ForEach(0..<stuff.count, id:\.self) { i in
+                        HStack {
+                            Text(stuff[i].id).foregroundStyle(.gray)
+                            
+                            TextField("", text: $stuff[i].name).foregroundStyle(.red)
+                            //                    Text(stuff[i].name)
+                            
+                            TextField("", text: $stuff[i].n).foregroundStyle(.yellow)
+                            
+                            TextField("", text: Binding(get: {
+                                stuff[i].q.description
+                            }, set: { v in
+                                var b = stuff[i].q
+                                stuff[i].q = Int64(v) ?? b
+                                //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
+                                //                        Int()
+                            }) )
+                            TextField("", text: Binding(get: {
+                                stuff[i].price.description
+                            }, set: { v in
+                                var b = stuff[i].price
+                                stuff[i].price = Int64(v) ?? b
+                                //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
+                                //                        Int()
+                            })).foregroundStyle(.blue)
+                        }.textFieldStyle(.roundedBorder)
                     }
                 }
             }
-            rec[recordType == "Item" ? "blanks" : "sizes"] = ider
-//            if recordType == "Item" {
+            Button("Cancel") {
+                dismiss()
+            }
+            Button("Push") {
+                let db = gbl.db
+                
+                var rec:CKRecord = CKRecord(recordType: recordType, recordID: CKRecord.ID(recordName: recName))
+                
+                rec["cost"] = Int64(whole * 10000 + fraction)
+                var ider:[CKRecord.Reference] = []
+                if recordType == "Item" {
+                    for i in things {
+                        ider.append(.init(recordID: CKRecord.ID(recordName: i), action: .none))  // i.n
+                    }
+                } else if recordType == "blank" {
+                    for i in stuff {
+                        if hbed != nil {
+                            ider.append(.init(record: i.generateCKRecord(hbed!), action: .none))  // i.n
+                        }
+                    }
+                }
+                rec[recordType == "Item" ? "blanks" : "sizes"] = ider
+                //            if recordType == "Item" {
                 if catagory != [] {
                     rec[recordType == "Item" ? "tags" : "materials"] = catagory
                 }
-//            }
-            
-//            rec[recordType == "Item" ? ""]
-//            db.
-//            db.save(rec) { r, e in
-//                print(e)
-//                e == CKError.
-//            }
-            var svec:[CKRecord] = [rec]
-            if hbed != nil {
-                for i in stuff {
-                    svec.append(i.generateCKRecord(hbed!))
+                //            }
+                
+                //            rec[recordType == "Item" ? ""]
+                //            db.
+                //            db.save(rec) { r, e in
+                //                print(e)
+                //                e == CKError.
+                //            }
+                var svec:[CKRecord] = [rec]
+                if hbed != nil {
+                    for i in stuff {
+                        svec.append(i.generateCKRecord(hbed!))
+                    }
+                } else {print("ISNIL")}
+                let operation = CKModifyRecordsOperation(recordsToSave: svec, recordIDsToDelete: nil)
+                operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
+                db.add(operation)
+                
+            }.disabled(name == "")
+                .navigationBarBackButtonHidden()
+                .onAppear {
+                    if recordType == "blank" {
+                        getstuff()
+                    }
+                    //            print(stuff)
                 }
-            } else {print("ISNIL")}
-            let operation = CKModifyRecordsOperation(recordsToSave: svec, recordIDsToDelete: nil)
-            operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
-             db.add(operation)
-            
-        }.disabled(name == "")
-        .navigationBarBackButtonHidden()
-        .onAppear {
-            if recordType == "blank" {
-                getstuff()
+        }
+            if (showCaptureImageView) {
+                CaptureImageView(isShown: $showCaptureImageView, image: $image, images:$images)
             }
-//            print(stuff)
         }
     }
     func getstuff() {
         stuff = []
-//        var ready:[snake] = []
+        //        var ready:[snake] = []
         gbl.db.fetch(withRecordIDs: originals) { r in
             var recs:[snake] = []
             do {
@@ -338,8 +372,8 @@ struct newItemView: View {
                 }
             }
             stuff = recs
-//            snake()
-//            stuff
+            //            snake()
+            //            stuff
             //            if recs.isEmpty {return}
         }
     }
@@ -385,5 +419,49 @@ struct snake : Identifiable, Hashable {
         record["cost"] = price
         record["blank"] = CKRecord.Reference.init(record: parentID.record, action: .none)
         return record
+    }
+}
+
+class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    @Binding var isCoordinatorShown: Bool
+    @Binding var imageInCoordinator: Image?
+    @Binding var images: [UIImage]
+    
+    init(isShown: Binding<Bool>, image: Binding<Image?>, images: Binding<[UIImage]>) {
+        _isCoordinatorShown = isShown
+        _imageInCoordinator = image
+        _images = images
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+        images.append(unwrapImage)
+        imageInCoordinator = Image(uiImage: unwrapImage)
+        isCoordinatorShown = false
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        isCoordinatorShown = false
+    }
+}
+struct CaptureImageView: UIViewControllerRepresentable {
+    /// MARK: - Properties
+    @Binding var isShown: Bool
+    @Binding var image: Image?
+    @Binding var images: [UIImage]
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(isShown: $isShown, image: $image, images: $images)
+    }
+    func makeUIViewController(context: UIViewControllerRepresentableContext<CaptureImageView>) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.delegate = context.coordinator
+        return picker
+    }
+    
+    func updateUIViewController(_ uiViewController: UIImagePickerController,
+                                context: UIViewControllerRepresentableContext<CaptureImageView>) {
+        
     }
 }
