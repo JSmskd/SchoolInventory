@@ -184,81 +184,7 @@ struct newItemView: View {
                                 }
                             }
                         }
-                        //                    Button {
-                        //                        i.wrappedValue.s.append((addPrice:0,name:"hi",n:"h"))
-                        //                    } label: {
-                        //                        Text("Add Size")
-                        //                    }
-                        
-                        //                    Text("$")
-                        //                    TextField("addPrice", value: Binding(get: {
-                        //                        i.wrappedValue.addPrice / 10000
-                        //                    }, set: { v in
-                        //                        let p = i.wrappedValue.addPrice
-                        //                        var o : Int = 0
-                        //                        o -= p
-                        //                        o /= 10000
-                        //                        o *= 10000
-                        //                        o += p
-                        //
-                        //                        o += v * 10000
-                        //
-                        //                        i.wrappedValue.addPrice = o
-                        //                    }), format: .number)
-                        //                    .frame(maxWidth: 24 * 2)
-                        //                    .background(Color.yellow).grayscale(1).cornerRadius(3)
-                        //                    Text(".")
-                        //                    TextField("addPrice", value: Binding(get: {
-                        //                        (i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))
-                        //                    }, set: { v in
-                        //                        let p = i.wrappedValue.addPrice
-                        //                        i.wrappedValue.addPrice = p / 10000 * 10000 + v
-                        //
-                        //                    }), format: .number)
-                        //                    .frame(maxWidth: 24 * 2)
-                        //                    .background(Color.yellow).grayscale(1).cornerRadius(3)
-                        //                    Text("cost: \(i.wrappedValue.addPrice / 10000)")
-                        //                    Text("cost: \(i.wrappedValue.addPrice - (i.wrappedValue.addPrice / 10000 * 10000))")
-                        //                    Text("cost: \(i.wrappedValue.addPrice)")
                     }
-                    
-                    
-                    
-                    //                ForEach(i.s as! Binding<[(addPrice:Int,name:String,n:String)]>, id:\.wrappedValue.name) { n in
-                    //                        HStack {
-                    ////                            Button {
-                    //                                Text("•\t" + n.name.wrappedValue)
-                    ////                                n.wrappedValue.s.append((addPrice:0,name:"hi",n:"h"))
-                    ////                            } label: {
-                    ////                                Text("Add Size")
-                    ////                            }
-                    //
-                    //                            Text("$")
-                    //                            TextField("addPrice", value: Binding(get: {
-                    //
-                    //                                n.wrappedValue.addPrice / 10000
-                    //                            }, set: { v in
-                    //                                let p = n.wrappedValue.addPrice
-                    //                                var o : Int = 0
-                    //                                o -= p; o /= 10000; o *= 10000; o += p; o += v * 10000
-                    //
-                    //                                n.wrappedValue.addPrice = o
-                    //                            }), format: .number)
-                    //                            .frame(maxWidth: 24 * 2)
-                    //                                .background(Color.yellow).grayscale(1).cornerRadius(3)
-                    //                            Text(".")
-                    //                            TextField("addPrice", value: Binding(get: {
-                    //                                (n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))
-                    //                            }, set: { v in
-                    //                                let p = n.wrappedValue.addPrice
-                    //                                n.wrappedValue.addPrice = p / 10000 * 10000 + v
-                    //
-                    //                            }), format: .number)
-                    //                            .frame(maxWidth: 24 * 2)
-                    //                                .background(Color.yellow).grayscale(1).cornerRadius(3)
-                    //                            Text("cost: \(n.wrappedValue.addPrice / 10000)")
-                    //                            Text("cost: \(n.wrappedValue.addPrice - (n.wrappedValue.addPrice / 10000 * 10000))")
-                    //                            Text("cost: \(n.wrappedValue.addPrice)")
                 }
             } else {
                 List{
@@ -272,14 +198,12 @@ struct newItemView: View {
                             Text(stuff[i].id).foregroundStyle(.gray)
                             
                             TextField("", text: $stuff[i].name).foregroundStyle(.red)
-                            //                    Text(stuff[i].name)
-                            
                             TextField("", text: $stuff[i].n).foregroundStyle(.yellow)
                             
                             TextField("", text: Binding(get: {
                                 stuff[i].q.description
                             }, set: { v in
-                                var b = stuff[i].q
+                                let b = stuff[i].q
                                 stuff[i].q = Int64(v) ?? b
                                 //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
                                 //                        Int()
@@ -287,7 +211,7 @@ struct newItemView: View {
                             TextField("", text: Binding(get: {
                                 stuff[i].price.description
                             }, set: { v in
-                                var b = stuff[i].price
+                                let b = stuff[i].price
                                 stuff[i].price = Int64(v) ?? b
                                 //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
                                 //                        Int()
@@ -299,14 +223,24 @@ struct newItemView: View {
             Button("Cancel") {
                 dismiss()
             }
+            Button("SET AS TEST") {
+                recName = "TEST"; name = "TEST"
+            }
             Button("Push") {
-                let db = gbl.db
+                let db = gbl.db; var
                 
-                var rec:CKRecord = CKRecord(recordType: recordType, recordID: CKRecord.ID(recordName: recName))
                 
+                rec:CKRecord = CKRecord(recordType: recordType, recordID: CKRecord.ID(recordName: recName))
                 rec["cost"] = Int64(whole * 10000 + fraction)
                 var ider:[CKRecord.Reference] = []
                 if recordType == "Item" {
+                    var img:[Data] = []
+                    for i in images {
+                        let o = i.pngData()
+                        if o != nil {img.append(o!)}
+                        
+                    }
+                    rec["images"] = img
                     for i in things {
                         ider.append(.init(recordID: CKRecord.ID(recordName: i), action: .none))  // i.n
                     }
@@ -336,6 +270,16 @@ struct newItemView: View {
                         svec.append(i.generateCKRecord(hbed!))
                     }
                 } else {print("ISNIL")}
+                
+                for i in svec {
+                    Task {
+                        do {
+                            try await gbl.db.save(i)
+                        } catch {
+                            print("ERR: \(error)")
+                        }
+                    }
+                }
                 let operation = CKModifyRecordsOperation(recordsToSave: svec, recordIDsToDelete: nil)
                 operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
                 db.add(operation)
