@@ -206,6 +206,9 @@ struct newItemView: View {
                                 //                        Int()
                             })).foregroundStyle(.blue)
                         }.textFieldStyle(.roundedBorder)
+                    }.onDelete { inde in
+                        for i in inde {
+                        }
                     }
                 }
             }
@@ -292,6 +295,7 @@ struct newItemView: View {
                     if tb != nil {
                         recs.append(snake(tb!))
                     }
+                    
                 }
             }
             stuff = recs
