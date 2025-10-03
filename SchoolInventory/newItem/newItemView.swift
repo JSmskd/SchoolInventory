@@ -124,17 +124,10 @@ struct newItemView: View {
                     } else {
                         stuff.append(.init());
                     }
-                    //                iter += 1
                 } label: {
                     Text("Add size")
                 }
-                //            Button {
-                //
-                //            } label: {
-                //                Text("Add color")
-                //            }
             }
-            //        Button("hi"){isFocused=nil;print(isFocused)}
             VStack{
                 HStack {
                     ForEach(0..<catagory.count, id: \.self) { i in
@@ -220,7 +213,8 @@ struct newItemView: View {
                 dismiss()
             }
             Button("SET AS TEST") {
-                recName = "TEST"; name = "TEST"
+//                recName = "TEST";
+                name = "TEST"
             }
             Button("Push") {
                 let db = gbl.db; var
@@ -290,15 +284,13 @@ struct newItemView: View {
         //        var ready:[snake] = []
         gbl.db.fetch(withRecordIDs: originals) { r in
             var recs:[snake] = []
-            do {
-                var ta = try? r.get()
-                if ta != nil {
-                    for i in ta! {
-                        var tb = try? i.value.get()
-                        if tb != nil {
-                            recs.append(snake(tb!))
-                        }
-                        
+            var ta = try? r.get()
+            
+            if ta != nil {
+                for i in ta! {
+                    var tb = try? i.value.get()
+                    if tb != nil {
+                        recs.append(snake(tb!))
                     }
                 }
             }
