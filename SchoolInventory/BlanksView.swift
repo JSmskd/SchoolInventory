@@ -71,49 +71,42 @@ struct BlanksView: View {
                 VStack(spacing: 20) {
                     ScrollView {
                         
-
+                        
                         LazyVGrid(columns: [GridItem.init(),GridItem.init(),GridItem.init()]) {
                             ForEach(0..<listems.count, id:\.self) { i in
                                 // Gildan View
                                 VStack(spacing: 10) {
                                     let itm:blDe = listems[i]
                                     
-                                    //Gildan5000
-                                    //                            do {
-                                    //                            Text("")
-                                    //                            } catch {
-                                    //                            Text("")
-                                    //                            }
-                                    //                            let img = items[i].images
-                                    //                            if img.first != nil ? img.first!.fileURL != nil ? true : false : false {
-                                    //                                Image(items[i].images.first != nil ? items[i].images.first!.fileURL ?? "Gildan5000" : "Gildan5000")
-                                    //                                    .resizable()
-                                    //                                    .scaledToFit()
-                                    //                                    .frame(height: 100)
-                                    //                            } else {
-                                    //                                Image(items[i].images.first != nil ? items[i].images.first!.fileURL ?? "Gildan5000" : "Gildan5000")
-                                    //                                    .resizable()
-                                    //                                    .scaledToFit()
-                                    //                                    .frame(height: 100)
-                                    //                            }
-                                    //                                Image(i)
-                                    //                                    .resizable()
-                                    //                                    .scaledToFit()
-                                    //                                    .frame(height: 100)
-
+//Gildan5000
+//                            do {
+//                            Text("")
+//                            } catch {
+//                            Text("")
+//                            }
+//                            let img = items[i].images
+//                            if img.first != nil ? img.first!.fileURL != nil ? true : false : false {
+//                                Image(items[i].images.first != nil ? items[i].images.first!.fileURL ?? "Gildan5000" : "Gildan5000")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(height: 100)
+//                            } else {
+//                                Image(items[i].images.first != nil ? items[i].images.first!.fileURL ?? "Gildan5000" : "Gildan5000")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(height: 100)
+//                            }
+//                                Image(i)
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(height: 100)
+                                    
                                     Button {
                                         UIPasteboard.general.string = "JSI" + itm.name
                                     } label : {
                                         Text(itm.name)
                                             .font(.headline)
                                     }
-                                    //                            Text("Color: \(gildanColor)")
-                                    //                                .font(.subheadline)
-                                    //                                .foregroundColor(.gray)
-                                    
-                                    //                            Text("Small: \(gildanSmallQuantity)")
-                                    //                            Text("Medium: \(gildanMediumQuantity)")
-                                    //                            Text("Large: \(gildanLargeQuantity)")
                                     ForEach(itm.self.to/*do not rememove the slef*/ , id:\.self) { sty in
                                         
                                         Text(sty.self.self.recordName).padding() .background(Color.gray).cornerRadius(8)
@@ -157,8 +150,6 @@ struct BlanksView: View {
                     }
                 }
                 .padding()
-//                .navigationTitle(FILTERTEXT)
-                
             }
 //            .alert(isPresented: $showStockAlert) {
 //                Alert(
@@ -178,12 +169,12 @@ struct BlanksView: View {
     }
     
     func checkStock() {
-        //        if gildanSmallQuantity < 3 || gildanMediumQuantity < 3 || gildanLargeQuantity < 3 ||
-        //            bellaSmallQuantity < 3 || bellaMediumQuantity < 3 || bellaLargeQuantity < 3 {
-        //            stockAlertMessage = "Low stock! Some sizes have less than 3 items."
-        //        } else {
-        //            stockAlertMessage = "Enough stock! All sizes have more than 3 items."
-        //        }
+//        if gildanSmallQuantity < 3 || gildanMediumQuantity < 3 || gildanLargeQuantity < 3 ||
+//            bellaSmallQuantity < 3 || bellaMediumQuantity < 3 || bellaLargeQuantity < 3 {
+//            stockAlertMessage = "Low stock! Some sizes have less than 3 items."
+//        } else {
+//            stockAlertMessage = "Enough stock! All sizes have more than 3 items."
+//        }
         showStockAlert = true
     }
     
