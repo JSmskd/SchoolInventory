@@ -38,7 +38,7 @@ struct BlanksView: View {
     }
     @State var listems: [blDe] = []
     func fetchData () {
-        let p = NSPredicate(value: true)
+        let p = predicate// NSPredicate(value: true)
         let db = gbl.db
         db.fetch(withQuery: .init(recordType: recordType, predicate: p)) { m in
             listems = []

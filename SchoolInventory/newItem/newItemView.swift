@@ -74,7 +74,8 @@ struct newItemView: View {
         things = t
         stuff = []
     }
-    
+    var isItem : Bool {get{ recordType == "Item"}}
+    var isBlank : Bool { get { recordType == "blank"}}
     var body: some View {
         ZStack { VStack {
             Text("Hello, World!")
@@ -260,7 +261,7 @@ struct newItemView: View {
                     for i in stuff {
                         svec.append(i.generateCKRecord(hbed!))
                     }
-                } else {print("ISNIL")}
+                } else { print("ISNIL") }
                 
                 for i in svec {
                     Task {
