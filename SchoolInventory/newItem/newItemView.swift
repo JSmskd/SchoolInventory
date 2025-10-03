@@ -78,8 +78,28 @@ struct newItemView: View {
     var isBlank : Bool { get { recordType == "blank"}}
     var body: some View {
         ZStack { VStack {
-            Text("Hello, World!")
-            //        Text
+            HStack {
+                Text(recName)
+                Text("Hello, World!")
+                Button(action: {
+                    self.showCaptureImageView.toggle()
+                }) {
+                    Image(systemName: "camera")
+                }.foregroundStyle(isItem ? .blue : .gray).disabled(!isItem)
+            }
+            HStack {
+                ForEach(0..<images.count, id:\.self) { i in
+                    Button {
+                        images.remove(at: i)
+                    } label: {
+                        Image(systemName: "xmark.circle.fill").resizable().foregroundStyle(.gray)
+                            .frame(width: 32, height: 32)
+                            .clipShape(Circle())
+                    }
+                    Image(uiImage: images[i]).resizable()
+                        .frame(width: 250, height: 200)
+                }
+            }
             TextField("Enter Item Name", text:$name)
             
             HStack {
@@ -148,31 +168,6 @@ struct newItemView: View {
                 }
             }
             if recordType == "Item" {
-                VStack {
-                    Button(action: {
-                        self.showCaptureImageView.toggle()
-                    }) {
-                        Text("Choose photos")
-                    }
-                    HStack {
-                        ForEach(0..<images.count, id:\.self) { i in
-                            Button {
-                                images.remove(at: i)
-                            } label: {
-                                Image(systemName: "xmark.circle.fill").resizable().foregroundStyle(.gray)
-                                    .frame(width: 32, height: 32)
-                                    .clipShape(Circle())
-                                //                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                                //                                .shadow(radius: 10)
-                            }
-                            Image(uiImage: images[i]).resizable()
-                                .frame(width: 250, height: 200)
-//                                .clipShape(Circle())
-//                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
-//                                .shadow(radius: 10)
-                        }
-                    }
-                }
                 List($things, id: \.self, editActions: .all) { i in
                     HStack {
                         TextField("ID", text: i)
