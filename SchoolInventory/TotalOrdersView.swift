@@ -92,7 +92,7 @@ struct OrderRow: View {
                 Text(order.item)
                     .foregroundColor(.gray)
                 Text("Size: \(order.size)")
-                    .foregroundColor(.darkOrange)
+                    .foregroundColor(gbl.darkOrange)
                 Image(systemName: "person.fill")
                     .foregroundColor(gbl.darkBrown)
             }

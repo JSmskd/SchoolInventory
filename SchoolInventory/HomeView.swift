@@ -17,12 +17,8 @@ struct HomeView: View {
             Text("INVENTORY")
                 .font(.custom("Impact", size: 700))
                 .minimumScaleFactor(0.01)
-                .foregroundColor(.darkOrange)
+                .foregroundColor(gbl.darkOrange)
         }
     }
-}
-
-extension Color {
-    static let darkOrange = Color(red: 244/255, green: 108/255, blue: 44/255)
 }
 

@@ -64,7 +64,7 @@ struct ShirtView: View {
                         Text("Check Stock")
                             .font(.title2)
                             .padding()
-                            .background(Color.darkOrange)
+                            .background(gbl.darkOrange)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
@@ -97,7 +97,7 @@ struct ShirtView: View {
                         Text("Save")
                             .font(.title2)
                             .padding()
-                            .background(Color.darkOrange)
+                            .background(gbl.darkOrange)
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
