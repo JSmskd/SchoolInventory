@@ -91,7 +91,9 @@ struct newItemView: View {
                     var svec:[CKRecord.ID] = [recName]
                     if hbed != nil {
                         for i in stuff {
-                            svec.append(i.generateCKRecord(hbed!).recordID)
+                            if i.posted {
+                                svec.append(i.generateCKRecord(hbed!).recordID)
+                            }
                         }
                     }else{print("ISNIL")}
                     for(i)in(svec){gbl.db.delete(withRecordID:i){id,er in}}
@@ -222,8 +224,7 @@ struct newItemView: View {
                             })).foregroundStyle(.blue)
                         }.textFieldStyle(.roundedBorder)
                     }.onDelete { inde in
-                        for i in inde {
-                        }
+                        for(i)in(inde){if(stuff[i].posted){gbl.db.delete(withRecordID:stuff.remove(at: i).generateCKRecord().recordID){id,er in}}}
                     }
                 }
             }
@@ -267,8 +268,9 @@ struct newItemView: View {
                 }
                 var svec:[CKRecord] = [rec]
                 if hbed != nil {
-                    for i in stuff {
+                    for (x,i) in stuff.enumerated() {
                         svec.append(i.generateCKRecord(hbed!))
+                        stuff[x].posted = true
                     }
                 } else { print("ISNIL") }
                 
@@ -334,12 +336,15 @@ struct snake : Identifiable, Hashable {
     var name:String
     var n:String
     var price:Int64
+    
+    var posted:Bool
     init() {
         id = UUID().uuidString
         q = 0
         name = "NONE"
         n = "NNE"
         price = 0
+        posted = false
     }
     init (_ record:CKRecord) {
         id = record.recordID.recordName
@@ -347,13 +352,15 @@ struct snake : Identifiable, Hashable {
         name = record["longName"] as! String
         n = record["shortName"] as! String
         price = record["cost"] as! Int64
+        posted = true
     }
-    init(id:String, cost:Int64, name:String, n:String,quantity:Int64) {
+    init(id:String, cost:Int64, name:String, n:String,quantity:Int64, posted:Bool = false) {
         self.id = id
         self.price = cost
         self.name = name
         self.n = n
         self.q = quantity
+        self.posted = posted
     }
     func generateCKRecord(_ parentID:blDe) -> CKRecord {
         var record = CKRecord(recordType: "blankSize", recordID: .init(recordName: id))
@@ -362,6 +369,15 @@ struct snake : Identifiable, Hashable {
         record["shortName"] = n
         record["cost"] = price
         record["blank"] = CKRecord.Reference.init(record: parentID.record, action: .none)
+        return record
+    }
+    func generateCKRecord() -> CKRecord {
+        var record = CKRecord(recordType: "blankSize", recordID: .init(recordName: id))
+        record["quantity"] = q
+        record["longName"] = name
+        record["shortName"] = n
+        record["cost"] = price
+//        record["blank"] = CKRecord.Reference.init(record: parentID.record, action: .none)
         return record
     }
 }
