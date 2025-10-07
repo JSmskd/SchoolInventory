@@ -55,7 +55,6 @@ struct newItemView: View {
             print("\t\(i.recordName)")
         }
         things = t
-        //        print("]")/
     }
     init (blank:blDe) {
         recName = blank.id
@@ -65,11 +64,9 @@ struct newItemView: View {
         originals = blank.to
         name = blank.name
         NAME = blank.n ?? ""
-        //        print("[")
         var t:[String] = []
         for i in blank.to {
             t.append(i.recordName)
-            //            print("\t\(i.recordName)")
         }
         things = t
         stuff = []
@@ -231,10 +228,6 @@ struct newItemView: View {
             Button("Cancel") {
                 dismiss()
             }
-//            Button("SET AS TEST") {
-//                recName = "TEST";
-//                name = "TEST"
-//            }
             Button("Push") {
                 let db = gbl.db; var
                 
@@ -310,7 +303,7 @@ struct newItemView: View {
     }
     func getstuff() {
         stuff = []
-        //        var ready:[snake] = []
+
         gbl.db.fetch(withRecordIDs: originals) { r in
             var recs:[snake] = []
             var ta = try? r.get()
@@ -406,7 +399,6 @@ class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerContro
     }
 }
 struct CaptureImageView: UIViewControllerRepresentable {
-    /// MARK: - Properties
     @Binding var isShown: Bool
     @Binding var image: Image?
     @Binding var images: [UIImage]
@@ -421,7 +413,5 @@ struct CaptureImageView: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UIImagePickerController,
-                                context: UIViewControllerRepresentableContext<CaptureImageView>) {
-        
-    }
+                                context: UIViewControllerRepresentableContext<CaptureImageView>) {}
 }
