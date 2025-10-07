@@ -16,7 +16,7 @@ struct newItemView: View {
     @State var image: Image? = nil
     @State var showCaptureImageView = false
     @State var catagory:[String]
-    @State private var recName:String
+    @State private var recName:CKRecord.ID
     @State var NAME:String
     @State var name:String
     @State var originals:[CKRecord.ID]
@@ -32,7 +32,7 @@ struct newItemView: View {
     init (_ c:String, _ rt:String) {
         catagory = c == "" ? [] : [c]
         recordType = rt
-        recName = UUID().uuidString
+        recName = CKRecord.ID(recordName: UUID().uuidString)
         name = ""
         NAME = ""
         things = []
@@ -45,7 +45,7 @@ struct newItemView: View {
         recordType = bed.type
         catagory = bed.cats
         hbed = bed
-        name = bed.n ?? "400"
+        name = bed.n ?? ""
         NAME = bed.name
         //        print("[")
         originals = bed.to
@@ -64,7 +64,7 @@ struct newItemView: View {
         hbed = blank
         originals = blank.to
         name = blank.name
-        NAME = blank.n ?? "400"
+        NAME = blank.n ?? ""
         //        print("[")
         var t:[String] = []
         for i in blank.to {
@@ -79,13 +79,25 @@ struct newItemView: View {
     var body: some View {
         ZStack { VStack {
             HStack {
-                Text(recName)
+                Text(recName.recordName)
                 Text("Hello, World!")
                 Button(action: {
                     self.showCaptureImageView.toggle()
                 }) {
                     Image(systemName: "camera")
                 }.foregroundStyle(isItem ? .blue : .gray).disabled(!isItem)
+                Image(systemName: "trash.fill").foregroundStyle(.red).onTapGesture(count: 3) {
+                    
+                    var svec:[CKRecord.ID] = [recName]
+                    if hbed != nil {
+                        for i in stuff {
+                            svec.append(i.generateCKRecord(hbed!).recordID)
+                        }
+                    }else{print("ISNIL")}
+                    for(i)in(svec){gbl.db.delete(withRecordID:i){id,er in}}
+                    dismiss()
+                }
+                
             }
             HStack {
                 ForEach(0..<images.count, id:\.self) { i in
@@ -100,7 +112,10 @@ struct newItemView: View {
                         .frame(width: 250, height: 200)
                 }
             }
-            TextField("Enter Item Name", text:$name)
+            HStack {
+                TextField("Enter The Name", text:$NAME)
+                TextField("Enter the Shortened name", text: $name)
+            }
             
             HStack {
                 Text(" Defualt Price : $")
@@ -215,15 +230,15 @@ struct newItemView: View {
             Button("Cancel") {
                 dismiss()
             }
-            Button("SET AS TEST") {
+//            Button("SET AS TEST") {
 //                recName = "TEST";
-                name = "TEST"
-            }
+//                name = "TEST"
+//            }
             Button("Push") {
                 let db = gbl.db; var
                 
                 
-                rec:CKRecord = CKRecord(recordType: recordType, recordID: CKRecord.ID(recordName: recName))
+                rec:CKRecord = CKRecord(recordType: recordType, recordID: recName)
                 rec["cost"] = Int64(whole * 10000 + fraction)
                 var ider:[CKRecord.Reference] = []
                 if recordType == "Item" {
@@ -245,6 +260,8 @@ struct newItemView: View {
                     }
                 }
                 rec[recordType == "Item" ? "blanks" : "sizes"] = ider
+                rec[recordType == "Item" ? "title" : "color"] = NAME
+                rec[recordType == "Item" ? "description" : "brandName"] = name
                 if catagory != [] {
                     rec[recordType == "Item" ? "tags" : "materials"] = catagory
                 }
@@ -255,20 +272,27 @@ struct newItemView: View {
                     }
                 } else { print("ISNIL") }
                 
-                for i in svec {
-                    Task {
-                        do {
-                            try await gbl.db.save(i)
-                        } catch {
-                            print("ERR: \(error)")
-                        }
-                    }
-                }
+//                for i in svec {
+//                    Task {
+//                        do {
+//                            try await gbl.db.save(i)
+//                        } catch {
+//                            print("ERR: \(error)")
+//                        }
+//                    }
+//                }
+//                print(rec.allKeys())
+//                for(i)in(rec.allKeys()){print("\(i):\(rec[i])")}
+//                for i in svec {
+//                    db.save(i){r,e in
+//                        print("ERR:\(e!)")
+//                    }
+//                }
                 let operation = CKModifyRecordsOperation(recordsToSave: svec, recordIDsToDelete: nil)
                 operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
                 db.add(operation)
                 
-            }.disabled(name == "")
+            }//.disabled(name == "")
                 .navigationBarBackButtonHidden()
                 .onAppear {
                     if recordType == "blank" {
