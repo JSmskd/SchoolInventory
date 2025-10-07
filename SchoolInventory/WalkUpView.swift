@@ -87,7 +87,6 @@ struct WalkUpView: View {
                             .padding()
 
 
-//                        if isTyping {
                         HStack {
                             TextField("Enter Item", text: $searchItem)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
