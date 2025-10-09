@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-extension Color {
-    
-    
-}
 
 struct InventoryView: View {
     let catagories: [String] = ["Shirts", "Sweatpants", "Hoodies", "Crewnecks"]
