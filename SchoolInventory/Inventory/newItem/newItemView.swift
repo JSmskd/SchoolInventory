@@ -174,57 +174,7 @@ struct newItemView: View {
                     }
                 }
             }
-            if recordType == "Item" {
-                List($things, id: \.self, editActions: .all) { i in
-                    HStack {
-                        TextField("ID", text: i)
-                        Button("Paste ID") {
-                            if UIPasteboard.general.string != nil {
-                                if UIPasteboard.general.string!.starts(with: "JSI") {
-                                    var it = UIPasteboard.general.string!
-                                    it.removeFirst();it.removeFirst();it.removeFirst()
-                                    i.wrappedValue = it
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                List{
-                    HStack{Text("name :").foregroundStyle(.red)
-                        Text("n :").foregroundStyle(.yellow)
-                        Text("quantity :")
-                        Text("cost * 10000") .foregroundStyle(.blue)
-                    }
-                    ForEach(0..<stuff.count, id:\.self) { i in
-                        HStack {
-                            Text(stuff[i].id).foregroundStyle(.gray)
-                            
-                            TextField("", text: $stuff[i].name).foregroundStyle(.red)
-                            TextField("", text: $stuff[i].n).foregroundStyle(.yellow)
-                            
-                            TextField("", text: Binding(get: {
-                                stuff[i].q.description
-                            }, set: { v in
-                                let b = stuff[i].q
-                                stuff[i].q = Int64(v) ?? b
-                                //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
-                                //                        Int()
-                            }) )
-                            TextField("", text: Binding(get: {
-                                stuff[i].price.description
-                            }, set: { v in
-                                let b = stuff[i].price
-                                stuff[i].price = Int64(v) ?? b
-                                //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
-                                //                        Int()
-                            })).foregroundStyle(.blue)
-                        }.textFieldStyle(.roundedBorder)
-                    }.onDelete { inde in
-                        for(i)in(inde){if(stuff[i].posted){gbl.db.delete(withRecordID:stuff.remove(at: i).generateCKRecord().recordID){id,er in}}}
-                    }
-                }
-            }
+            allofthem(things: $things, stuff: $stuff, recordType: recordType)
             Button("Cancel") {
                 dismiss()
             }
@@ -322,56 +272,63 @@ struct newItemView: View {
     }
 }
 
-//sillySize => ss => ssssss => snake
-struct snake : Identifiable, Hashable {
-    var id:String
-    var q:Int64
-    var name:String
-    var n:String
-    var price:Int64
-    
-    var posted:Bool
-    init() {
-        id = UUID().uuidString
-        q = 0
-        name = "NONE"
-        n = "NNE"
-        price = 0
-        posted = false
+struct allofthem: View {
+    @Binding var things:[String]; @Binding var stuff:[snake]
+    let recordType:String
+    var body: some View {
+        if recordType == "Item" { itm } else { blk }
     }
-    init (_ record:CKRecord) {
-        id = record.recordID.recordName
-        q = record["quantity"] as! Int64
-        name = record["longName"] as! String
-        n = record["shortName"] as! String
-        price = record["cost"] as! Int64
-        posted = true
+    var itm:some View {
+        List($things, id: \.self, editActions: .all) { i in
+            HStack {
+                TextField("ID", text: i)
+                Button("Paste ID") {
+                    if UIPasteboard.general.string != nil {
+                        if UIPasteboard.general.string!.starts(with: "JSI") {
+                            var it = UIPasteboard.general.string!
+                            it.removeFirst();it.removeFirst();it.removeFirst()
+                            i.wrappedValue = it
+                        }
+                    }
+                }
+            }
+        }
     }
-    init(id:String, cost:Int64, name:String, n:String,quantity:Int64, posted:Bool = false) {
-        self.id = id
-        self.price = cost
-        self.name = name
-        self.n = n
-        self.q = quantity
-        self.posted = posted
-    }
-    func generateCKRecord(_ parentID:blDe) -> CKRecord {
-        var record = CKRecord(recordType: "blankSize", recordID: .init(recordName: id))
-        record["quantity"] = q
-        record["longName"] = name
-        record["shortName"] = n
-        record["cost"] = price
-        record["blank"] = CKRecord.Reference.init(record: parentID.record, action: .none)
-        return record
-    }
-    func generateCKRecord() -> CKRecord {
-        var record = CKRecord(recordType: "blankSize", recordID: .init(recordName: id))
-        record["quantity"] = q
-        record["longName"] = name
-        record["shortName"] = n
-        record["cost"] = price
-//        record["blank"] = CKRecord.Reference.init(record: parentID.record, action: .none)
-        return record
+    var blk:some View {
+        List{
+            HStack{Text("name :").foregroundStyle(.red)
+                Text("n :").foregroundStyle(.yellow)
+                Text("quantity :")
+                Text("cost * 10000") .foregroundStyle(.blue)
+            }
+            ForEach(0..<stuff.count, id:\.self) { i in
+                HStack {
+                    Text(stuff[i].id).foregroundStyle(.gray)
+                    
+                    TextField("", text: $stuff[i].name).foregroundStyle(.red)
+                    TextField("", text: $stuff[i].n).foregroundStyle(.yellow)
+                    
+                    TextField("", text: Binding(get: {
+                        stuff[i].q.description
+                    }, set: { v in
+                        let b = stuff[i].q
+                        stuff[i].q = Int64(v) ?? b
+                        //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
+                        //                        Int()
+                    }) )
+                    TextField("", text: Binding(get: {
+                        stuff[i].price.description
+                    }, set: { v in
+                        let b = stuff[i].price
+                        stuff[i].price = Int64(v) ?? b
+                        //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
+                        //                        Int()
+                    })).foregroundStyle(.blue)
+                }.textFieldStyle(.roundedBorder)
+            }.onDelete { inde in
+                for(i)in(inde){if(stuff[i].posted){gbl.db.delete(withRecordID:stuff.remove(at: i).generateCKRecord().recordID){id,er in}}}
+            }
+        }
     }
 }
 
