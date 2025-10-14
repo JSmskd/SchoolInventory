@@ -248,8 +248,6 @@ struct newItemView: View {
         }
     }
     func getstuff() {
-        stuff = []
-
         gbl.db.fetch(withRecordIDs: originals) { r in
             var recs:[snake] = []
             for i in (try? r.get()) ?? [:] {
