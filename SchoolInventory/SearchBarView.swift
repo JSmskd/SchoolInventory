@@ -24,25 +24,25 @@ struct SearchBarView: View {
                             OrderItemV(o: studentItem)
                         } label: {
                             HStack {
-                                //                            if isEditing {
-                                //                                TextField("Student ID", text: studentItem.orderFulfilledBy /*$listOfStudentIDs.first(where: { $0.id == studentItem.id })!.studentID*/)
-                                //                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                //
-                                //                                TextField("Item", text: .constant(studentItem.wrappedValue.pickupIdentifier)/*$listOfStudentIDs.first(where: { $0.id == studentItem.id })!.item*/)
-                                //                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                //
-                                //                                TextField("Size", text: .constant("")/*$listOfStudentIDs.first(where: { $0.id == studentItem.id })!.size*/)
-                                //                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                //                            } else {
-                                //                                Text(""/*studentItem.studentID.capitalized*/)
-                                //                                Spacer()
-                                //                                Text(""/*studentItem.item*/)
-                                //                                    .foregroundColor(.gray)
-                                //                                Text("Size: "/*\(studentItem.size)*/)
-                                //                                    .foregroundColor(.darkBrown)
-                                //                                Image(systemName: "person.fill")
-                                //                                    .foregroundColor(.darkOrange)
-                                //                            }
+//                            if isEditing {
+//                                TextField("Student ID", text: studentItem.orderFulfilledBy /*$listOfStudentIDs.first(where: { $0.id == studentItem.id })!.studentID*/)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//
+//                                TextField("Item", text: .constant(studentItem.wrappedValue.pickupIdentifier)/*$listOfStudentIDs.first(where: { $0.id == studentItem.id })!.item*/)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//
+//                                TextField("Size", text: .constant("")/*$listOfStudentIDs.first(where: { $0.id == studentItem.id })!.size*/)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//                            } else {
+//                                Text(""/*studentItem.studentID.capitalized*/)
+//                                Spacer()
+//                                Text(""/*studentItem.item*/)
+//                                    .foregroundColor(.gray)
+//                                Text("Size: "/*\(studentItem.size)*/)
+//                                    .foregroundColor(.darkBrown)
+//                                Image(systemName: "person.fill")
+//                                    .foregroundColor(.darkOrange)
+//                            }
                                 
                                 
                                 Text("ID: \(studentItem.wrappedValue.pickupIdentifier ?? "ERR")")
@@ -52,7 +52,7 @@ struct SearchBarView: View {
                             .tint(studentItem.wrappedValue.orderFulfilledBy == "" ? .white : .gray)
                         }
                     }
-                    //                    .onDelete(perform: deleteItems)
+//                    .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
                 .navigationTitle("Online Orders")
@@ -123,7 +123,7 @@ struct OrderItemV: View {
                 upload()
             }
             Text(gbl.toPrice(totalPrice))
-            .clipShape(RoundedRectangle(cornerSize: .init(width: 100, height: 100)))
+                .clipShape(RoundedRectangle(cornerSize: .init(width: 100, height: 100)))
             List {
                 ForEach($itemsOrdered, id:\.self ) { i in
                     HStack{
@@ -136,7 +136,7 @@ struct OrderItemV: View {
         }.onAppear {
             ref()
         }
-
+        
     }
     func upload() {
         o.upload()
@@ -144,8 +144,8 @@ struct OrderItemV: View {
     func ref() {
         itemsOrdered = []
 //        for ords in o.itemsOrdered! {
-            //            print(ords.recordID)
-            
+//            print(ords.recordID)
+
 //        }
     }
 }

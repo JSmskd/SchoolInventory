@@ -44,7 +44,6 @@ struct BlanksView: View {
             listems = []
             var mm : (matchResults: [(CKRecord.ID, Result<CKRecord, any Error>)], queryCursor: CKQueryOperation.Cursor?)?
             do {
-                //                m.get
                 mm = try m.get()
                 
             } catch {
@@ -56,7 +55,7 @@ struct BlanksView: View {
                     let b = try? res.1.get()
                     if b != nil {
                         let a = blDe(b!)
-
+                        
                         if a != nil {
                             listems.append(a!)
                         }
@@ -74,32 +73,8 @@ struct BlanksView: View {
                         
                         LazyVGrid(columns: [GridItem.init(),GridItem.init(),GridItem.init()]) {
                             ForEach(0..<listems.count, id:\.self) { i in
-                                // Gildan View
                                 VStack(spacing: 10) {
                                     let itm:blDe = listems[i]
-                                    
-//Gildan5000
-//                            do {
-//                            Text("")
-//                            } catch {
-//                            Text("")
-//                            }
-//                            let img = items[i].images
-//                            if img.first != nil ? img.first!.fileURL != nil ? true : false : false {
-//                                Image(items[i].images.first != nil ? items[i].images.first!.fileURL ?? "Gildan5000" : "Gildan5000")
-//                                    .resizable()
-//                                    .scaledToFit()
-//                                    .frame(height: 100)
-//                            } else {
-//                                Image(items[i].images.first != nil ? items[i].images.first!.fileURL ?? "Gildan5000" : "Gildan5000")
-//                                    .resizable()
-//                                    .scaledToFit()
-//                                    .frame(height: 100)
-//                            }
-//                                Image(i)
-//                                    .resizable()
-//                                    .scaledToFit()
-//                                    .frame(height: 100)
                                     
                                     Button {
                                         UIPasteboard.general.string = "JSI" + itm.name
@@ -128,7 +103,9 @@ struct BlanksView: View {
                         .padding(.horizontal)
                     }
                     HStack {
-                        Button(action: checkStock) {
+                        Button {
+                            print("checks stock")
+                        } label: {
                             Text("Check Stock")
                                 .font(.title2)
                                 .padding()
@@ -162,23 +139,6 @@ struct BlanksView: View {
         .onAppear {
             fetchData()
         }
-    }
-    
-    func saveChanges() {
-//        saveStockData()
-    }
-    
-    func checkStock() {
-
-        showStockAlert = true
-    }
-    
-    func saveStockData() {
-        
-    }
-    
-    func loadStockData() {
-        
     }
 }
 

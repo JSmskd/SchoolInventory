@@ -23,7 +23,6 @@ struct ContentView: View {
                 }
             }
             
-
             SearchBarView().tabItem {
                 HStack{
                     Text("Online")
@@ -38,11 +37,11 @@ struct ContentView: View {
                 }
             }
             TotalOrdersView().tabItem {
-                            Image(systemName: "text.page.fill")
-                            Text("Total Orders")
-                        }
-
-
+                Image(systemName: "text.page.fill")
+                Text("Total Orders")
+            }
+            
+            
         }
     }
 }

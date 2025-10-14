@@ -217,32 +217,32 @@ struct newItemView: View {
                     }
                 } else { print("ISNIL") }
                 
-//                for i in svec {
-//                    Task {
-//                        do {
-//                            try await gbl.db.save(i)
-//                        } catch {
-//                            print("ERR: \(error)")
-//                        }
-//                    }
-//                }
-//                for(i)in(rec.allKeys()){print("\(i):\(rec[i])")}
-//                for i in svec {
-//                    db.save(i){r,e in
-//                        print("ERR:\(e!)")
-//                    }
-//                }
+                //                for i in svec {
+                //                    Task {
+                //                        do {
+                //                            try await gbl.db.save(i)
+                //                        } catch {
+                //                            print("ERR: \(error)")
+                //                        }
+                //                    }
+                //                }
+                //                for(i)in(rec.allKeys()){print("\(i):\(rec[i])")}
+                //                for i in svec {
+                //                    db.save(i){r,e in
+                //                        print("ERR:\(e!)")
+                //                    }
+                //                }
                 let operation = CKModifyRecordsOperation(recordsToSave: svec, recordIDsToDelete: nil)
                 operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
                 db.add(operation)
                 
             }//.disabled(name == "")
-                .navigationBarBackButtonHidden()
-                .onAppear {
-                    if recordType == "blank" {
-                        getstuff()
-                    }
+            .navigationBarBackButtonHidden()
+            .onAppear {
+                if recordType == "blank" {
+                    getstuff()
                 }
+            }
         }
             if (showCaptureImageView) { CaptureImageView(isShown: $showCaptureImageView, image: $image, images:$images) }
         }
