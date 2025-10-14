@@ -15,11 +15,7 @@ struct allofthem: View {
         List {
             if recordType == "Item" {
                 Button {
-                    if recordType == "Item" {
-                        things.append("\(Int.random(in: 0..<10000))")
-                    } else {
-                        stuff.append(.init());
-                    }
+                    things.append(.init())
                 } label: {
                     HStack {
                         Spacer()
@@ -30,11 +26,7 @@ struct allofthem: View {
                 itm
             } else {
                 Button {
-                    if recordType == "Item" {
-                        things.append("\(Int.random(in: 0..<10000))")
-                    } else {
-                        stuff.append(.init());
-                    }
+                    stuff.append(.init())
                 } label: {
                     HStack {
                         Text("Record ID").foregroundStyle(.gray);Spacer()
