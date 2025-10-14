@@ -244,9 +244,7 @@ struct newItemView: View {
                     }
                 }
         }
-            if (showCaptureImageView) {
-                CaptureImageView(isShown: $showCaptureImageView, image: $image, images:$images)
-            }
+            if (showCaptureImageView) { CaptureImageView(isShown: $showCaptureImageView, image: $image, images:$images) }
         }
     }
     func getstuff() {
