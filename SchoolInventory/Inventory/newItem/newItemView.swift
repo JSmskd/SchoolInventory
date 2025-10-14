@@ -226,7 +226,6 @@ struct newItemView: View {
 //                        }
 //                    }
 //                }
-//                print(rec.allKeys())
 //                for(i)in(rec.allKeys()){print("\(i):\(rec[i])")}
 //                for i in svec {
 //                    db.save(i){r,e in
@@ -243,7 +242,6 @@ struct newItemView: View {
                     if recordType == "blank" {
                         getstuff()
                     }
-                    //            print(stuff)
                 }
         }
             if (showCaptureImageView) {
