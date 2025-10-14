@@ -131,17 +131,6 @@ struct newItemView: View {
             VStack {
                 Text("Price : $\(whole).\(fraction)  ")
             }
-            HStack {
-                Button {
-                    if recordType == "Item" {
-                        things.append("\(Int.random(in: 0..<10000))")
-                    } else {
-                        stuff.append(.init());
-                    }
-                } label: {
-                    Text("Add size")
-                }
-            }
             VStack{
                 HStack {
                     ForEach(0..<catagory.count, id: \.self) { i in
@@ -167,13 +156,9 @@ struct newItemView: View {
                 
                 HStack {
                     ForEach(0..<catagory.count, id:\.self) { i in
-                        if i != 0 {
-                            Text(", ")
-                        }
-                        Text(catagory[i])
-                    }
+                        if i != 0 { Text(", ") }; Text(catagory[i]) }
                 }
-            }
+            }.frame(maxWidth: .infinity, alignment: .trailing)
             allofthem(things: $things, stuff: $stuff, recordType: recordType)
             Button("Cancel") {
                 dismiss()
