@@ -68,9 +68,6 @@ struct SearchBarView: View {
             .refreshable {
                 refreshShirts()
             }
-            //            .onAppear {
-            //                refreshShirts()
-            //            }
         }
     }
     
@@ -146,7 +143,6 @@ struct OrderItemV: View {
     }
     func ref() {
         itemsOrdered = []
-        let db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
 //        for ords in o.itemsOrdered! {
             //            print(ords.recordID)
             
