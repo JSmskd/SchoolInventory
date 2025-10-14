@@ -254,15 +254,10 @@ struct newItemView: View {
 
         gbl.db.fetch(withRecordIDs: originals) { r in
             var recs:[snake] = []
-            var ta = try? r.get()
-            
-            if ta != nil {
-                for i in ta! {
-                    var tb = try? i.value.get()
-                    if tb != nil {
-                        recs.append(snake(tb!))
-                    }
-                    
+            for i in (try? r.get()) ?? [:] {
+                var tb = try? i.value.get()
+                if tb != nil {
+                    recs.append(snake(tb!))
                 }
             }
             stuff = recs
