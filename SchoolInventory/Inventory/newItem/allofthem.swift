@@ -86,7 +86,7 @@ struct allofthem: View {
             }.textFieldStyle(.roundedBorder)
         }
         .onDelete { inde in
-            for(i)in(inde){if(stuff[i].posted){gbl.db.delete(withRecordID:stuff.remove(at: i).generateCKRecord().recordID){id,er in}}}
+            for(i)in(inde){if(stuff[i].posted){gbl.db.delete(withRecordID:stuff.remove(at: i).generateCKRecord().recordID){id,er in}};stuff.remove(at: i)}
         }
     }
 }
