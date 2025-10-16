@@ -12,8 +12,10 @@ struct ContentView: View {
     var body: some View {
         TabView {
             HomeView().tabItem{
-                Text("Home")
-                Image(systemName: "house.fill")
+                HStack {
+                    Text("Home")
+                    Image(systemName: "house.fill")
+                }
             }
             
             InventoryView().tabItem {
@@ -37,10 +39,18 @@ struct ContentView: View {
                 }
             }
             TotalOrdersView().tabItem {
-                Image(systemName: "text.page.fill")
-                Text("Total Orders")
+                HStack {
+                    Image(systemName: "text.page.fill")
+                    Text("Total Orders")
+                }
             }
             
+//            StoreView().tabItem {
+//                HStack {
+//                    Image(systemName: "text.page.fill")
+//                    Text("Store Page")
+//                }
+//            }
             
         }
     }
