@@ -164,7 +164,7 @@ struct newItemView: View {
                 dismiss()
             }
             Button("Push") {
-                let db = gbl.db; var
+                let db = gbl.db; let
                 
                 
                 rec:CKRecord = CKRecord(recordType: recordType, recordID: recName)
@@ -236,7 +236,7 @@ struct newItemView: View {
         gbl.db.fetch(withRecordIDs: originals) { r in
             var recs:[snake] = []
             for i in (try? r.get()) ?? [:] {
-                var tb = try? i.value.get()
+                let tb = try? i.value.get()
                 if tb != nil {
                     recs.append(snake(tb!))
                 }

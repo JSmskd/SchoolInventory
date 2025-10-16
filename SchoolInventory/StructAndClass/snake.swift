@@ -41,7 +41,7 @@ struct snake : Identifiable, Hashable {
         self.posted = posted
     }
     func generateCKRecord(_ parentID:blDe) -> CKRecord {
-        var record = CKRecord(recordType: "blankSize", recordID: .init(recordName: id))
+        let record = CKRecord(recordType: "blankSize", recordID: .init(recordName: id))
         record["quantity"] = q
         record["longName"] = name
         record["shortName"] = n
@@ -50,7 +50,7 @@ struct snake : Identifiable, Hashable {
         return record
     }
     func generateCKRecord() -> CKRecord {
-        var record = CKRecord(recordType: "blankSize", recordID: .init(recordName: id))
+        let record = CKRecord(recordType: "blankSize", recordID: .init(recordName: id))
         record["quantity"] = q
         record["longName"] = name
         record["shortName"] = n

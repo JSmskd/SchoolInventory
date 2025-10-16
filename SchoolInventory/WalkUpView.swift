@@ -96,7 +96,7 @@ struct WalkUpView: View {
                                 let qur = CKQuery(recordType: "Item", predicate: NSPredicate(format: "title CONTAINS '\(searchItem.replacingOccurrences(of: "'", with: "\\'"))'"))
                                 print(qur)
                                 gbl.db.fetch(withQuery: qur, resultsLimit: 5) { a in
-                                    a.map { b in
+                                    let _ = a.map { b in
                                         for c in b.matchResults {
                                             print(c.0)
                                         }

@@ -32,7 +32,7 @@ struct blank:CustomStringConvertible , Hashable, Identifiable{
     }
     var sizes:[CKRecord.ID]? {
         get {
-            var temp = record["sizes"] as? [CKRecord.Reference]
+            let temp = record["sizes"] as? [CKRecord.Reference]
             if temp == nil {return nil}
             var tea :[CKRecord.ID] = []
             for i in temp! {
@@ -74,7 +74,7 @@ struct blank:CustomStringConvertible , Hashable, Identifiable{
 //        price = 0
 //    }
     static func newReccord(brandName:String = "", color:String = "", cost:Int64 = -1, materials:[String] = []) -> blank {
-        var r:CKRecord = CKRecord(recordType: "blank")
+        let r:CKRecord = CKRecord(recordType: "blank")
         if cost >= 0 {
             r["cost"] = cost
         }
