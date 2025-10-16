@@ -5,101 +5,110 @@
 //  Created by Haasini Kala R. Police on 3/21/25.
 //
 
+//
+//  SearchBarView.swift
+//  SchoolInventory
+//
+//  Created by Aneena M. Ginson on 1/14/25.
+//
+
 import SwiftUI
+import CloudKit
 
 struct TotalOrdersView: View {
-    @State private var searchOrdersText = ""
+    @State private var listOfStudentIDs: [order/*StudentItem*/] = []
+    @State private var searchText = ""
     @State private var isEditing = false
     
-    @State private var onlineOrders: [StudentItem] = [
-        StudentItem(studentID: "12345", item: "Shirt", size: "M"),
-        StudentItem(studentID: "67890", item: "Hoodie", size: "L"),
-        StudentItem(studentID: "54321", item: "Shorts", size: "S")
-    ]
-    
-    @State private var walkUpOrders: [StudentItem] = [
-        StudentItem(studentID: "54321", item: "Crewneck", size: "M"),
-        StudentItem(studentID: "09876", item: "Orange Hoodie", size: "L"),
-        StudentItem(studentID: "12431", item: "Sweat Pants", size: "S")
-    ]
-    
-    var allOrders: [StudentItem] {
-        let combinedOrders = onlineOrders + walkUpOrders
-        if searchOrdersText.isEmpty {
-            return combinedOrders
-        } else {
-            return combinedOrders.filter {
-                $0.studentID.lowercased().contains(searchOrdersText.lowercased()) ||
-                $0.item.lowercased().contains(searchOrdersText.lowercased()) ||
-                $0.size.lowercased().contains(searchOrdersText.lowercased())
-            }
-        }
-    }
     
     var body: some View {
         NavigationStack {
             VStack {
                 List {
-                    ForEach(allOrders) { order in
-                        if let onlineIndex = onlineOrders.firstIndex(where: { $0.id == order.id }) {
-                            OrderRow(order: $onlineOrders[onlineIndex], isEditing: $isEditing)
-                        } else if let walkUpIndex = walkUpOrders.firstIndex(where: { $0.id == order.id }) {
-                            OrderRow(order: $walkUpOrders[walkUpIndex], isEditing: $isEditing)
+                    ForEach($listOfStudentIDs, id: \.self) { studentItem in
+                        NavigationLink {
+                            //OrderItemView
+                            OrderItemV(o: studentItem)
+                        } label: {
+                            HStack {
+//                            if isEditing {
+//                                TextField("Student ID", text: studentItem.orderFulfilledBy /*$listOfStudentIDs.first(where: { $0.id == studentItem.id })!.studentID*/)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//
+//                                TextField("Item", text: .constant(studentItem.wrappedValue.pickupIdentifier)/*$listOfStudentIDs.first(where: { $0.id == studentItem.id })!.item*/)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//
+//                                TextField("Size", text: .constant("")/*$listOfStudentIDs.first(where: { $0.id == studentItem.id })!.size*/)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//                            } else {
+//                                Text(""/*studentItem.studentID.capitalized*/)
+//                                Spacer()
+//                                Text(""/*studentItem.item*/)
+//                                    .foregroundColor(.gray)
+//                                Text("Size: "/*\(studentItem.size)*/)
+//                                    .foregroundColor(.darkBrown)
+//                                Image(systemName: "person.fill")
+//                                    .foregroundColor(.darkOrange)
+//                            }
+                                
+                                
+                                Text("ID: \(studentItem.wrappedValue.pickupIdentifier ?? "ERR")")
+                                Text("\((studentItem.wrappedValue.itemsOrdered ?? []).count) unique items")
+                            }
+                            
+                            .tint(studentItem.wrappedValue.orderFulfilledBy == "" ? .white : .gray)
                         }
                     }
-                    .onDelete(perform: deleteOrder)
+//                    .onDelete(perform: deleteItems)
                 }
-                .searchable(text: $searchOrdersText)
-                .navigationTitle("Total Orders")
+                .searchable(text: $searchText)
+                .navigationTitle("Online Orders")
                 .navigationBarItems(
                     trailing: Button(isEditing ? "Done" : "Edit") {
                         isEditing.toggle()
                     }
                 )
             }
+            .onAppear {
+                refreshShirts()
+            }
+            .refreshable {
+                refreshShirts()
+            }
         }
     }
     
-    func deleteOrder(at offsets: IndexSet) {
-        for index in offsets {
-            let order = allOrders[index]
-            
-            if let onlineIndex = onlineOrders.firstIndex(where: { $0.id == order.id }) {
-                onlineOrders.remove(at: onlineIndex)
-            } else if let walkUpIndex = walkUpOrders.firstIndex(where: { $0.id == order.id }) {
-                walkUpOrders.remove(at: walkUpIndex)
-            }
+    var studentItems: [order] {
+        listOfStudentIDs
+    }
+    
+    
+    func refreshShirts() {
+        print("refreshing")
+        listOfStudentIDs = []
+        var orders:Array<order> {get {listOfStudentIDs} set {listOfStudentIDs = newValue}}
+        let query = CKQuery(recordType: "Order", predicate: .init(value: true))
+        query.sortDescriptors = [NSSortDescriptor(key: "___createTime", ascending: false)]
+        
+        gbl.db.fetch(withQuery: query) { results in
+            let _ = results.map {
+                $0.matchResults.map({
+                    var i = 0
+                    let _ = $1.map({ record in
+                        DispatchQueue.main.async {
+                            let t = order(record)
+                            if i < listOfStudentIDs.count {
+                                listOfStudentIDs[i] = t
+                            } else {
+                                listOfStudentIDs.append(t)
+                            }
+                            i += 1
+                        }
+                        
+                    })
+                    while (i < listOfStudentIDs.count) {let _ = listOfStudentIDs.popLast()}
+                })
+            }.self
         }
     }
-}
-
-struct OrderRow: View {
-    @Binding var order: StudentItem
-    @Binding var isEditing: Bool
-
-    var body: some View {
-        HStack {
-            if isEditing {
-                TextField("Student ID", text: $order.studentID)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                TextField("Item", text: $order.item)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                TextField("Size", text: $order.size)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-            } else {
-                Text(order.studentID.capitalized)
-                Spacer()
-                Text(order.item)
-                    .foregroundColor(.gray)
-                Text("Size: \(order.size)")
-                    .foregroundColor(gbl.darkOrange)
-                Image(systemName: "person.fill")
-                    .foregroundColor(gbl.darkBrown)
-            }
-        }
-    }
-}
-
-#Preview {
-    TotalOrdersView()
 }

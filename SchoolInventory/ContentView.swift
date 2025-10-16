@@ -27,21 +27,21 @@ struct ContentView: View {
             
             SearchBarView().tabItem {
                 HStack{
-                    Text("Online")
+                    Text("Pick Ups")
                     Image(systemName: "desktopcomputer")
                 }
             }
             
             WalkUpView().tabItem {
                 HStack{
-                    Text("Walk Up")
+                    Text("New Order")
                     Image(systemName: "figure.walk")
                 }
             }
             TotalOrdersView().tabItem {
                 HStack {
                     Image(systemName: "text.page.fill")
-                    Text("Total Orders")
+                    Text("Orders")
                 }
             }
             

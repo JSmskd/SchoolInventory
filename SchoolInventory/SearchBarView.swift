@@ -81,7 +81,7 @@ struct SearchBarView: View {
         listOfStudentIDs = []
         var orders:Array<order> {get {listOfStudentIDs} set {listOfStudentIDs = newValue}}
         
-        let query = CKQuery(recordType: "Order", predicate: .init(value: true))
+        let query = CKQuery(recordType: "Order", predicate: .init(format: "orderFulfilledBy != %@", ""))
         query.sortDescriptors = [NSSortDescriptor(key: "___createTime", ascending: false)]
         
         gbl.db.fetch(withQuery: query) { results in
