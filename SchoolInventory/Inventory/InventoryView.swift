@@ -14,57 +14,49 @@ struct InventoryView: View {
         
         NavigationStack {
             ScrollView{
-                ForEach(0..<catagories.count + 2, id: \.self) { i in
-                    if i == 0 {
-                        VStack(spacing: 20) {
-                            NavigationLink {
-                                BlanksView(blank: "")
-                            } label: {
-                                Text("Blanks")
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(i % 2 == 0 ? gbl.darkBrown : Color.orange)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                                    .font(.largeTitle)
-                            }
-                            .padding()
+                VStack(spacing: 20) {
+                    HStack {
+                        quearyBloc("Items", 1) {
+                            BlanksView(design: "")
                         }
-                    }else if i == 1 {
-                        VStack(spacing: 20) {
-                            NavigationLink {
-                                BlanksView(design: "")
-                            } label: {
-                                Text("Items")
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(i % 2 == 0 ? gbl.darkBrown : Color.orange)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                                    .font(.largeTitle)
-                            }
-                            .padding()
-                            
+                        quearyBloc("Blanks", 1) {
+                            BlanksView(blank: "")
                         }
-                    } else {
-                        VStack(spacing: 20) {
-                            NavigationLink {
-                                BlanksView(design: catagories[i - 2])
-                            } label: {
-                                Text(catagories[i - 2])
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(i % 2 == 0 ? gbl.darkBrown : Color.orange)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                                    .font(.largeTitle)
-                            }
-                            .padding()
+                    }
+                    ForEach(0..<catagories.count, id: \.self) { i in
+                        quearyBloc(catagories[i], i) {
+                            BlanksView(design: catagories[i])
                         }
                     }
                 }
             }
         }
+    }
+}
+
+struct quearyBloc<view: View>: View {
+    let f: () -> view
+var text:String
+    var i:Int
+    
+    init(_ label:String, _ iteration :Int, @ViewBuilder _ destination: @escaping () -> view) {
+        text = label
+        i = iteration
+            self.f = destination
+        }
+    var body: some View {
+        NavigationLink {
+            f()
+        } label: {
+            Text(text)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(i % 2 == 0 ? gbl.darkBrown : Color.orange)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .font(.largeTitle)
+        }
+        .padding()
     }
 }
 

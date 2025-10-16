@@ -21,13 +21,13 @@ struct blank:CustomStringConvertible , Hashable, Identifiable{
     func getCol() -> Color {
         switch name {
             case "orange":
-                return .orange
+                return Color.orange
             case "white":
-                return .white
+                return Color.white
             case "ERR":
-                return .orange
+                return Color.orange
             default:
-                return.clear
+                return Color.clear
         }
     }
     var sizes:[CKRecord.ID]? {
