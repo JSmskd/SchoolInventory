@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct InventoryView: View {
-    let catagories: [[String]] = [[gbl.type.top.rawValue,"shirt"], [gbl.type.bottom.rawValue,"sweatpant"], [gbl.type.top.rawValue,"hoodie"], [gbl.type.top.rawValue,"crewnecks"]]
+    let catagories: [[String]] = [["shirt",gbl.type.top.rawValue], ["sweatpant",gbl.type.bottom.rawValue], ["hoodie",gbl.type.top.rawValue], ["crewnecks",gbl.type.top.rawValue]]
     var body: some View {
         
         NavigationStack {
@@ -46,7 +46,21 @@ var text:String
             self.f = destination
         }
     init(_ label:[String], _ iteration :Int, @ViewBuilder _ destination: @escaping () -> view) {
-        text = label.first!
+        var t = label.first!
+        if label.count > 1 {
+            for (n,x) in label.enumerated() {
+                if n == 0 {
+                    t += " ["
+                } else {
+                    t += ", "
+                }
+                t += x
+                if n == label.count - 1 {
+                    t += "]"
+                }
+            }
+        }
+        text = t
         i = iteration
             self.f = destination
         }
