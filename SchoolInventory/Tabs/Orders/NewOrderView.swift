@@ -8,15 +8,15 @@
 import SwiftUI
 import CloudKit
 
-struct Studentitem: Identifiable, Codable {
-    var id = UUID()
-    var studentID: String
-    var item: String
-    var size: String
-}
+//struct Studentitem: Identifiable, Codable {
+//    var id = UUID()
+//    var studentID: String
+//    var item: String
+//    var size: String
+//}
 
 struct WalkUpView: View {
-    @State private var listOfStudentIDs: [Studentitem] = []
+    @State private var listOfStudentIDs: [order] = []
     @State private var searchText = ""
     @State private var showAddStudentIDSheet = false
     @State private var newStudentID = ""
@@ -34,28 +34,28 @@ struct WalkUpView: View {
         NavigationStack {
             VStack {
                 List {
-                    ForEach(filteredStudentItems) { studentItem in
+                    ForEach(/*filteredStudentItems*/listOfStudentIDs) { studentItem in
                         HStack {
-                            if isEditing {
-                                TextField("Student ID", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.studentID)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-
-                                TextField("Item", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.item)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-
-                                TextField("Size", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.size)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                            } else {
-                                Text(studentItem.studentID.capitalized)
-                                Spacer()
-                                Text(studentItem.item)
-                                    .foregroundColor(.gray)
-                                Text("Size: \(studentItem.size)")
-                                    .foregroundColor(gbl.darkBrown)
-                            }
+//                            if isEditing {
+//                                TextField("Student ID", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.studentID)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//
+//                                TextField("Item", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.item)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//
+//                                TextField("Size", text: $listOfStudentIDs.first(where: { $0.id == studentItem.id })!.size)
+//                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//                            } else {
+//                                Text(studentItem.studentID.capitalized)
+//                                Spacer()
+//                                Text(studentItem.item)
+//                                    .foregroundColor(.gray)
+//                                Text("Size: \(studentItem.size)")
+//                                    .foregroundColor(gbl.darkBrown)
+//                            }
                         }
                     }
-                    .onDelete(perform: deleteItems)
+//                    .onDelete(perform: deleteItems)
                 }
                 .searchable(text: $searchText)
                 .navigationTitle("Walk Up Orders")
@@ -135,7 +135,7 @@ struct WalkUpView: View {
                         
                         HStack{
                             Button(action: {
-                                addStudentID(newStudentID, newItem: selectedItem, newSize: selectedSize)
+//                                addStudentID(newStudentID, newItem: selectedItem, newSize: selectedSize)
                                 showAddStudentIDSheet = false
                             }) {
                                 Text("Add")
@@ -164,46 +164,46 @@ struct WalkUpView: View {
                 }
             }
         }
-        .onAppear(perform: loadStudentItems) // Load data when view appears
+//        .onAppear(perform: loadStudentItems) // Load data when view appears
     }
 
-    var filteredStudentItems: [Studentitem] {
-        if searchText.isEmpty {
-            return listOfStudentIDs
-        } else {
-            return listOfStudentIDs.filter {
-                $0.studentID.lowercased().contains(searchText.lowercased()) ||
-                $0.item.lowercased().contains(searchText.lowercased()) ||
-                $0.size.lowercased().contains(searchText.lowercased())
-            }
-        }
-    }
+//    var filteredStudentItems: [order] {
+//        if searchText.isEmpty {
+//            return listOfStudentIDs
+//        } else {
+//            return listOfStudentIDs.filter {
+//                $0.studentID.lowercased().contains(searchText.lowercased()) ||
+//                $0.item.lowercased().contains(searchText.lowercased()) ||
+//                $0.size.lowercased().contains(searchText.lowercased())
+//            }
+//        }
+//    }
 
-    func deleteItems(at offsets: IndexSet) {
-        listOfStudentIDs.remove(atOffsets: offsets)
-        saveStudentItems() // Save data after deletion
-    }
+//    func deleteItems(at offsets: IndexSet) {
+//        listOfStudentIDs.remove(atOffsets: offsets)
+//        saveStudentItems() // Save data after deletion
+//    }
 
-    func addStudentID(_ studentID: String, newItem: String, newSize: String) {
-        guard !studentID.isEmpty, !newItem.isEmpty, !newSize.isEmpty else { return }
-        
-        let newStudent = Studentitem(studentID: studentID, item: newItem, size: newSize)
-        listOfStudentIDs.append(newStudent)
-        saveStudentItems() // Save data after adding
-    }
+//    func addStudentID(_ studentID: String, newItem: String, newSize: String) {
+//        guard !studentID.isEmpty, !newItem.isEmpty, !newSize.isEmpty else { return }
+//        
+//        let newStudent = Studentitem(studentID: studentID, item: newItem, size: newSize)
+//        listOfStudentIDs.append(newStudent)
+//        saveStudentItems() // Save data after adding
+//    }
 
     // Save the data to UserDefaults
-    func saveStudentItems() {
-        if let encoded = try? JSONEncoder().encode(listOfStudentIDs) {
-            UserDefaults.standard.set(encoded, forKey: "studentItems")
-        }
-    }
+//    func saveStudentItems() {
+//        if let encoded = try? JSONEncoder().encode(listOfStudentIDs) {
+//            UserDefaults.standard.set(encoded, forKey: "studentItems")
+//        }
+//    }
 
     // Load the data from UserDefaults
-    func loadStudentItems() {
-        if let savedData = UserDefaults.standard.data(forKey: "studentItems"),
-           let decodedItems = try? JSONDecoder().decode([Studentitem].self, from: savedData) {
-            listOfStudentIDs = decodedItems
-        }
-    }
+//    func loadStudentItems() {
+//        if let savedData = UserDefaults.standard.data(forKey: "studentItems"),
+//           let decodedItems = try? JSONDecoder().decode([Studentitem].self, from: savedData) {
+//            listOfStudentIDs = decodedItems
+//        }
+//    }
 }
