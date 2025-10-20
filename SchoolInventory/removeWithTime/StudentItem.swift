@@ -48,9 +48,9 @@ struct order:Hashable,Identifiable {
     }
 }
 
-struct StudentItem: Identifiable {
-    var id = UUID()
-    var studentID: String
-    var item: String
-    var size: String
-}
+//struct StudentItem: Identifiable {
+//    var id = UUID()
+//    var studentID: String
+//    var item: String
+//    var size: String
+//}
