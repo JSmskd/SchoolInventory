@@ -41,8 +41,12 @@ struct BlanksView: View {
     init(design: [String] = []) {
         if design.isEmpty {
             predicate = .init(value: true)
-        } else {
+        } else if design.count == 1 {
             predicate = .init(format: "tags CONTAINS %@", design.first!)
+        } else {
+            var p:[NSPredicate] = []
+            for iter in design { p.append(.init(format: "tags CONTAINS %@", iter)) }
+            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: p)
         }
         FILTERTEXT = design
         recordType = "Item"
@@ -50,8 +54,12 @@ struct BlanksView: View {
     init(blank: [String] = []) {
         if blank.isEmpty {
             predicate = .init(value: true)
-        } else {
+        } else if blank.count == 1 {
             predicate = .init(format: "tags CONTAINS %@", blank.first!)
+        } else {
+            var p:[NSPredicate] = []
+            for iter in blank { p.append(.init(format: "tags CONTAINS %@", iter)) }
+            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: p)
         }
         FILTERTEXT = blank
         recordType = "blank"
