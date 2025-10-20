@@ -1,21 +1,12 @@
 //
-//  StoreView.swift
+//  StoreRow.swift
 //  SchoolInventory
 //
-//  Created by John Sencion on 10/16/25.
+//  Created by John Sencion on 10/20/25.
 //
+
 import CloudKit
 import SwiftUI
-
-struct StoreView: View {
-//    @State var
-    var body: some View {
-        VStack {
-            Text("Store")
-            StoreRow(name: "hi")
-        }
-    }
-}
 
 struct StoreRow:View {
     var name:String
@@ -60,8 +51,5 @@ struct StoreRow:View {
 }
 
 #Preview {
-    
-//    Text("hi")
-//    StoreRow(name: "Alphabeta")
-    StoreView()
+    StoreRow(name: "hello")
 }
