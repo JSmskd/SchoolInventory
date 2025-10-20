@@ -16,25 +16,45 @@ struct BlanksView: View {
     @State private var showStockAlert = false
     
     private let recordType:String
-    let FILTERTEXT: String
+    let FILTERTEXT: [String]
     var predicate : NSPredicate
     init(blank: String = "") {
         if blank == ""{
             predicate = .init(value: true)
+            FILTERTEXT = []
         } else {
             predicate = .init(format: "tags CONTAINS %@", blank)
+            FILTERTEXT = [blank]
         }
-        FILTERTEXT = blank
         recordType = "blank"
     }
     init(design: String = "") {
         if design == ""{
             predicate = .init(value: true)
+            FILTERTEXT = []
         } else {
             predicate = .init(format: "tags CONTAINS %@", design)
+            FILTERTEXT = [design]
+        }
+        recordType = "Item"
+    }
+    init(design: [String] = []) {
+        if design.isEmpty {
+            predicate = .init(value: true)
+        } else {
+            predicate = .init(format: "tags CONTAINS %@", design.first!)
         }
         FILTERTEXT = design
         recordType = "Item"
+    }
+    init(blank: [String] = []) {
+        if blank.isEmpty {
+            predicate = .init(value: true)
+        } else {
+            predicate = .init(format: "tags CONTAINS %@", blank.first!)
+        }
+        FILTERTEXT = blank
+        recordType = "blank"
     }
     @State var listems: [blDe] = []
     func fetchData () {

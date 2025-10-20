@@ -29,8 +29,8 @@ struct newItemView: View {
     
     var hbed : blDe? = nil
     
-    init (_ c:String, _ rt:String) {
-        catagory = c == "" ? [] : [c]
+    init (_ c:[String], _ rt:String) {
+        catagory = c
         recordType = rt
         recName = CKRecord.ID(recordName: UUID().uuidString)
         name = ""

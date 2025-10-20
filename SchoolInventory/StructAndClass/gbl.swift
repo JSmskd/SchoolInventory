@@ -31,4 +31,8 @@ struct gbl {
         //    let cents:Int = doub - (dollars * 10000)
         return "$\(dollars).\(cents)"
     }
+    enum type:String, Codable {
+        case top
+        case bottom
+    }
 }
