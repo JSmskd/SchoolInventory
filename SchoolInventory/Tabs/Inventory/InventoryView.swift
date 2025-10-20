@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct InventoryView: View {
-    let catagories: [(gbl.type,String)] = [(.top,"Shirts"), (.bottom,"Sweatpants"), (.top,"Hoodies"), (.top,"Crewnecks")]
+    let catagories: [(gbl.type,String)] = [(.top,"shirt"), (.bottom,"sweatpant"), (.top,"hoodie"), (.top,"crewnecks")]
     var body: some View {
         
         NavigationStack {
@@ -25,7 +25,8 @@ struct InventoryView: View {
                     }
                     ForEach(0..<catagories.count, id: \.self) { i in
                         quearyBloc(catagories[i].1, i) {
-                            BlanksView(design: [catagories[i].1])
+                            let o = catagories[i]
+                            BlanksView(design: [o.1, o.0.rawValue])
                         }
                     }
                 }

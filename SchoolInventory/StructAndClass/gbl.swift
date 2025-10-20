@@ -32,7 +32,7 @@ struct gbl {
         return "$\(dollars).\(cents)"
     }
     enum type:String, Codable {
-        case top
-        case bottom
+        case top = "top"
+        case bottom = "bottom"
     }
 }
