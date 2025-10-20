@@ -24,7 +24,7 @@ struct Item:Identifiable, CustomStringConvertible, Hashable/*, Codable*/ {
     //    var dollar:Int {get {price / 100}}
     //    var cent:Int {get {price - (dollar * 1000)}}
     init(_ ref : CKRecord.ID) {
-        var tr:CKRecord = CKRecord(recordType: "dumb")
+        var tr:CKRecord = gbl.dumb
         gbl.db.fetch(withRecordID: ref) { r, e in
             if e == nil {
                 tr = r!

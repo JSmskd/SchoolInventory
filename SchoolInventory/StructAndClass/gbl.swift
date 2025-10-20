@@ -9,6 +9,9 @@ import SwiftUI
 import CloudKit
 
 struct gbl {
+    
+    static let dumb:CKRecord = CKRecord(recordType: "dumb")
+    
     static let db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
     
     static let darkOrange = Color(red: 244/255, green: 108/255, blue: 44/255)

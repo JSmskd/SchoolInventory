@@ -59,8 +59,8 @@ struct blank:CustomStringConvertible , Hashable, Identifiable{
     }
     var description: String {get {name?.description ?? "Nill"}}
     init(_ ref : CKRecord.ID) {
-        var tr:CKRecord = CKRecord(recordType: "dumb")
-        CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withRecordID: ref) { r, e in
+        var tr:CKRecord = gbl.dumb
+        gbl.db.fetch(withRecordID: ref) { r, e in
             if e == nil {
                 tr = r!
             }

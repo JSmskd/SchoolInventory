@@ -51,10 +51,10 @@ struct blankSize:Hashable, Identifiable, CustomStringConvertible {
 //        self.name = longName
 //        self.n = shortName
 //    }
-    var isERR:Bool { get {record.recordType == "dumb"} }
+    var isERR:Bool { get {record.recordType == gbl.dumb.recordType} }
     init(_ ref : CKRecord.ID) {
-        var tr:CKRecord = CKRecord(recordType: "dumb")
-        CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withRecordID: ref) { r, e in
+        var tr:CKRecord = gbl.dumb
+        gbl.db.fetch(withRecordID: ref) { r, e in
             if e == nil {
                 tr = r!
             }
@@ -62,13 +62,13 @@ struct blankSize:Hashable, Identifiable, CustomStringConvertible {
             record = tr
     }
     mutating func updateSelf (_ ident:CKRecord.ID) {
-        var tr:CKRecord = CKRecord(recordType: "")
-        CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase.fetch(withRecordID: ident) { r, e in
+        var tr:CKRecord = gbl.dumb
+        gbl.db.fetch(withRecordID: ident) { r, e in
             if e == nil {
                 tr = r!
             }
         }
-        if tr.recordType != "" {
+        if tr.recordType != gbl.dumb.recordType {
             record = tr
         }
     }
