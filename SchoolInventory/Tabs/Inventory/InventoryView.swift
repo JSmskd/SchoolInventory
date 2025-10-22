@@ -21,13 +21,15 @@ struct InventoryView: View {
                                 .navigationTitle("Items")
                         }
                         quearyBloc("Blanks", 1) {
-                            BlanksView(blank: "Blanks")
+                            BlanksView(blank: "")
+                                .navigationTitle("Blanks")
                         }
                     }
                     ForEach(0..<catagories.count, id: \.self) { i in
                         quearyBloc(catagories[i], i) {
                             let o = catagories[i]
                             BlanksView(design: o.JSString())
+                                .navigationTitle(o.String().description)
                         }
                     }
                 }

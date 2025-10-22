@@ -23,7 +23,7 @@ struct BlanksView: View {
             predicate = .init(value: true)
             FILTERTEXT = []
         } else {
-            predicate = .init(format: "tags CONTAINS %@", blank.text)
+            predicate = .init(format: "materials CONTAINS %@", blank.text)
             FILTERTEXT = [blank.text]
         }
         recordType = "blank"
@@ -33,6 +33,7 @@ struct BlanksView: View {
             predicate = .init(value: true)
             FILTERTEXT = []
         } else {
+//            print(design.text)
             predicate = .init(format: "tags CONTAINS %@", design.text)
             FILTERTEXT = [design.text]
         }
@@ -55,10 +56,10 @@ struct BlanksView: View {
         if blank.isEmpty {
             predicate = .init(value: true)
         } else if blank.count == 1 {
-            predicate = .init(format: "tags CONTAINS %@", blank.first!.description)
+            predicate = .init(format: "materials CONTAINS %@", blank.first!.description)
         } else {
             var p:[NSPredicate] = []
-            for iter in blank { p.append(.init(format: "tags CONTAINS %@", iter.description)) }
+            for iter in blank { p.append(.init(format: "materials CONTAINS %@", iter.description)) }
             predicate = NSCompoundPredicate(andPredicateWithSubpredicates: p)
         }
         FILTERTEXT = blank.String()
@@ -68,6 +69,7 @@ struct BlanksView: View {
     func fetchData () {
         let p = predicate// NSPredicate(value: true)
         let db = gbl.db
+//        print(p)
         db.fetch(withQuery: .init(recordType: recordType, predicate: p)) { m in
             listems = []
             var mm : (matchResults: [(CKRecord.ID, Result<CKRecord, any Error>)], queryCursor: CKQueryOperation.Cursor?)?
