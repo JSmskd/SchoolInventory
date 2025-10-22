@@ -5,6 +5,8 @@
 //  Created by John Sencion on 10/14/25.
 //
 
+//GET NEW DEFAULT VALUES
+
 import CloudKit
 
 ///itemsOrdered
