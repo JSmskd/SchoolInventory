@@ -58,7 +58,7 @@ extension Array<gbl.type> {
     func JSString() -> [JSString] {
         var output :[JSString] = []
         for i in self{
-            output.append(.init(stringLiteral: i.rawValue))
+            output.append(i.JSString())
         }
         return output
     }
@@ -78,14 +78,18 @@ extension String {
 }
 
 struct JSString: Codable, Hashable, Identifiable, ExpressibleByStringLiteral, CustomStringConvertible {
-    var id: Int {hashValue}
+    var description: String { get { text } }
+    var id = UUID()
     var text:String
+    
     init(stringLiteral: String) {
         text = stringLiteral
     }
     init (_ t:String) {
-        text = t
+        self = .init(stringLiteral: t)
     }
-    var description: String { get { text } }
+    init (_ g:gbl.type) {
+        self = .init(g.rawValue)
+    }
     
 }
