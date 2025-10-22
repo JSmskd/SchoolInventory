@@ -15,7 +15,7 @@ struct allofthem: View {
         List {
             if recordType == "Item" {
                 Button {
-                    things.append(.init())
+                    things.append("&TEMP" + UUID.init().uuidString)
                 } label: {
                     HStack {
                         Spacer()
@@ -47,6 +47,7 @@ struct allofthem: View {
         ForEach($things, id: \.self, editActions: .all) { i in
             HStack {
                 TextField("ID", text: i)
+                    .foregroundStyle(i.wrappedValue.starts(with: "&TEMP") ? .red : .black )
                 Button("Paste ID") {
                     if UIPasteboard.general.string != nil {
                         if UIPasteboard.general.string!.starts(with: "JSI") {

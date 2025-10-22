@@ -73,6 +73,17 @@ struct newItemView: View {
     }
     var isItem : Bool {get{ recordType == "Item"}}
     var isBlank : Bool { get { recordType == "blank"}}
+    var dis:Bool {
+        
+//                for i in stuff {
+//                    if i.name
+//                }
+        for i in things {
+            if i.starts(with: "&TEMP") { return true}
+        }
+        return false
+    }
+    
     var body: some View {
         ZStack { VStack {
             HStack {
@@ -226,7 +237,8 @@ struct newItemView: View {
                 operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
                 db.add(operation)
                 
-            }//.disabled(name == "")
+            }
+            .disabled(dis)
             .navigationBarBackButtonHidden()
             .onAppear {
                 if recordType == "blank" {
