@@ -126,10 +126,19 @@ struct newItemView: View {
             }.textFieldStyle(.plain)
                 .border(.gray, width: 1)
             
-            
-            Text("Item preview")
             VStack {
-                Text("Price : $\(whole).\(fraction)  ")
+                Text("Item preview")
+                HStack {
+                    Text(NAME.blank() ?? "NAME").foregroundStyle(NAME.isEmpty ? .gray : .black)
+                    Text(name.blank() ?? "name").foregroundStyle(name.isEmpty ? .gray : .black)
+                    HStack(spacing:0) {
+                        Text("[")
+                        ForEach(0..<catagory.count, id:\.self) { i in
+                            if i != 0 { Text(", ") }; Text(catagory[i]) }
+                        Text("]")
+                    }
+                    Text("Price : $\(whole).\(fraction)  ")
+                }
             }
             VStack{
                 HStack {
@@ -154,10 +163,6 @@ struct newItemView: View {
                 }
                 .padding()
                 
-                HStack {
-                    ForEach(0..<catagory.count, id:\.self) { i in
-                        if i != 0 { Text(", ") }; Text(catagory[i]) }
-                }
             }.frame(maxWidth: .infinity, alignment: .trailing)
             allofthem(things: $things, stuff: $stuff, recordType: recordType)
             Button("Cancel") {

@@ -75,6 +75,10 @@ extension Array<JSString> {
 
 extension String {
     func JSString() -> JSString { return .init(stringLiteral: self) }
+    func blank() -> String? {
+        if !self.isEmpty { return self }
+        return nil
+    }
 }
 
 struct JSString: Codable, Hashable, Identifiable, ExpressibleByStringLiteral, CustomStringConvertible {
