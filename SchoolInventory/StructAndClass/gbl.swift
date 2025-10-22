@@ -32,7 +32,60 @@ struct gbl {
         return "$\(dollars).\(cents)"
     }
     enum type:String, Codable {
+        //loose
         case top = "top"
         case bottom = "bottom"
+        
+        //more
+        case shirt = "shirt"
+        case sweatpant = "sweatpant"
+        case hoodie = "hoodie"
+        case crewnecks = "crewnecks"
+        
+        func JSString() -> JSString {
+            return self.rawValue.JSString()
+        }
     }
+}
+extension Array<gbl.type> {
+    func String() -> [String] {
+        var output :[String] = []
+        for i in self {
+            output.append(i.rawValue)
+        }
+        return output
+    }
+    func JSString() -> [JSString] {
+        var output :[JSString] = []
+        for i in self{
+            output.append(.init(stringLiteral: i.rawValue))
+        }
+        return output
+    }
+}
+extension Array<JSString> {
+    func String() -> [String] {
+        var output :[String] = []
+        for i in self {
+            output.append(i.description)
+        }
+        return output
+    }
+}
+
+extension String {
+    func JSString() -> JSString { return .init(stringLiteral: self) }
+}
+
+struct JSString: Codable, Hashable, Identifiable, ExpressibleByStringLiteral, CustomStringConvertible {
+    var id: Int {hashValue}
+    var text:String
+    init(stringLiteral: String) {
+        text = stringLiteral
+    }
+    init (_ t:String) {
+        text = t
+    }
+    var description: String { get { text } }
+    
 }

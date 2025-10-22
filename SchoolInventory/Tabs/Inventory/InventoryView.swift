@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct InventoryView: View {
-    let catagories: [[String]] = [["shirt",gbl.type.top.rawValue], ["sweatpant",gbl.type.bottom.rawValue], ["hoodie",gbl.type.top.rawValue], ["crewnecks",gbl.type.top.rawValue]]
+    let catagories: [[gbl.type]] = [[.shirt,.top], [.sweatpant,.bottom], [.hoodie,.top], [.crewnecks,.top]]
     var body: some View {
         
         NavigationStack {
@@ -18,15 +18,16 @@ struct InventoryView: View {
                     HStack {
                         quearyBloc("Items", 1) {
                             BlanksView(design: "")
+                                .navigationTitle("Items")
                         }
                         quearyBloc("Blanks", 1) {
-                            BlanksView(blank: "")
+                            BlanksView(blank: "Blanks")
                         }
                     }
                     ForEach(0..<catagories.count, id: \.self) { i in
                         quearyBloc(catagories[i], i) {
                             let o = catagories[i]
-                            BlanksView(design: o)
+                            BlanksView(design: o.JSString())
                         }
                     }
                 }
@@ -45,8 +46,8 @@ var text:String
         i = iteration
             self.f = destination
         }
-    init(_ label:[String], _ iteration :Int, @ViewBuilder _ destination: @escaping () -> view) {
-        var t = label.first!
+    init(_ label:[gbl.type], _ iteration :Int, @ViewBuilder _ destination: @escaping () -> view) {
+        var t = label.first!.rawValue
         if label.count > 1 {
             for (n,x) in label.enumerated() {
                 if n == 0 {
@@ -54,7 +55,7 @@ var text:String
                 } else {
                     t += ", "
                 }
-                t += x
+                t += x.rawValue
                 if n == label.count - 1 {
                     t += "]"
                 }

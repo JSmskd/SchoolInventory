@@ -18,50 +18,50 @@ struct BlanksView: View {
     private let recordType:String
     let FILTERTEXT: [String]
     var predicate : NSPredicate
-    init(blank: String = "") {
+    init(blank: JSString = "") {
         if blank == ""{
             predicate = .init(value: true)
             FILTERTEXT = []
         } else {
-            predicate = .init(format: "tags CONTAINS %@", blank)
-            FILTERTEXT = [blank]
+            predicate = .init(format: "tags CONTAINS %@", blank.text)
+            FILTERTEXT = [blank.text]
         }
         recordType = "blank"
     }
-    init(design: String = "") {
+    init(design: JSString = "") {
         if design == ""{
             predicate = .init(value: true)
             FILTERTEXT = []
         } else {
-            predicate = .init(format: "tags CONTAINS %@", design)
-            FILTERTEXT = [design]
+            predicate = .init(format: "tags CONTAINS %@", design.text)
+            FILTERTEXT = [design.text]
         }
         recordType = "Item"
     }
-    init(design: [String] = []) {
+    init(design: [JSString] = []) {
         if design.isEmpty {
             predicate = .init(value: true)
         } else if design.count == 1 {
-            predicate = .init(format: "tags CONTAINS %@", design.first!)
+            predicate = .init(format: "tags CONTAINS %@", design.first!.description)
         } else {
             var p:[NSPredicate] = []
-            for iter in design { p.append(.init(format: "tags CONTAINS %@", iter)) }
+            for iter in design { p.append(.init(format: "tags CONTAINS %@", iter.description)) }
             predicate = NSCompoundPredicate(andPredicateWithSubpredicates: p)
         }
-        FILTERTEXT = design
+        FILTERTEXT = design.String()
         recordType = "Item"
     }
-    init(blank: [String] = []) {
+    init(blank: [JSString] = []) {
         if blank.isEmpty {
             predicate = .init(value: true)
         } else if blank.count == 1 {
-            predicate = .init(format: "tags CONTAINS %@", blank.first!)
+            predicate = .init(format: "tags CONTAINS %@", blank.first!.description)
         } else {
             var p:[NSPredicate] = []
-            for iter in blank { p.append(.init(format: "tags CONTAINS %@", iter)) }
+            for iter in blank { p.append(.init(format: "tags CONTAINS %@", iter.description)) }
             predicate = NSCompoundPredicate(andPredicateWithSubpredicates: p)
         }
-        FILTERTEXT = blank
+        FILTERTEXT = blank.String()
         recordType = "blank"
     }
     @State var listems: [blDe] = []
