@@ -8,6 +8,7 @@
 import CloudKit
 
 //this is a test
+///blank Design
 struct blDe : Identifiable, CustomStringConvertible, Hashable {
     var description: String { get { "\(id.recordName) \(name)"}}
     var id: CKRecord.ID
