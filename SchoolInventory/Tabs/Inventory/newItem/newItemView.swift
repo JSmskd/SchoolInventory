@@ -30,7 +30,6 @@ struct newItemView: View {
     var hbed : blDe? = nil
     
     init (_ c:[String], _ rt:String) {
-//        print(c)
         recordType = rt
         recName = CKRecord.ID(recordName: UUID().uuidString)
         name = ""
@@ -52,14 +51,11 @@ struct newItemView: View {
     }
     
     init (bed:blDe) {
-//        print(bed.cats)
-//        catagory = be
         recName = bed.id
         recordType = bed.type
         hbed = bed
         name = bed.n ?? ""
         NAME = bed.name
-//        print("[")
         originals = bed.to
         var t:[String] = []
         for i in bed.to {
@@ -80,7 +76,6 @@ struct newItemView: View {
         catagory = cee
     }
     init (blank:blDe) {
-//        print(blank.cats)
         recName = blank.id
         recordType = blank.type
         catagory = blank.cats
@@ -109,16 +104,7 @@ struct newItemView: View {
     var isItem : Bool {get{ recordType == "Item"}}
     var isBlank : Bool { get { recordType == "blank"}}
     @State var WARNING:Bool = false
-    var dis:Bool {
-        
-//                for i in stuff {
-//                    if i.name
-//                }
-        for i in things {
-            if i.starts(with: "&TEMP") { return true}
-        }
-        return false
-    }
+    var dis:Bool { for i in things { if i.starts(with: "&TEMP") { return true} }; return false }
     
     var body: some View {
         ZStack { VStack {
@@ -140,16 +126,6 @@ struct newItemView: View {
                         message: Text("You are going to delete this item and possible all of its child nodes, are you sure?"),
                         
                         primaryButton: .destructive(Text("DELETE"), action: {
-//                                        var svec:[CKRecord.ID] = [recName]
-//                                        if hbed != nil {
-//                                            for i in stuff {
-//                                                if i.posted {
-//                                                    svec.append(i.generateCKRecord(hbed!).recordID)
-//                                                }
-//                                            }
-//                                        }else{print("ISNIL")}
-//                                        for(i)in(svec){gbl.db.delete(withRecordID:i){id,er in}}
-//                                        DispatchQueue.main.async {
                             Task {
                                 var r = try? await gbl.db.record(for: recName)
                                 if r != nil{
@@ -160,13 +136,12 @@ struct newItemView: View {
                                     r!.setValue(ks, forKey: (recordType == "Item" ? "tags" : "materials"))
                                     gbl.db.save(r!) { r, e in
                                         if e != nil {
-                                            print(e)
+                                            print(e!)
                                         }
                                     }
                                     
                                 }
                             }
-                            //                                        }
                             dismiss()
                         }),
                         secondaryButton: .cancel(Text("nevermind")))

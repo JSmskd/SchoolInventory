@@ -18,27 +18,7 @@ struct BlanksView: View {
     private let recordType:String
     let FILTERTEXT: [String]
     var predicate : NSPredicate
-//    init(blank: JSString = "") {
-//        if blank.isEmpty {
-//            predicate = .init(value: true)
-//            FILTERTEXT = []
-//        } else {
-//            predicate = .init(format: "materials CONTAINS %@", blank.text)
-//            FILTERTEXT = [blank.text]
-//        }
-//        recordType = "blank"
-//    }
-//    init(design: JSString = "") {
-//        if design.isEmpty {
-//            predicate = .init(value: true)
-//            FILTERTEXT = []
-//        } else {
-//            print(design.text)
-//            predicate = .init(format: "tags CONTAINS %@", design.text)
-//            FILTERTEXT = [design.text]
-//        }
-//        recordType = "Item"
-//    }
+
     init(design: [JSString] = []) {
         var p:[NSPredicate] = [.init(format: "tags CONTAINS %@", gbl.realID)]
         for iter in design { p.append(.init(format: "tags CONTAINS %@", iter.description)) }
@@ -64,7 +44,7 @@ struct BlanksView: View {
         let p = predicate// NSPredicate(value: true)
         print(predicate)
         let db = gbl.db
-//        print(p)
+
         db.fetch(withQuery: .init(recordType: recordType, predicate: p)) { m in
             listems = []
             var mm : (matchResults: [(CKRecord.ID, Result<CKRecord, any Error>)], queryCursor: CKQueryOperation.Cursor?)?
