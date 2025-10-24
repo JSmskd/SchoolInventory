@@ -18,51 +18,45 @@ struct BlanksView: View {
     private let recordType:String
     let FILTERTEXT: [String]
     var predicate : NSPredicate
-    init(blank: JSString = "") {
-        if blank.isEmpty {
-            predicate = .init(value: true)
-            FILTERTEXT = []
-        } else {
-            predicate = .init(format: "materials CONTAINS %@", blank.text)
-            FILTERTEXT = [blank.text]
-        }
-        recordType = "blank"
-    }
-    init(design: JSString = "") {
-        if design.isEmpty {
-            predicate = .init(value: true)
-            FILTERTEXT = []
-        } else {
+//    init(blank: JSString = "") {
+//        if blank.isEmpty {
+//            predicate = .init(value: true)
+//            FILTERTEXT = []
+//        } else {
+//            predicate = .init(format: "materials CONTAINS %@", blank.text)
+//            FILTERTEXT = [blank.text]
+//        }
+//        recordType = "blank"
+//    }
+//    init(design: JSString = "") {
+//        if design.isEmpty {
+//            predicate = .init(value: true)
+//            FILTERTEXT = []
+//        } else {
 //            print(design.text)
-            predicate = .init(format: "tags CONTAINS %@", design.text)
-            FILTERTEXT = [design.text]
-        }
-        recordType = "Item"
-    }
+//            predicate = .init(format: "tags CONTAINS %@", design.text)
+//            FILTERTEXT = [design.text]
+//        }
+//        recordType = "Item"
+//    }
     init(design: [JSString] = []) {
-        if design.isEmpty {
-            predicate = .init(value: true)
-        } else if design.count == 1 {
-            predicate = .init(format: "tags CONTAINS %@", design.first!.description)
-        } else {
-            var p:[NSPredicate] = []
-            for iter in design { p.append(.init(format: "tags CONTAINS %@", iter.description)) }
-            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: p)
-        }
-        FILTERTEXT = design.String()
+        var p:[NSPredicate] = [.init(format: "tags CONTAINS %@", gbl.realID)]
+        for iter in design { p.append(.init(format: "tags CONTAINS %@", iter.description)) }
+        
+        predicate = NSCompoundPredicate(andPredicateWithSubpredicates: p)
+        var v = design.String()
+        v.append(gbl.realID)
+        FILTERTEXT = v
         recordType = "Item"
     }
     init(blank: [JSString] = []) {
-        if blank.isEmpty {
-            predicate = .init(value: true)
-        } else if blank.count == 1 {
-            predicate = .init(format: "materials CONTAINS %@", blank.first!.description)
-        } else {
-            var p:[NSPredicate] = []
-            for iter in blank { p.append(.init(format: "materials CONTAINS %@", iter.description)) }
-            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: p)
-        }
-        FILTERTEXT = blank.String()
+        var p:[NSPredicate] = [.init(format: "materials CONTAINS %@", gbl.realID)]
+        for iter in blank { p.append(.init(format: "materials CONTAINS %@", iter.description)) }
+        
+        predicate = NSCompoundPredicate(andPredicateWithSubpredicates: p)
+        var v = blank.String()
+        v.append(gbl.realID)
+        FILTERTEXT = v
         recordType = "blank"
     }
     @State var listems: [blDe] = []
@@ -74,9 +68,9 @@ struct BlanksView: View {
         db.fetch(withQuery: .init(recordType: recordType, predicate: p)) { m in
             listems = []
             var mm : (matchResults: [(CKRecord.ID, Result<CKRecord, any Error>)], queryCursor: CKQueryOperation.Cursor?)?
+            
             do {
                 mm = try m.get()
-                
             } catch {
                 print(error)
             }
@@ -113,7 +107,7 @@ struct BlanksView: View {
                                         Text(itm.name)
                                             .font(.headline)
                                     }
-                                    ForEach(itm.self.to/*do not rememove the slef*/ , id:\.self) { sty in
+                                    ForEach(itm.self.to, id:\.self) { sty in
                                         
                                         Text(sty.self.self.recordName).padding() .background(Color.gray).cornerRadius(8)
                                     }
@@ -135,7 +129,7 @@ struct BlanksView: View {
                     }
                     HStack {
                         Button {
-                            print("checks stock")
+                            print("*checks stock*")
                         } label: {
                             Text("Check Stock")
                                 .font(.title2)
@@ -175,7 +169,7 @@ struct BlanksView: View {
 
 #Preview {
 
-    BlanksView(design: "Test")
+    BlanksView(design: ["Test"])
     
 }
 

@@ -17,11 +17,11 @@ struct InventoryView: View {
                 VStack(spacing: 20) {
                     HStack {
                         quearyBloc("Items", 1) {
-                            BlanksView(design: "")
+                            BlanksView(design: [])
                                 .navigationTitle("Items")
                         }
                         quearyBloc("Blanks", 1) {
-                            BlanksView(blank: "")
+                            BlanksView(blank: [])
                                 .navigationTitle("Blanks")
                         }
                     }

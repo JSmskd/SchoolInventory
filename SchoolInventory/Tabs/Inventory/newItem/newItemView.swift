@@ -24,30 +24,42 @@ struct newItemView: View {
     @State var whole : Int = 9
     @State var fraction : Int = 99
     @FocusState var isFocused: Int?
-    
+    var realsFound:Int = 0
     let recordType:String
     
     var hbed : blDe? = nil
     
     init (_ c:[String], _ rt:String) {
-        catagory = c
+//        print(c)
         recordType = rt
         recName = CKRecord.ID(recordName: UUID().uuidString)
         name = ""
         NAME = ""
         things = []
         originals = []
+        var r = 0
+        var cee : [String] = []
+        for cat in c {
+            if cat == gbl.realID {
+                r+=1
+            } else {
+                cee.append(cat)
+            }
+        }
+        realsFound = r
+        catagory = cee
+
     }
     
     init (bed:blDe) {
-        //        catagory = be
+//        print(bed.cats)
+//        catagory = be
         recName = bed.id
         recordType = bed.type
-        catagory = bed.cats
         hbed = bed
         name = bed.n ?? ""
         NAME = bed.name
-        //        print("[")
+//        print("[")
         originals = bed.to
         var t:[String] = []
         for i in bed.to {
@@ -55,8 +67,20 @@ struct newItemView: View {
             print("\t\(i.recordName)")
         }
         things = t
+        var r = 0
+        var cee : [String] = []
+        for cat in bed.cats {
+            if cat == gbl.realID {
+                r+=1
+            } else {
+                cee.append(cat)
+            }
+        }
+        realsFound = r
+        catagory = cee
     }
     init (blank:blDe) {
+//        print(blank.cats)
         recName = blank.id
         recordType = blank.type
         catagory = blank.cats
@@ -70,9 +94,21 @@ struct newItemView: View {
         }
         things = t
         stuff = []
+        var cee : [String] = []
+        var r = 0
+        for cat in blank.cats {
+            if cat == gbl.realID {
+                r+=1
+            } else {
+                cee.append(cat)
+            }
+        }
+        realsFound = r
+        catagory = cee
     }
     var isItem : Bool {get{ recordType == "Item"}}
     var isBlank : Bool { get { recordType == "blank"}}
+    @State var WARNING:Bool = false
     var dis:Bool {
         
 //                for i in stuff {
@@ -96,17 +132,46 @@ struct newItemView: View {
                 }.foregroundStyle(isItem ? .blue : .gray).disabled(!isItem)
                 Image(systemName: "trash.fill").foregroundStyle(.red).onTapGesture(count: 3) {
                     
-                    var svec:[CKRecord.ID] = [recName]
-                    if hbed != nil {
-                        for i in stuff {
-                            if i.posted {
-                                svec.append(i.generateCKRecord(hbed!).recordID)
-                            }
-                        }
-                    }else{print("ISNIL")}
-                    for(i)in(svec){gbl.db.delete(withRecordID:i){id,er in}}
-                    dismiss()
+                    WARNING = true
                 }
+                .alert(isPresented: $WARNING) {
+                    Alert(
+                        title: Text("Stock Status"),
+                        message: Text("You are going to delete this item and possible all of its child nodes, are you sure?"),
+                        
+                        primaryButton: .destructive(Text("DELETE"), action: {
+//                                        var svec:[CKRecord.ID] = [recName]
+//                                        if hbed != nil {
+//                                            for i in stuff {
+//                                                if i.posted {
+//                                                    svec.append(i.generateCKRecord(hbed!).recordID)
+//                                                }
+//                                            }
+//                                        }else{print("ISNIL")}
+//                                        for(i)in(svec){gbl.db.delete(withRecordID:i){id,er in}}
+//                                        DispatchQueue.main.async {
+                            Task {
+                                var r = try? await gbl.db.record(for: recName)
+                                if r != nil{
+                                    var ks:[String] = []
+                                    for k in (r![(recordType == "Item" ? "tags" : "materials")] as? [String] ?? []) {
+                                        if k != gbl.realID { ks.append(k)}
+                                    }
+                                    r!.setValue(ks, forKey: (recordType == "Item" ? "tags" : "materials"))
+                                    gbl.db.save(r!) { r, e in
+                                        if e != nil {
+                                            print(e)
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                            //                                        }
+                            dismiss()
+                        }),
+                        secondaryButton: .cancel(Text("nevermind")))
+                }
+                
                 
             }
             HStack {
@@ -207,8 +272,17 @@ struct newItemView: View {
                 rec[recordType == "Item" ? "blanks" : "sizes"] = ider
                 rec[recordType == "Item" ? "title" : "color"] = NAME
                 rec[recordType == "Item" ? "description" : "brandName"] = name
+                var usec:[String] = []
+                for real in 0..<realsFound {
+                    usec.append(gbl.realID)
+                }; for real in catagory {
+                    usec.append(real)
+                }
+                print(realsFound)
+                print(usec)
+                print(catagory)
                 if catagory != [] {
-                    rec[recordType == "Item" ? "tags" : "materials"] = catagory
+                    rec[recordType == "Item" ? "tags" : "materials"] = usec
                 }
                 var svec:[CKRecord] = [rec]
                 if hbed != nil {
@@ -218,21 +292,21 @@ struct newItemView: View {
                     }
                 } else { print("ISNIL") }
                 
-                //                for i in svec {
-                //                    Task {
-                //                        do {
-                //                            try await gbl.db.save(i)
-                //                        } catch {
-                //                            print("ERR: \(error)")
-                //                        }
-                //                    }
-                //                }
-                //                for(i)in(rec.allKeys()){print("\(i):\(rec[i])")}
-                //                for i in svec {
-                //                    db.save(i){r,e in
-                //                        print("ERR:\(e!)")
-                //                    }
-                //                }
+//                for i in svec {
+//                    Task {
+//                        do {
+//                            try await gbl.db.save(i)
+//                        } catch {
+//                            print("ERR: \(error)")
+//                        }
+//                    }
+//                }
+//                for(i)in(rec.allKeys()){print("\(i):\(rec[i])")}
+//                for i in svec {
+//                    db.save(i){r,e in
+//                        print("ERR:\(e!)")
+//                    }
+//                }
                 let operation = CKModifyRecordsOperation(recordsToSave: svec, recordIDsToDelete: nil)
                 operation.savePolicy = .allKeys // Or .changedKeys, .allKeys
                 db.add(operation)
