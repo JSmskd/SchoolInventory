@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct JSString: Codable, Hashable, Identifiable, ExpressibleByStringLiteral, CustomStringConvertible {
+struct JSString: Codable, Hashable, Identifiable, ExpressibleByStringLiteral, CustomStringConvertible, Equatable {
     var description: String { get { text } }
     var id = UUID()
     var text:String
@@ -21,5 +21,13 @@ struct JSString: Codable, Hashable, Identifiable, ExpressibleByStringLiteral, Cu
     init (_ g:gbl.type) {
         self = .init(g.rawValue)
     }
+    init () {
+        self = .init(stringLiteral: "")
+    }
     
+    static func == (lhs:JSString, rhs:JSString) -> Bool {
+        lhs.text == rhs.text
+    }
+    
+    var isEmpty:Bool { get { text.isEmpty } }
 }

@@ -19,7 +19,7 @@ struct BlanksView: View {
     let FILTERTEXT: [String]
     var predicate : NSPredicate
     init(blank: JSString = "") {
-        if blank == ""{
+        if blank.isEmpty {
             predicate = .init(value: true)
             FILTERTEXT = []
         } else {
@@ -29,7 +29,7 @@ struct BlanksView: View {
         recordType = "blank"
     }
     init(design: JSString = "") {
-        if design == ""{
+        if design.isEmpty {
             predicate = .init(value: true)
             FILTERTEXT = []
         } else {
@@ -68,6 +68,7 @@ struct BlanksView: View {
     @State var listems: [blDe] = []
     func fetchData () {
         let p = predicate// NSPredicate(value: true)
+        print(predicate)
         let db = gbl.db
 //        print(p)
         db.fetch(withQuery: .init(recordType: recordType, predicate: p)) { m in
