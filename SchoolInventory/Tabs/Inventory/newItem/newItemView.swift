@@ -134,7 +134,7 @@ struct newItemView: View {
                                         if k != gbl.realID { ks.append(k)}
                                     }
                                     r!.setValue(ks, forKey: (recordType == "Item" ? "tags" : "materials"))
-                                    gbl.db.save(r!) { r, e in
+                                    gbl.db.save(r!) {r,e in
                                         if e != nil {
                                             print(e!)
                                         }
