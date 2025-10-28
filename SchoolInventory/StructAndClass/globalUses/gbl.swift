@@ -47,5 +47,43 @@ struct gbl {
             return self.rawValue.JSString()
         }
     }
+    private enum JSError:Error {
+        case uhoh
+    }
+    typealias error = any Error
+    typealias record = Result<CKRecord,error>
+    typealias multirecord = Result<[record],error>
+    typealias id = CKRecord.ID
+    typealias diction = [id:record]
+    typealias dict = Result<diction,error>
+    
+    static func fetch(ids:[id]) -> dict {
+        var res:dict = Result.failure(JSError.uhoh)
+        db.fetch(withRecordIDs: ids) { r in res = r }
+        do {
+            var ret:diction=[:]
+            for(id,r)in(try(res.get())){ret[id]=r}
+            return.success(ret)
+        }catch(let Err){return.failure(Err)
+        }
+    }
+    static func fetch(id:id)->record{
+        do{return.success(try(try(fetch(ids:[id]).get()).first!.1).get())
+        } catch let Err { return .failure(Err) }
+    }
+    static func fetch(predicate:NSPredicate, recordType rt:CKRecord.RecordType) -> Result<[record], error> {
+        return fetch(queary: .init(recordType: rt, predicate: predicate))
+    }
+    static func fetch(predicates:[NSPredicate], recordType rt:CKRecord.RecordType) -> multirecord {
+        return fetch(predicate: NSCompoundPredicate(andPredicateWithSubpredicates: predicates), recordType: rt)
+    }
+    static func fetch(queary:CKQuery) -> Result<[record], error> {
+        var res:Result<(matchResults: [(id, record)], queryCursor: CKQueryOperation.Cursor?), error> = .failure(JSError.uhoh)
+        db.fetch(withQuery: queary) { m in res=m}
+        do { var out:[record] = []
+            for i in (try res.get()).matchResults { out.append(i.1) }
+            return .success(out)
+        } catch let Err { return .failure(Err) }
+    }
 }
 
