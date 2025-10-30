@@ -40,3 +40,9 @@ extension String {
         return nil
     }
 }
+
+import CloudKit
+
+extension CKRecord {
+    var dumb:Bool {get {self==gbl.dumb}}
+}
