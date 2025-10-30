@@ -51,7 +51,6 @@ struct snake : Identifiable, Hashable {
         record["longName"] = name
         record["shortName"] = n
         record["cost"] = price
-//        record["blank"] = CKRecord.Reference.init(record: parentID.record, action: .none)
         return record
     }
 }

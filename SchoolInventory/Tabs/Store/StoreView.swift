@@ -8,7 +8,6 @@ import CloudKit
 import SwiftUI
 
 struct StoreView: View {
-//    @State var
     var body: some View {
         VStack {
             Text("Store")
@@ -18,8 +17,5 @@ struct StoreView: View {
 }
 
 #Preview {
-    
-//    Text("hi")
-//    StoreRow(name: "Alphabeta")
     StoreView()
 }

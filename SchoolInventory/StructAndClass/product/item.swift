@@ -17,7 +17,6 @@ struct Item:Identifiable, CustomStringConvertible, Hashable/*, Codable*/ {
     var record:CKRecord
     var title:String
     var Itemdescription:String
-//    var reference:CKRecord.Reference?
     var images:[CKAsset]
     private var PRICE:Int64
     var price:Int {get {Int(PRICE)} set {PRICE = Int64(newValue)}}
@@ -52,7 +51,6 @@ struct Item:Identifiable, CustomStringConvertible, Hashable/*, Codable*/ {
         self.Itemdescription = description
         self.images = images ?? []
         self.PRICE = Int64(price)
-//        self.reference = reference
     }
     init(_ title: String, _ description: String, _ price: Int, images: [CKAsset]? = [], id: CKRecord? = nil, reference: CKRecord.Reference? = nil) {
         self.record = id!
@@ -60,6 +58,5 @@ struct Item:Identifiable, CustomStringConvertible, Hashable/*, Codable*/ {
         self.Itemdescription = description
         self.images = images ?? []
         self.PRICE = Int64(price)
-//        self.reference = reference
     }
 }

@@ -29,13 +29,8 @@ struct blDe : Identifiable, CustomStringConvertible, Hashable {
             type = a.recordType
         
         id = a.recordID
-//        print(a["title"])
-//        print(a["longName"])
-//        print(a["color"])
         name = ((((a["title"] ?? a["longName"]) as? String) ?? a["color"]) as? String) ?? a.recordID.recordName
-//        name = a["title"] ?? (a["longName"] ?? (a["color"] ?? a.recordID.recordName))
         n = a["shortName"]
-//        name = a.recordType == "Item" ? a["title"] as? String ?? a.recordID.recordName : a.recordType == "blank" ? a["longName"]  : a["color"] a.recordID.recordName
         cats = (a.recordType == "Item" ? a["tags"] : a["materials"]) as? [String] ?? []
             price = a[a.recordType == "Item" ? "price" : "cost"] as? Int64 ?? -1
         let refs = a[a.recordType == "Item" ? "blanks" : "sizes"] as? [CKRecord.Reference] ?? []

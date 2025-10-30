@@ -41,7 +41,7 @@ struct BlanksView: View {
     }
     @State var listems: [blDe] = []
     func fetchData () {
-        let p = predicate// NSPredicate(value: true)
+        let p = predicate
         print(predicate)
         let db = gbl.db
 
@@ -133,13 +133,6 @@ struct BlanksView: View {
                 }
                 .padding()
             }
-//            .alert(isPresented: $showStockAlert) {
-//                Alert(
-//                    title: Text("Stock Status"),
-//                    message: Text(stockAlertMessage),
-//                    dismissButton: .default(Text("OK"))
-//                )
-//            }
         }
         .onAppear {
             fetchData()
