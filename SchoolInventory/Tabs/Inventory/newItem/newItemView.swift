@@ -256,9 +256,9 @@ struct newItemView: View {
                 print(realsFound)
                 print(usec)
                 print(catagory)
-                if catagory != [] {
+//                if usec != [] {
                     rec[recordType == "Item" ? "tags" : "materials"] = usec
-                }
+//                }
                 var svec:[CKRecord] = [rec]
                 if hbed != nil {
                     for (x,i) in stuff.enumerated() {
