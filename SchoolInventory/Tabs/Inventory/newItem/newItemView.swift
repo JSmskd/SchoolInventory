@@ -134,11 +134,11 @@ struct newItemView: View {
                                         if k != gbl.realID { ks.append(k)}
                                     }
                                     r!.setValue(ks, forKey: (recordType == "Item" ? "tags" : "materials"))
-                                    gbl.db.save(r!) {r,e in
-                                        if e != nil {
-                                            print(e!)
-                                        }
-                                    }
+                                        print(try? await gbl.save(record: r!))
+//                                    gbl.db.save(r!) {r,e in
+//                                        if e != nil {
+//                                            print(e!)
+//                                        }
                                     
                                 }
                             }
@@ -294,7 +294,10 @@ struct newItemView: View {
         }
     }
     func getstuff() {
-        gbl.db.fetch(withRecordIDs: originals) { r in
+        Task {
+        let r = await gbl.fetch(ids: originals)
+            //        gbl.db.fetch(withRecordIDs: originals) { r in
+            
             var recs:[snake] = []
             for i in (try? r.get()) ?? [:] {
                 let tb = try? i.value.get()

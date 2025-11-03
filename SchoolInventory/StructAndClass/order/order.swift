@@ -28,7 +28,12 @@ struct order:Hashable,Identifiable {
         var fulf:String? = nil
         ///pickup identifier
         var puid:String? = nil
-        
+//        var i = self.id
+//        Task {
+//            
+//            var r = try? await gbl.fetch(id: i).get()
+//            //            gbl.db.fetch(withRecordID: self.id) { r, e in
+//            if r != nil {
         gbl.db.fetch(withRecordID: self.id) { r, e in
             if e == nil {
                 ord = []

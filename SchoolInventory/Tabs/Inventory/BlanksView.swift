@@ -18,7 +18,7 @@ struct BlanksView: View {
     private let recordType:String
     let FILTERTEXT: [String]
     var predicate : NSPredicate
-
+    
     init(design: [JSString] = []) {
         var p:[NSPredicate] = [.init(format: "tags CONTAINS %@", gbl.realID)]
         for iter in design { p.append(.init(format: "tags CONTAINS %@", iter.description)) }
@@ -44,28 +44,13 @@ struct BlanksView: View {
         let p = predicate
         print(predicate)
         let db = gbl.db
-
-        db.fetch(withQuery: .init(recordType: recordType, predicate: p)) { m in
-            listems = []
-            var mm : (matchResults: [(CKRecord.ID, Result<CKRecord, any Error>)], queryCursor: CKQueryOperation.Cursor?)?
+        Task {
+            let m = try await gbl.fetch(predicate: p, recordType: recordType).get()
             
-            do {
-                mm = try m.get()
-            } catch {
-                print(error)
-            }
-            if mm != nil {
-                for res in mm!.matchResults {
-                    
-                    let b = try? res.1.get()
-                    if b != nil {
-                        let a = blDe(b!)
-                        
-                        if a != nil {
-                            listems.append(a!)
-                        }
-                    }
-                }
+            //        }
+            //        db.fetch(withQuery: .init(recordType: recordType, predicate: p)) { m in
+            for res in m.self {
+                    if let temp = blDe(try? res.get()) { listems.append(temp) }
             }
         }
     }
