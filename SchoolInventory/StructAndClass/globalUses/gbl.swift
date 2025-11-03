@@ -76,5 +76,8 @@ struct gbl {
             return .success(out)
         } catch let Err { return .failure(Err) }
     }
+    static func save(record rec: CKRecord) async throws -> CKRecord {
+        try await db.save(rec)
+    }
 }
 
