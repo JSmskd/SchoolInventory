@@ -127,7 +127,7 @@ struct newItemView: View {
                         
                         primaryButton: .destructive(Text("DELETE"), action: {
                             Task {
-                                var r = try? await gbl.db.record(for: recName)
+                                let r = try? await gbl.db.record(for: recName)
                                 if r != nil{
                                     var ks:[String] = []
                                     for k in (r![(recordType == "Item" ? "tags" : "materials")] as? [String] ?? []) {
@@ -248,7 +248,7 @@ struct newItemView: View {
                 rec[recordType == "Item" ? "title" : "color"] = NAME
                 rec[recordType == "Item" ? "description" : "brandName"] = name
                 var usec:[String] = []
-                for real in 0..<realsFound {
+                for _ in 0..<realsFound {
                     usec.append(gbl.realID)
                 }; for real in catagory {
                     usec.append(real)
