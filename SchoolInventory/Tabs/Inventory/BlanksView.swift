@@ -43,7 +43,6 @@ struct BlanksView: View {
     func fetchData () {
         let p = predicate
         print(predicate)
-        let db = gbl.db
         Task {
             let m = try await gbl.fetch(predicate: p, recordType: recordType).get()
             

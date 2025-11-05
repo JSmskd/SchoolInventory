@@ -130,11 +130,12 @@ struct newItemView: View {
                                 let r = try? await gbl.db.record(for: recName)
                                 if r != nil{
                                     var ks:[String] = []
-                                    for k in (r![(recordType == "Item" ? "tags" : "materials")] as? [String] ?? []) {
+                                    let t = (r![(recordType == "Item" ? "tags" : "materials")] as? [String] ?? [])
+                                    for k in t {
                                         if k != gbl.realID { ks.append(k)}
                                     }
                                     r!.setValue(ks, forKey: (recordType == "Item" ? "tags" : "materials"))
-                                        print(try? await gbl.save(record: r!))
+                                    if let t2 = try? await gbl.save(record: r!) {print(t2 as Any)}
 //                                    gbl.db.save(r!) {r,e in
 //                                        if e != nil {
 //                                            print(e!)
