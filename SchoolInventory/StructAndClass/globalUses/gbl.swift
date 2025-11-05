@@ -81,3 +81,8 @@ struct gbl {
     }
 }
 
+extension NSSortDescriptor {
+    static func createTime(_ ascending:Bool = false) -> NSSortDescriptor {
+        return .init(key: "___createTime", ascending: ascending)
+    }
+}
