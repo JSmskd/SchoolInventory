@@ -62,7 +62,11 @@ struct StoreView: View {
         }
         var levs:[storelev] = []
         for i in records {
-            levs.append(storelev(RECORD: i))
+            do {
+                levs.append(try storelev(i))
+            } catch {
+                print("uh oh: \(error)")
+            }
         }
         return levs
     }
@@ -80,6 +84,7 @@ struct storelev:Identifiable {
     var items:[CKRecord.Reference] { get {RECORD.object(forKey: "items") as! [CKRecord.Reference]} set {RECORD.setValue(newValue, forKey: "items")}}
     
     init (RECORD rec:CKRecord) {RECORD = rec }
+    init (_ rec:CKRecord) throws {RECORD = rec}
     
     func save(){Task{do{let _=try await gbl.save(record: RECORD)}catch{}}
     }
