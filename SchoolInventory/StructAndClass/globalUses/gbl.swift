@@ -17,9 +17,10 @@ struct gbl {
     static let darkOrange = Color(red: 244/255, green: 108/255, blue: 44/255)
     static let darkBrown = Color(red: 92/255, green: 64/255, blue: 51/255)
     static let realID = "ISREAL"
+    static let DOLLAR = 10000
     
     static func toPrice(_ doub:Int) -> String {
-        let cuttoff = 10000
+        let cuttoff = DOLLAR
         let dollars:Int = doub / cuttoff
         let cent = doub % cuttoff
         var cents = cent.description

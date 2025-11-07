@@ -311,3 +311,69 @@ struct newItemView: View {
     }
 }
 
+
+struct Money: View {
+    @State var text:String = ""
+    @State var price:String = "59.99"
+    var body: some View {
+        Text("hi there")
+        //        Decimal.FormatStyle
+        //        let a = ParseableFormatStyle.currency(code: "US")
+        //        let b = Decimal.FormatStyle.currency(code: "US")
+        TextField("test", text: Binding(get: {
+            price
+        }, set: { v in
+            print(v)
+            var temp = ""
+            var dotted:Bool = true
+            for i in v {
+                if i.isNumber || (i == "."  && dotted) {
+                    if i == "." { dotted = false}
+                    temp += i.description
+                }
+            }
+            price = temp
+        }))
+        let s = price.split(separator: ".")
+        HStack{
+            
+            ForEach(0..<s.count, id:\.self) { i in
+                VStack {
+                    let n = s[i].description
+                    let nn = Int(n) ?? 0
+                    let m = (i - 1) * (0 - 1)
+                    
+                    Text(i.description)
+                    Text(n.description)
+                    Text(nn.description)
+                    Text(m.description)
+                    Text(((gbl.DOLLAR - 1) * m + 1).description)
+                }
+            }
+        }
+        var temper:String {
+            var t = 0
+            for i in 0..<s.count {
+                var p = ((gbl.DOLLAR - 1) * ((i - 1) * (0 - 1)) + 1) * (Int(s[i]) ?? 0)
+                while p
+                        <= gbl.DOLLAR {
+                    p *= 10
+                }
+                t += p / 10
+            }
+            return t.description
+        }
+        Text(temper)
+
+//        Binding<Int>.init(get:{
+//            var t = 0
+//            for i in 0..<s.count {
+//                t += ((gbl.DOLLAR - 1) * ((i - 1) * (0 - 1)) + 1) * (Int(s[i]) ?? 0)
+//            }
+//        },set:{_ in})
+    }
+}
+
+#Preview {
+    Money()
+}
