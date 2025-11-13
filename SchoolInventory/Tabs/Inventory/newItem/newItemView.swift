@@ -21,9 +21,9 @@ struct newItemView: View {
     @State var name:String
     @State var originals:[CKRecord.ID]
     @State var things:[String]; @State var stuff:[snake] = []
-    @State var whole : Int = 9
-    @State var fraction : Int = 99
+    @State var price:Double = 0
     @FocusState var isFocused: Int?
+
     var realsFound:Int = 0
     let recordType:String
     
@@ -168,15 +168,12 @@ struct newItemView: View {
                 TextField("Enter the Shortened name", text: $name)
             }
             
-            HStack {
-                Text(" Defualt Price : $")
-                TextField("Enter the whole dollar amount", value: $whole, format: .number).frame(maxWidth: 24 * 2)
-                    .background(Color.yellow).grayscale(1).cornerRadius(3)
-                Text(".")
-                TextField("enter the decimal amount", value: $fraction, format: .number).frame(maxWidth: 24 * 2)
-                    .background(Color.yellow).grayscale(1).cornerRadius(3)
-            }.textFieldStyle(.plain)
-                .border(.gray, width: 1)
+            TextField("Price: $", value: $price, format: .number)
+                    .background(Color.yellow).grayscale(1)
+                    .cornerRadius(3)
+                    .textFieldStyle(.plain)
+                    .frame(maxWidth: 24 * 2 * 2)
+                    .border(.gray, width: 1)
             
             VStack {
                 Text("Item preview")
@@ -189,7 +186,7 @@ struct newItemView: View {
                             if i != 0 { Text(", ") }; Text(catagory[i]) }
                         Text("]")
                     }
-                    Text("Price : $\(whole).\(fraction)  ")
+                    Text("Price : $\(price, specifier: "%.4f")  ")
                 }
             }
             VStack{
@@ -225,7 +222,7 @@ struct newItemView: View {
                 
                 
                 rec:CKRecord = CKRecord(recordType: recordType, recordID: recName)
-                rec["cost"] = Int64(whole * 10000 + fraction)
+                rec["cost"] = gbl.storeMoney(price.description)
                 var ider:[CKRecord.Reference] = []
                 if recordType == "Item" {
                     var img:[Data] = []
@@ -309,87 +306,4 @@ struct newItemView: View {
             stuff = recs
         }
     }
-}
-
-
-struct Money: View {
-    @State var text:String = ""
-    @State var price:String = "59.99"
-    var body: some View {
-        Text("hi there")
-        //        Decimal.FormatStyle
-        //        let a = ParseableFormatStyle.currency(code: "US")
-        //        let b = Decimal.FormatStyle.currency(code: "US")
-        TextField("test", text: Binding(get: {
-            price
-        }, set: { v in
-            print(v)
-            var temp = ""
-            var dotted:Bool = true
-            for i in v {
-                if i.isNumber || (i == "."  && dotted) {
-                    if i == "." { dotted = false}
-                    temp += i.description
-                }
-            }
-            price = temp
-        }))
-        let s = price.split(separator: ".")
-        HStack{
-            
-            ForEach(0..<s.count, id:\.self) { i in
-                VStack {
-                    let n = s[i].description
-                    let nn = Int(n) ?? 0
-                    let m:Int = (i - 1) * (0 - 1)
-                    let mm = ((gbl.DOLLAR - 1) * m + 1)
-                    Text(i.description)
-                    Text(n.description)
-                    Text(m.description)
-                    Text((nn * mm).description)
-                    Text(mm.description)
-                }
-            }
-        }
-        var temper:String {
-            var t = 0
-            for i in 0..<s.count {
-//                (gbl.DOLLAR.description.count * i)
-                ///`DOLLAR` count
-                let dc = gbl.DOLLAR.description.count
-                ///`s` count
-                let sc = s[i].count
-                ///`s` use
-                let su = Int(s.description) ?? 0
-                let p = Int(pow(10, (i == 1 ? dc - sc : dc) - 1).description)! * su
-                
-                if gbl.debuging {
-                    print(dc)
-                    print(sc)
-                    print(su)
-                    print(p)
-                }
-                
-//                while p
-//                        <= gbl.DOLLAR / 1 {
-//                    print("\(p) \(gbl.DOLLAR)")
-//                    p *= 10
-//                }
-                t += p // 10
-            }
-            return t.description
-        }
-        Text(temper)
-
-//        Binding<Int>.init(get:{
-//            var t = 0
-//            for i in 0..<s.count {
-//                t += ((gbl.DOLLAR - 1) * ((i - 1) * (0 - 1)) + 1) * (Int(s[i]) ?? 0)
-//            }
-//        },set:{_ in})
-    }
-}
-
-#Preview {
-    Money()
 }

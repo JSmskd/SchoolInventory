@@ -17,6 +17,7 @@ struct gbl {
     static let darkOrange = Color(red: 244/255, green: 108/255, blue: 44/255)
     static let darkBrown = Color(red: 92/255, green: 64/255, blue: 51/255)
     static let realID = "ISREAL"
+    //123456 = $12.3456
     static let DOLLAR = 10000
     
     static func toPrice(_ doub:Int) -> String {
@@ -79,6 +80,39 @@ struct gbl {
     }
     static func save(record rec: CKRecord) async throws -> CKRecord {
         try await db.save(rec)
+    }
+    
+    static func storeMoney(_ dollar:Int, _ cent:Int) -> Int {
+        storeMoney("\(dollar).\(cent)")
+    }
+    static func storeMoney(_ full:String) -> Int {
+        let s = full.split(separator: ".")
+            var t = 0
+            for i in 0..<s.count {
+//                (gbl.DOLLAR.description.count * i)
+                ///`DOLLAR` count
+                let dc = gbl.DOLLAR.description.count
+                ///`s` count
+                let sc = s[i].count
+                ///`s` use
+                let su = Int(s[i].description) ?? 0
+                let p = Int(pow(10, (i==1 ? dc - sc : dc) - 1).description)! * su
+//                Int(pow(10, (i == 1 ? dollar.description.count - STRING[i].count : dollar.description.count) - 1).description)! * su
+                if gbl.debuging {
+                    print("\(dc) \(sc) \(su) \(su) \(p)")
+                }
+                
+//                while p
+//                        <= gbl.DOLLAR / 1 {
+//                    print("\(p) \(gbl.DOLLAR)")
+//                    p *= 10
+//                }
+                t += p // 10
+            }
+            return t
+    }
+    static func storeMoney_ (_ full: Decimal) -> Int {
+        storeMoney(full.description)
     }
 }
 
