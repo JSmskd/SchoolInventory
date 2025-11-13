@@ -341,25 +341,41 @@ struct Money: View {
                 VStack {
                     let n = s[i].description
                     let nn = Int(n) ?? 0
-                    let m = (i - 1) * (0 - 1)
-                    
+                    let m:Int = (i - 1) * (0 - 1)
+                    let mm = ((gbl.DOLLAR - 1) * m + 1)
                     Text(i.description)
                     Text(n.description)
-                    Text(nn.description)
                     Text(m.description)
-                    Text(((gbl.DOLLAR - 1) * m + 1).description)
+                    Text((nn * mm).description)
+                    Text(mm.description)
                 }
             }
         }
         var temper:String {
             var t = 0
             for i in 0..<s.count {
-                var p = ((gbl.DOLLAR - 1) * ((i - 1) * (0 - 1)) + 1) * (Int(s[i]) ?? 0)
-                while p
-                        <= gbl.DOLLAR {
-                    p *= 10
+//                (gbl.DOLLAR.description.count * i)
+                ///`DOLLAR` count
+                let dc = gbl.DOLLAR.description.count
+                ///`s` count
+                let sc = s[i].count
+                ///`s` use
+                let su = Int(s.description) ?? 0
+                let p = Int(pow(10, (i == 1 ? dc - sc : dc) - 1).description)! * su
+                
+                if gbl.debuging {
+                    print(dc)
+                    print(sc)
+                    print(su)
+                    print(p)
                 }
-                t += p / 10
+                
+//                while p
+//                        <= gbl.DOLLAR / 1 {
+//                    print("\(p) \(gbl.DOLLAR)")
+//                    p *= 10
+//                }
+                t += p // 10
             }
             return t.description
         }

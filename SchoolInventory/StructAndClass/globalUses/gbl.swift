@@ -9,7 +9,7 @@ import SwiftUI
 import CloudKit
 
 struct gbl {
-    
+    static let debuging:Bool = true
     static let dumb:CKRecord = CKRecord(recordType: "dumb")
     
     static let db = CloudKit.CKContainer(identifier: "iCloud.org.jhhs.627366.DawgPoundStore").publicCloudDatabase
