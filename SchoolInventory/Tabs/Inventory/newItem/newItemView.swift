@@ -202,6 +202,7 @@ struct newItemView: View {
                             TextField("Name", text: $catagory[i])
                         }
                         .padding().focused($isFocused,equals: i)
+                        .overlay(RoundedRectangle(cornerRadius: 15).stroke(.black, lineWidth: 1))
                     }
                     Button {
                         catagory.append("")

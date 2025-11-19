@@ -29,14 +29,16 @@ struct allofthem: View {
                     stuff.append(.init())
                 } label: {
                     HStack {
-                        Text("Record ID").foregroundStyle(.gray);Spacer()
-                        Text("name :").foregroundStyle(.red);Spacer()
-                        Text("short name :").foregroundStyle(.yellow);Spacer()
-                        Text("quantity :").foregroundStyle(.black);Spacer()
-                        Text("cost * 10000") .foregroundStyle(.blue);Spacer()
                         
-                        Text("Add size").foregroundStyle(.green)
-                    }
+                        TextField("", text:.constant("Record ID"))     .foregroundStyle(.gray);Spacer()
+                        TextField("", text:.constant("name :"))        .foregroundStyle(.red);Spacer()
+                        TextField("", text:.constant("short name :"))  .foregroundStyle(.yellow);Spacer()
+                        TextField("", text:.constant("quantity :"))    .foregroundStyle(.black);Spacer()
+                        TextField("", text:.constant("cost * 10000"))  .foregroundStyle(.blue);Spacer()
+                        
+                        Image(systemName: "plus.circle.fill").foregroundStyle(.blue)
+//                        Text("Add size").foregroundStyle(.green)
+                    }.disabled(true)
                 }
                 
                 blk
@@ -63,7 +65,7 @@ struct allofthem: View {
     var blk:some View {
         ForEach(0..<stuff.count, id:\.self) { i in
             HStack {
-                Text(stuff[i].id).foregroundStyle(.gray)
+                TextField("", text:.constant(stuff[i].id),axis: .vertical).disabled(true).textFieldStyle(.plain).foregroundStyle(.gray)
                 
                 TextField("", text: $stuff[i].name).foregroundStyle(.red)
                 TextField("", text: $stuff[i].n).foregroundStyle(.yellow)
