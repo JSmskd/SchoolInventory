@@ -10,6 +10,7 @@ import SwiftUI
 
 struct allofthem: View {
     @Binding var things:[String]; @Binding var stuff:[snake]
+//    @State var prces:[Decimal] = []
     let recordType:String
     var body: some View {
         List {
@@ -34,7 +35,7 @@ struct allofthem: View {
                         TextField("", text:.constant("name :"))        .foregroundStyle(.red);Spacer()
                         TextField("", text:.constant("short name :"))  .foregroundStyle(.yellow);Spacer()
                         TextField("", text:.constant("quantity :"))    .foregroundStyle(.black);Spacer()
-                        TextField("", text:.constant("cost * 10000"))  .foregroundStyle(.blue);Spacer()
+                        TextField("", text:.constant("cost :"))  .foregroundStyle(.blue);Spacer()
                         
                         Image(systemName: "plus.circle.fill").foregroundStyle(.blue)
 //                        Text("Add size").foregroundStyle(.green)
@@ -78,14 +79,40 @@ struct allofthem: View {
                     //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
                     //                        Int()
                 }) )
-                TextField("", text: Binding(get: {
+//                TextField("Price: $", value: $stuff[i].prce, format: .number)
+                TextField("hi", text: .init(get: {
+                    stuff[i].prce.description
+                }, set: { str in
+                    let mom = gbl.storeMoney(str)
+//                    print(mom)
+                    if mom != nil {
+                        if mom! > 0 {
+//                            print("write")
+                            $stuff[i].price.wrappedValue = Int64(mom!)
+                        }
+                    }
+//                    $stuff[i].price.wrappedValue = Int64( ?? )
+                }))
+//                TextField("hi", value: stuff[i].prce)
+//                TextField("", text: Binding(get: {
+//                    stuff[i].prce.description
+//                }, set: { v in
+//                    print("v: \(v)")
+//                    let b = stuff[i].prce
+//                    gbl.storeMoney(v)
+//                    stuff[i].price = Int64(gbl.storeMoney(v) ?? Int(stuff[i].price))
+                    
+                    //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
+                    //                        Int()
+//                }))
+                /*TextField("", text: Binding(get: {
                     stuff[i].price.description
                 }, set: { v in
                     let b = stuff[i].price
                     stuff[i].price = Int64(v) ?? b
                     //                        if Int(v) != nil {$stuff[i].q = Int(v)!}
                     //                        Int()
-                })).foregroundStyle(.blue)
+                }))*/.foregroundStyle(.blue)
             }.textFieldStyle(.roundedBorder)
         }
         .onDelete { inde in

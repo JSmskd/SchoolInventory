@@ -14,6 +14,11 @@ struct snake : Identifiable, Hashable {
     var name:String
     var n:String
     var price:Int64
+    var prce:Decimal { get {
+//        print("price is \(gbl.toPrice(0))")
+            return (try? Decimal(gbl.toPrice(Int(price)), format: .number)) ?? -1
+//        Decimal()
+    }}
     
     var posted:Bool
     init() {

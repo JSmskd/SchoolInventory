@@ -32,7 +32,7 @@ struct gbl {
             cents += "0"
         }
         //    let cents:Int = doub - (dollars * 10000)
-        return "$\(dollars).\(cents)"
+        return "\(dollars).\(cents)"
     }
     enum type:String, Codable {
         //loose
@@ -82,14 +82,23 @@ struct gbl {
         try await db.save(rec)
     }
     
-    static func storeMoney(_ dollar:Int, _ cent:Int) -> Int {
+    static func storeMoney(_ dollar:Int, _ cent:Int) -> Int? {
         storeMoney("\(dollar).\(cent)")
     }
-    static func storeMoney(_ full:String) -> Int {
-        let s = full.split(separator: ".")
+    static func storeMoney(_ full:String) -> Int? {
+        for i in full {
+            if (i.isNumber || i == ".") == false{
+                return nil
+            }
+        }
+        
+            let s = full.split(separator: ".")
             var t = 0
+            if debuging {
+                print("\(full)", terminator: "")
+            }
             for i in 0..<s.count {
-//                (gbl.DOLLAR.description.count * i)
+                //                (gbl.DOLLAR.description.count * i)
                 ///`DOLLAR` count
                 let dc = gbl.DOLLAR.description.count
                 ///`s` count
@@ -97,21 +106,16 @@ struct gbl {
                 ///`s` use
                 let su = Int(s[i].description) ?? 0
                 let p = Int(pow(10, (i==1 ? dc - sc : dc) - 1).description)! * su
-//                Int(pow(10, (i == 1 ? dollar.description.count - STRING[i].count : dollar.description.count) - 1).description)! * su
-                if gbl.debuging {
-                    print("\(dc) \(sc) \(su) \(su) \(p)")
-                }
-                
-//                while p
-//                        <= gbl.DOLLAR / 1 {
-//                    print("\(p) \(gbl.DOLLAR)")
-//                    p *= 10
-//                }
+                //                Int(pow(10, (i == 1 ? dollar.description.count - STRING[i].count : dollar.description.count) - 1).description)! * su
                 t += p // 10
+                if gbl.debuging {
+                    print(" -- \(dc) \(sc) \(su) \(su) \(p)", terminator: "")
+                }
             }
+            print(" --> \(t)")
             return t
     }
-    static func storeMoney_ (_ full: Decimal) -> Int {
+    static func storeMoney (_ full: Decimal) -> Int? {
         storeMoney(full.description)
     }
 }
